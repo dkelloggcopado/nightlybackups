@@ -1,0 +1,266 @@
+<apex:page id="PipelineDiagram" standardController="copado__Deployment_Flow__c" extensions="copado.PipelineDiagramExtension,copado.Settings,copado.FeatureHelper,copado.JsRemotingController" sidebar="false" showHeader="true" applyHtmlTag="true" title="{!$Label.copado__deployment_flow + ' ' + $Label.copado__pipeline_diagram}">
+    <apex:slds />
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <c:WizardUtils />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+    <c:IncludeStaticsResourceComponent addJQuery="true" addUIjs="true" addUIcss="true" />
+    <apex:includeScript value="{!URLFOR($Resource.copado__SetupDashboardJS)}" />
+    <script type="text/javascript"> var Copado_Licenses = {!CurrentUserLicenses};</script>
+    <apex:includeScript value="{!URLFOR($Resource.JsRemoting) }" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.CopadoChangeManagement,'Assets/css/deploymentFlowConnections.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.copado__CopadoChangeManagement, 'Assets/js/jquery.svg.min.js')}" />
+    <c:IncludeConnectionJsComponent />
+    <head>
+        <title>Pipeline Dashboard</title>
+
+        <style type="text/css">
+            .envBox{
+                height: 75px;
+                border-radius: 0px;
+            }
+            .envBox h3{
+                padding: 0;
+                padding-left: 5px;
+                padding-top: 10px;
+            }
+            .envBox p{
+                color: darkgray;
+                float: left;
+                padding-left: 5px;
+            }
+            .createEnv{
+                font-size: 20px !important;
+                width: 25px;
+                border-right: none;
+                border-bottom: none;
+                border-top: none;
+                float: right;
+                border: none;
+                color:white !important;
+                background-color:#54698d5e !important;
+                text-align: center;
+                height:inherit;
+                font-weight:bolder;
+            }
+
+            .forceDetailPanelDesktop .pageLevelErrors {
+                outline: none;
+            }
+
+            .forcePageError {
+                border-bottom: 1px solid rgb(221, 219, 218);
+                margin-bottom: 1rem;
+                padding-bottom: .75rem;
+            }
+
+            .forcePageError.desktop .genericNotification {
+                font-weight: 300;
+                border-radius: .25rem;
+                font-size: 1rem;
+            }
+
+            .forcePageError .genericNotification {
+                background: rgb(194, 57, 52);
+                padding: 1rem;
+                color: rgb(255, 255, 255);
+                line-height: 1.25;
+            }
+
+            .forcePageError .errorsList {
+                list-style: none;
+                color: rgb(194, 57, 52);
+                line-height: 1.5;
+                margin: 0;
+                padding: .5rem 1rem .25rem 1rem;
+            }
+
+            .forcePageError.desktop .errorsList {
+                font-size: .8125rem;
+            }
+        </style>
+    </head>
+
+    <body class="slds-scope" onresize="windowResize();">
+
+    <apex:form id="canvasSvg">
+        <c:CopadoSpinner />
+        <c:PipelineHeader mode="diagram" mainController="{!this}" />
+        <apex:outputPanel layout="block" id="mainPanel" >
+
+            <div id="notify" class="slds-notify_container slds-is-absolute" style="display: none">
+                <div class="slds-notify slds-notify_toast slds-theme_warning" role="status">
+                    <span class="slds-assistive-text">{!$Label.WARNING}</span>
+                    <span class="slds-icon_container slds-icon-utility-warning slds-m-right_small slds-no-flex slds-align-top" title="">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#warning')}" />
+                        </svg>
+                        </span>
+                    <div class="slds-notify__content">
+                        <h2 class="slds-text-heading_small "><apex:pageMessages id="pagemessage"/></h2>
+                    </div>
+                    <div class="slds-notify__close">
+                        <button class="slds-button slds-button_icon slds-button_icon-inverse" title="{!$Label.CLOSE}" onClick="closeToast(); return false;">
+                            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}" />
+                            </svg>
+                            <span class="slds-assistive-text">{!$Label.copado__close}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <apex:actionFunction name="createOrgCredentials" action="{!createOrgCredential}" reRender="canvasSvg">
+                <apex:param value="" name="flowStepId" />
+                <apex:param value="" name="envId" />
+                <apex:param value="" name="envName" />
+                <apex:param value="" name="branch" />
+                <apex:param value="" name="newOrg" />
+                <apex:param value="" name="useStep" />
+            </apex:actionFunction>
+
+            <apex:actionFunction name="doAuthentication" action="{!authenticateEnvironment}" reRender="rerenderNeeded">
+                <apex:param value="" name="flowStepId" />
+                <apex:param value="" name="envId" />
+                <apex:param value="" name="envName" />
+                <apex:param value="" name="branch" />
+                <apex:param value="" name="newOrg" />
+                <apex:param value="" name="useStep" />
+            </apex:actionFunction>
+            <script type="text/javascript">
+                var copadoApp = {
+                    ns: '{!JSENCODE(namespace)}',
+                    data: {
+                        flowId: '{!JSENCODE(Deployment_Flow__c.Id)}',
+                        __coordinates__: '{!JSENCODE(Deployment_Flow__c.Flow_Step_Coordinates__c)}',
+                        mainBranch: '{!JSENCODE(Deployment_Flow__c.Main_Branch__c)}'
+                    },
+                    envConnections: [],
+                    environments: []
+                };
+            </script>
+            <!-- Canvas Div -->
+
+            <div>
+                <div id="boxCanvas" style="position: fixed;background-color: white;overflow: scroll;"></div>
+            </div>
+
+            <script type="text/javascript" src="{!URLFOR($Resource.PipelineJS) }"></script>
+            <script type="text/javascript">
+                pipelineConnector.config.ns = copadoApp.ns;
+                pipelineConnector.config.currentUserId = '{!$User.Id}';
+                pipelineConnector.labels.LOADING = 'Loading';
+                pipelineConnector.labels.noSource = '{!JSENCODE($Label.NO_SOURCE_ENV_DF_STEP)}';
+                pipelineConnector.labels.noDestination = '{!JSENCODE($Label.NO_DESTINATION_ENV_DF_STEP)}';
+
+                $copado( document ).ready(function() {
+                    pipelineConnector.loadPage();
+                    showToast();
+                    onResize();
+                });
+
+                function windowResize() {
+
+                    $copado('#boxCanvas').css('width',$copado(window).width());
+                    $copado('#boxCanvas').css('height',$copado(window).height());
+                }
+                function onResize(calledFrom){
+
+                    var $win = $copado(window);
+                    var $doc = $copado(document);
+                    var flowSize = calculateFlowSize();
+                    $canvas = $copado("#boxCanvas canvas");
+                    $copado('#boxCanvas').css('width',$copado(window).width());
+                    if(flowSize.top <=  $win.height()){
+                        $canvas.prop('height',  $win.height());
+                        $copado('#boxCanvas').css('height',$win.height());
+                        $doc.css('height',$win.height());
+                    }else{
+                         $canvas.prop('height',  flowSize.top);
+                         $copado('#boxCanvas').css('height',flowSize.top);
+                         $doc.css('height',flowSize.top);
+                    }
+                    // Avoid drawing, since init or loading the page will do it in a few seconds.
+                    if(calledFrom!=='init')
+                        pipelineConnector.drawEnvironmentBoxes();
+                }
+
+                function calculateFlowSize(){
+                    var records = JsRemoting.deploymentFlows.getFlowStepCoordinates(pipelineConnector.config.ns, pipelineConnector.data.flowId);
+                    if(__coordinates__ && __coordinates__.length != 0){
+                        var __coordinates__ = records[0][pipelineConnector.config.ns + 'Branch_Management_Coordinates__c'];
+                        var tmp = (__coordinates__).split(',');
+                        var left = 0;
+                        var top = 0;
+                        for(var i=0; i<tmp.length; i++){
+                            var tmp2 = tmp[i].split('-');
+                            left = parseInt(tmp2[1]) > left ? parseInt(tmp2[1]) : left;
+                            top = parseInt(tmp2[2]) > top ? parseInt(tmp2[2]) : top;
+                        }
+                        return {'left':left+350, 'top':top+150};
+                    }else{
+                        return {'left':0, 'top':0};
+                    }
+                }
+
+                function createOrg(stepId, envId, envName, useStep){
+                    lockScreen();
+                    createOrgCredentials(stepId, envId, '', '', 'true', useStep);
+                }
+                function doOauth(stepId, envId, envName, branch){
+                    doAuthentication(stepId, envId, envName, branch, 'false', false);
+                    return false;
+                }
+                function openWarningModal() {
+                    $copado('#deploymentFlowActivationModal').addClass('slds-fade-in-open');
+                    $copado('#backdropActivationModal').addClass('slds-backdrop--open');
+                    unlockScreen();
+                    return false;
+                }
+                function closeWarningModal() {
+                    $copado('#deploymentFlowActivationModal').removeClass('slds-fade-in-open');
+                    $copado('#backdropActivationModal').removeClass('slds-backdrop--open');
+                    return false;
+                }
+                function closeToast() {
+                    $copado('#notify').css("display", "none");
+                }
+                function showToast() {
+                    if($copado('[Id$=pagemessage]').html() != ""){
+                        $copado('.errorM3').removeClass('errorM3');
+                        $copado('.confirmM3').removeClass('confirmM3');
+                        $copado('.infoM3').removeClass('infoM3');
+                        $copado('.message').removeClass('message');
+                        $copado('.msgIcon').removeClass('msgIcon');
+                        $copado('#notify').removeAttr("style");
+                        $copado('#notify').css({"width": "50%", "margin": "0 25% 0 25%"});
+                    }
+                }
+                function showModalToast() {
+                    $copado('.errorM3').removeClass('errorM3');
+                    $copado('.message').removeClass('message');
+                    $copado('.msgIcon').removeClass('msgIcon');
+                    $copado('.pageLevelErrors').removeAttr("style");
+                }
+            </script>
+        </apex:outputPanel>
+
+
+        <apex:actionFunction name="clearErrMessage" action="{!clearErrorMessage}" reRender="errorMessages" />
+        <apex:outputPanel id="errorResult">
+            <script>
+            function checkErrorResult() {
+                var returnErrorMessage = $copado('[Id$=theErrorMessage]');
+                if(!returnErrorMessage || returnErrorMessage.text() === "") {
+                    closeWarningModal();
+                } else {
+                    showModalToast();
+                }
+                unlockScreen();
+                return false;
+            }
+        </script>
+        </apex:outputPanel>
+    </apex:form>
+    </body>
+    </html>
+</apex:page>
