@@ -1,0 +1,647 @@
+<apex:page id="PipelineManager" standardController="copado__Deployment_Flow__c" extensions="copado.PipelineManagerExtension" lightningStylesheets="true" sideBar="false" docType="html-5.0" title="Pipeline Manager">
+    <apex:slds />
+    <c:IncludeConnectionJsComponent />
+    <apex:includeScript value="{!URLFOR($Resource.utils) }" />
+
+    <c:IncludeStaticsResourceComponent addJQuery="true" addUIjs="true" addUIcss="true" addCometdjs="true" addJCometdjs="true" addJSON2js="true" addJSzipjs="true" />
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.DataTables10,'DataTables10/datatables.min.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.select.min.js')}" />
+    <c:IncludeJqxResourceComponent addjqxalljs="true" addjqxWjs="true" addjqxBasecss="true" />
+
+    <script type="text/javascript" src="{!URLFOR($Resource.CopadoChangeManagement, 'Assets/js/jquery.svg.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.CopadoChangeManagement, 'Assets/js/jquery.connectingLine.js')}"></script>
+    <script>
+        var svgButtonsId = [];
+        var svgButtonsClass = ['editIcon', 'forwardIcon', 'backIcon', 'approvalIcon', 'inProgressIcon', 'closeIcon'];
+
+        var svgStruct = [];
+        var setSVGStruct = function(){
+            svgStruct['.editIcon'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#edit')}",
+                class:'slds-button__icon'
+            };
+            svgStruct['.forwardIcon'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#forward')}",
+                class:'slds-button__icon'
+            };
+            svgStruct['.backIcon'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#back')}",
+                class:'slds-button__icon'
+            };
+            svgStruct['.approvalIcon'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#approval')}",
+                class:'slds-button__icon'
+            };
+            svgStruct['.inProgressIcon'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#spinner')}",
+                class:'slds-button__icon'
+            };
+            svgStruct['.closeIcon'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#close')}",
+                class:'slds-button__icon',
+            };
+            svgStruct['.chevronright'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#chevronright')}",
+                class:'slds-button__icon',
+            };
+            svgStruct['.chevrondown'] = {
+                imageURL: "{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#chevrondown')}",
+                class:'slds-button__icon',
+            };
+        }
+        $copado(document).ready(function(){
+            lockScreen();
+            setSVGStruct();
+            applyRenderSVG(svgButtonsId,svgButtonsClass);
+            calculateFlowSteps();
+        });
+
+        var stageNameOperations = {
+            name: 'StageNames',
+            pipelineId: '{!currentPipeline}',
+            hiddens: [],
+            toggle: function(){
+                $copado('.toggle').prop('readOnly',false);
+                $copado('input.toggle').css('border','');
+                $copado('.editIcon').css('display','none');
+                $copado('button.saveStage').css('display','');
+            },
+            stageMap: {},
+            getAttach: function(){
+                var attachment = dw.u.getAttach(this.pipelineId, this.name);
+                if(attachment.length > 0){
+                    var res = Base64.decode(attachment[0].Body);
+                    return res;
+                }
+            },
+            upsAttach: function(){
+                dw.u.upsertAttach(stageNameOperations.pipelineId, stageNameOperations.name, JSON.stringify(stageNameOperations.stageMap), false);
+            },
+            updateStageName: function(){
+                var flag = false;
+                $copado('input.toggle').each(function(){
+                    if($copado(this).attr('exval') != $copado(this).val()){
+                        flag = true;
+                        stageNameOperations.stageMap[$copado(this).attr('constant')] = $copado(this).val();
+                        stageNameOperations.stageMap[$copado(this).attr('title')] = $copado(this).val();
+                    }
+                });
+                stageNameOperations.hide();
+                if(flag){
+                    stageNameOperations.upsAttach();
+                }
+            },
+            hide: function(){
+                $copado('input.toggle').prop('readOnly',true);
+                $copado('input.toggle').css('border','none');
+                $copado('.saveStage').css('display','none');
+                $copado('.editIcon').css('display','');
+            },
+            hideOncomplete: function(){
+                if(stageNameOperations.hiddens.length > 0){
+                    for(var h=0; h < stageNameOperations.hiddens.length; h++){
+                        document.querySelector('[constant="'+stageNameOperations.hiddens[h]+'"]').closest('.slds-checkbox').querySelector('[id$="hideShow"]').click();
+                    }
+                }
+            },
+            init: function(){
+                stageNameOperations.initDone = true;
+
+                var res = stageNameOperations.getAttach();
+                if(res){
+                    res = JSON.parse(res);
+                    $copado('input.toggle').each(function(){
+                        if(r = res[$copado(this).val()]){
+                            $copado(this).val(r);
+                            $copado(this).attr('exval',r);
+                            $copado(this).attr('title',r);
+                        }
+                    });
+                }
+                stageNameOperations.hideOncomplete();
+            },
+            initDone: false
+        }
+
+        function openUSDep(elem){
+            lockScreen();
+            var proId = $copado(elem).attr('html-proid');
+            assingProId(proId);
+            $copado('html').css('overflow','hidden');
+        }
+        function fromAcf2Open(){
+            $copado('[id$=dependencyUSComponent]').show();
+            $copado('[id$=operationModal]').hide();
+            $copado('[id$=promotionListModal]').hide();
+            applyRenderSVG(undefined,['chevrondown']);
+            unlockScreen();
+        }
+        function closeUSDep(){
+            $copado('[id$="dependencyUSComponent"]').hide();
+            $copado('[id$=promotionListModal]').show();
+            $copado('[id$=operationModal]').show();
+            $copado('html').css('overflow','unset');
+        }
+
+        $copado(window).on('resize',function(){
+            alignFormWidth();
+            alignTabsWithColumn();
+        });
+
+        function applyRenderSVG(listIdArray,listClassArray,additionalSelector){
+            if(listIdArray){
+                listIdArray.forEach(function(element){
+                    renderSVG('#'+element,additionalSelector);
+                });
+            }
+
+            if(listClassArray) {
+                listClassArray.forEach(function(element){
+                    renderSVG('.'+element,additionalSelector);
+                });
+            }
+        }
+
+        function renderSVG(elemId,additionalSelector){
+            var elem = $copado(elemId+(additionalSelector ? additionalSelector : ''));
+            var struct = svgStruct[elemId];
+            var imageURL = struct.imageURL;
+            var SVG = $copado('<svg/>', {
+               class: struct.class,
+            });
+
+            var SVGUse = $copado('<use/>');
+            SVGUse.attr('xlink:href',imageURL);
+            elem.prepend(SVG.append(SVGUse));
+            elem.html(elem.html());
+        }
+
+        var alignFormWidth = function(){
+            var formContent = $copado('[id$=pipelineForm]');
+            var iWidht = $copado('#tabContainer').innerWidth() - 20;
+            if(iWidht > 0){
+                formContent.css('width','' + iWidht + 'px');
+            }
+        }
+
+        var alignTabsWithColumn = function(){
+            var tabs = $copado('.slds-tabs--path');
+            if(tabs){
+                var columnWidth = $copado('.slds-size--3-of-12:not(.shrinked)') ? $copado('.slds-size--3-of-12:not(.shrinked)').css('width') : false;
+                var hiddenColmWidth = $copado('.slds-size--3-of-12.shrinked') ? $copado('.slds-size--3-of-12.shrinked').css('width') : false;
+                var itemCount = $copado('.slds-tabs--path__item:not(.shrinked)') ? $copado('.slds-tabs--path__item:not(.shrinked)').length : false;
+                var hiddenItemCount = $copado('.slds-tabs--path__item.shrinked') ? $copado('.slds-tabs--path__item.shrinked').length : false;
+                console.log('calculations :: ',columnWidth,hiddenColmWidth,itemCount,hiddenItemCount);
+                if(columnWidth && itemCount){
+                    var tabsWidth = (parseInt(columnWidth,10) * itemCount)
+                    if(hiddenColmWidth && hiddenItemCount){
+                        tabsWidth += (parseInt(hiddenColmWidth,10) * hiddenItemCount)
+                    }
+                    console.log('tabsWidth ::',tabsWidth);
+                    tabs.css('width', tabsWidth + 'px');
+                    !stageNameOperations.initDone &&  stageNameOperations.init();
+                }
+            }
+        }
+
+
+        function hideShow(elem) {
+            // Get the checkbox
+            var checkBox = elem;
+            // Get the id
+            var generatedId = elem.getAttribute('index');
+            if(!generatedId) return;
+            var inputElem = $copado('[index='+generatedId+']');
+            var inputElemPathItem;
+            if(inputElem){
+                inputElemPathItem = inputElem.closest('div.slds-tabs--path__item');
+            }
+            var cStage = elem.closest('.slds-checkbox').querySelector('.toggle').getAttribute('constant');
+
+            // Get the outer div
+            var outerDiv = document.getElementById(generatedId);
+            var innerArticals = outerDiv.getElementsByTagName("article");
+            for(var x = 0; x < innerArticals.length; x++){
+                if ($copado(checkBox).prop('checked') == false){
+                    !stageNameOperations.hiddens.includes(cStage) && stageNameOperations.hiddens.push(cStage);
+                    innerArticals[x].style.display = "none";
+                    if(outerDiv){
+                        outerDiv.style.width ='100px';
+                        outerDiv.classList.add('shrinked');
+                    }
+                    if(inputElemPathItem){
+                        inputElemPathItem.css('width','100px').css('padding-left', '15px');
+                        inputElemPathItem.addClass('shrinked');
+                        inputElemPathItem.css('flex','none');
+                    }
+
+                } else {
+                    stageNameOperations.hiddens.includes(cStage) && stageNameOperations.hiddens.remove(cStage);
+                    innerArticals[x].style.display = "block";
+                    if(outerDiv){
+                        outerDiv.style.width = $copado('.slds-size--3-of-12:not(.shrinked)').css('width');
+                        outerDiv.classList.remove('shrinked');
+                    }
+                    if(inputElemPathItem){
+                        inputElem.closest('div.slds-tabs--path__item').css('width',$copado('.slds-size--3-of-12:not(.shrinked)').css('width')).css('padding-left', '');
+                        inputElem.closest('div.slds-tabs--path__item').removeClass('shrinked');
+                        inputElem.closest('div.slds-tabs--path__item').css('flex',$copado('.slds-size--3-of-12:not(.shrinked)').css('flex'));
+                    }
+                }
+            }
+            alignTabsWithColumn();
+            var allStageCheckboxes = $copado('.slds-tabs--path') ? $copado('.slds-tabs--path').children().find('input[type=checkbox]') : [];
+            var totalCheckbox = allStageCheckboxes.length;
+            allStageCheckboxes.each(function(){
+                if(!$copado(this).prop('checked')){
+                    totalCheckbox--;
+                }
+                if(totalCheckbox == 1){
+                    allStageCheckboxes.each(function(){
+                        if($copado(this).prop('checked')){
+                            $copado(this).prop('disabled',true);
+                        }
+                    });
+                } else {
+                    allStageCheckboxes.each(function(){
+                        if($copado(this).prop('disabled')){
+                            $copado(this).prop('disabled','');
+                        }
+                    });
+                }
+            });
+        }
+
+        function runNecessaryOnCompleteActions(){
+            applyRenderSVG(svgButtonsId,['editIcon', 'forwardIcon', 'backIcon', 'approvalIcon', 'inProgressIcon', 'closeIcon', 'chevronright']);
+            alignFormWidth();
+            alignTabsWithColumn();
+            unlockScreen();
+        }
+
+        function reRenderFunction() {
+            renderPageMessage();
+        }
+
+        function updateFilterMap(updatedFilter){
+            //console.log(updatedFilter.getAttribute('data-id') + ' ' + updatedFilter.value);
+            var selectedFilterKey = updatedFilter.getAttribute('data-id') ? updatedFilter.getAttribute('data-id') : '';
+            var selectedFilterValue = updatedFilter.value ? updatedFilter.value : '';
+            updateFilterMapId(selectedFilterKey, selectedFilterValue);
+        }
+
+    </script>
+
+    <style>
+
+        .lookupInput {
+            padding: 0 !important;
+            width: 100%;
+        }
+
+        .hideDropdown select{
+            display: none !important;
+        }
+
+        .hideDropdown input{
+            width: 100% !important;
+            border: 0px;
+        }
+
+        .lookupInput a{
+            position: absolute;
+            height:22px !important;
+            width: 33px !important;
+            margin-left: -33px;
+            margin-top: 3px;
+            background-image: url(/img/setup/search-icon.png) !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            display: inline-flex !important;
+        }
+
+        .lookupInput a img, .lookupInput a svg{
+            display:none !important;
+        }
+
+        .noDisplay {
+            display: none !important;
+        }
+
+        .gridAdjustment {
+            display: -webkit-inline-box !important;
+            width: inherit !important;
+        }
+
+        .headerPadingAdjustment {
+            margin: 0 0 .75rem;
+        }
+
+        .pillBackground{
+            background-color: #315575 !important;
+            padding: 5px !important;
+            margin: 3px;
+        }
+
+        .closeIconBackground {
+            background: none;
+            color: white;
+        }
+
+        .closeIconBackground2 {
+            background: none;
+        }
+        .WarningColor{
+            background-color: #ffb75d !important;
+            border: 1px solid #ffb75d !important;
+        }
+        input.toggle{
+            border-radius: 3px;
+            border: 1px solid #dddbda;
+        }
+    </style>
+    <div class="slds-scope">
+        <apex:form id="pipelineForm">
+            <c:CopadoSpinner />
+            <apex:actionFunction name="assingProId" onComplete="fromAcf2Open();" action="{!assingCurrentPro}" reRender="dependencyUSComponent">
+                <apex:param name="currentProId" value=""/>
+            </apex:actionFunction>
+            <apex:actionFunction name="renderPageMessage" reRender="notify"/>
+            <apex:actionFunction name="closeToastMessage" action="{!closeToastMessage}" reRender="notify" />
+            <apex:actionFunction name="calculateFlowSteps" action="{!populateFlowGridMap}" onComplete="promotableUserStories();" reRender="notify"/>
+            <apex:actionFunction name="prepareUserStoriesForPromotion" action="{!getPromotableBackPromotableUserStoriesList}" reRender="operationModal,notify" onComplete="showModal();switchToUserStory();">
+                <apex:param name="fromId" value="" />
+                <apex:param name="toId" value="" />
+                <apex:param name="pathType" value="" />
+            </apex:actionFunction>
+            <apex:actionFunction name="promotableUserStories" action="{!getPromotableUserStoriesCount}" onComplete="reRenderFunction();backPromotableUserStories();" reRender="noRender" />
+            <apex:actionFunction name="backPromotableUserStories" action="{!getBackPromotableUserStoriesCount}" onComplete="reRenderFunction();runNecessaryOnCompleteActions();reRenderFunction();" reRender="pipelineWrapper"/>
+            <apex:actionFunction name="removeFilter" action="{!removeFromFilters}" onComplete="runNecessaryOnCompleteActions();" reRender="pipelineWrapper,filterWrapper">
+                <apex:param value="" name="filterId" assignTo="{!removedFilterId}" />
+            </apex:actionFunction>
+            <apex:actionFunction name="updateFilterMapId" action="{!updateFilterMapValue}" onComplete="unlockScreen();" reRender="rerenderNeeded">
+                <apex:param name="filterId" value="" assignTo="{!selectedFilterId}"/>
+                <apex:param name="filterValue" value="" assignTo="{!selectedFilterValue}"/>
+            </apex:actionFunction>
+            <apex:actionFunction name="removeAllFilter" action="{!removeAllFilters}" onComplete="runNecessaryOnCompleteActions();" reRender="pipelineWrapper,flowStepPanel"  />
+
+            <!-- start Toast Message block -->
+            <apex:outputPanel layout="block" id="notify">
+                <apex:outputPanel layout="none" rendered="{!pageMessagesMap != null}">
+                    <apex:repeat value="{!pageMessagesMap}" var="status">
+                        <div class="slds-notify_container slds-is-absolute" style="width:50%; margin-left:25%; margin-right:25%;">
+                            <div class="slds-notify slds-notify_toast slds-theme_{!status}" role="status">
+                                <span class="slds-assistive-text">{!status}</span>
+                                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_small slds-no-flex slds-align-top" title="{!status}">
+                                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#'+status)}" />
+                                    </svg>
+                                </span>
+                                <div class="slds-notify__content">
+                                    <h2 class="slds-text-heading_small ">
+                                        <apex:repeat value="{!pageMessagesMap[status]}" var="message">
+                                            {!message} <br />
+                                        </apex:repeat>
+                                    </h2>
+                                </div>
+                                <div class="slds-notify__close">
+                                    <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="closeToastMessage(); return false;">
+                                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#close')}" />
+                                        </svg>
+                                        <span class="slds-assistive-text">{!$Label.copado__close}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:repeat>
+                </apex:outputPanel>
+            </apex:outputPanel>
+            <!-- End Toast Message block -->
+
+            <apex:outputPanel layout="block" id="pipelineWrapper" style="margin-top:-10px;">
+                <c:PipelineHeader mainController="{!this}" mode="{!pipelineMode}" />
+                <apex:outputPanel layout="block" id="filterWrapper">
+                    <apex:outputPanel layout="block" id="filterPanel" style="display: {!IF(renderFilterPanel, 'block', 'none')}">
+                        <!--<c:PipelineFilters mainController="{!this}" />-->
+                        <div class="slds-box slds-m-around_small" style="">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Project__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Project__c" SObject="{!filterUserStory}" requiredView="false" Field="Project__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Release__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Release__c" SObject="{!filterUserStory}" requiredView="false" Field="Release__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Sprint__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Sprint__c" SObject="{!filterUserStory}" requiredView="false" Field="Sprint__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Epic__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Epic__c" SObject="{!filterUserStory}" requiredView="false" Field="Epic__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Team__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Team__c" SObject="{!filterUserStory}" requiredView="false" Field="Team__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Developer__c.Label}</label>
+                                        <div class="slds-form-element__control hideDropdown">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Developer__c" SObject="{!filterUserStory}" requiredView="false" Field="Developer__c" onChangeHandler="lockScreen();updateFilterMap(this);" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Theme__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Theme__c" SObject="{!filterUserStory}" requiredView="false" Field="Theme__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.copado__Status__c.Label}</label>
+                                        <div class="slds-form-element__control lookupFillDiv">
+                                            <c:LightningReadyInputFields showClassic="false" showLabel="false" SObject="{!filterUserStory}" requiredView="false" Field="Status__c" identity="Status__c" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label">{!$ObjectType.copado__User_Story__c.fields.OwnerId.Label}</label>
+                                        <div class="slds-form-element__control hideDropdown">
+                                            <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="OwnerId" SObject="{!filterUserStory}" requiredView="false" Field="OwnerId" onChangeHandler="lockScreen();updateFilterMap(this);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-5 slds-p-around_xx-small">
+                                </div>
+                                <div class="slds-col slds-size_2-of-8 slds-p-around_xx-small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-checkbox">
+                                            <apex:inputCheckbox styleClass="slds-input"
+                                                                value="{!renderInApproval}" />
+                                            <span class="slds-checkbox--faux"></span>
+                                            <span class="slds-form-element__label">Show Pending Approvals</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_2-of-8 slds-p-around_xx-small">
+                                </div>
+                                <div class="slds-col slds-size_4-of-8 slds-p-around_xx-small">
+                                    <apex:commandButton style="float:right;" value="{!$Label.copado__apply}" styleClass="slds-button slds-button_neutral" onClick="lockScreen();applyFilter();" reRender="preventReload" html-formnovalidate="formnovalidate"/>
+                                    <apex:commandButton style="float:right;margin-right:3px;" value="{!$Label.copado__pipeline_clear_all_filters}" styleClass="slds-button slds-button_neutral" onClick="lockScreen();removeAllFilter();" reRender="preventReload" html-formnovalidate="formnovalidate"/>
+                                </div>
+                                <apex:actionFunction name="applyFilter" action="{!recalculate}" onComplete="applyRenderSVG(svgButtonsId,['forwardIcon', 'backIcon', 'approvalIcon', 'inProgressIcon', 'closeIcon', 'editIcon']);$copado('[id$=\'filterBtn\']').addClass('slds-is-pressed');alignFormWidth();alignTabsWithColumn();stageNameOperations.init();unlockScreen();" reRender="flowStepPanel,pillWrapper"  />
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" id="pillWrapper">
+                        <apex:outputPanel rendered="{!filterCount != 0}" layout="none">
+                            <div class="slds-pill_container">
+                                <ul class="slds-listbox slds-listbox_horizontal" role="listbox" aria-label="Selected Options:" aria-orientation="horizontal">
+                                    <apex:repeat value="{!selectedFilters}" var="filter">
+                                        <li class="slds-listbox-item" role="presentation" style="max-width:100px;">
+                                            <span class="slds-pill pillBackground slds-truncate" role="option" tabindex="0" aria-selected="true" title="{!filterIdToValueMap[filter]}">
+                                                <span class="slds-pill__label" style="color:white;">
+                                                <apex:outputText value="{!filterIdToValueMap[filter]}" />
+                                            </span>
+                                            <span class="slds-icon_container slds-icon__svg--default closeIconBackground closeIcon" onclick="lockScreen();removeFilter('{!filter}');"></span>
+                                            </span>
+                                        </li>
+                                    </apex:repeat>
+                                </ul>
+                            </div>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" id="flowStepPanel" styleClass="slds-scrollable_x" style="width:100%;min-height:500px;">
+                    <!--Column Headers-->
+                    <div class="slds-grid gridAdjustment" style="margin-top: 10px">
+                        <div class="slds-tabs--path" role="application">
+                            <div class="slds-tabs--path__nav" role="tablist">
+                                <apex:variable var="count" value="{!0}"/>
+                                <apex:repeat value="{!allEnvironmentsByStageGroupMap}" var="stage">
+                                    <div class="slds-tabs--path__item breadcrump" role="presentation">
+                                        <span class="slds-tabs--path__title slds-text-heading--small">
+                                            <div class="slds-form-element">
+                                                <apex:outputPanel rendered="{!count==0}" style="float:left;margin-left: 5px;margin-right: 5px;cursor:pointer;">
+                                                    <span title="{!$Label.Pipeline_Edit_Stage_Names}" onclick="stageNameOperations.toggle();" class="slds-icon_container slds-icon__svg--default editIcon"></span>
+                                                    <button type="button" onclick="stageNameOperations.updateStageName();" style="display:none;margin-left:5px;padding-left: 0.5rem;padding-right: 0.5rem;" class="saveStage slds-button slds-button_neutral">{!$Label.Save}</button>
+                                                </apex:outputPanel>
+                                                <label class="slds-checkbox">
+                                                    <apex:inputCheckbox id="hideShow" styleClass="checkEmAll slds-input" html-index="hideOrShow{!RIGHT(stage,1)}" onclick="hideShow(this);" value="{!trueVal}"/>
+                                                    <span class="slds-checkbox--faux"></span>
+                                                    <span class="slds-form-element__label">
+                                                        <!--{!stage}-->
+                                                        <input type="text" style="border: none;overflow: hidden !important;text-overflow: ellipsis;white-space: nowrap !important;" class="toggle" constant="{!stage}" exval="{!stage}" value="{!stage}" readonly="readonly" title="{!stage}"/>
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                        </span>
+                                    </div>
+                                    <apex:variable value="{!count+1}" var="count"/>
+                                </apex:repeat>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!--Cards-->
+                    <div class="slds-grid gridAdjustment">
+                        <apex:repeat value="{!allEnvironmentsByStageGroupMap}" var="envByStage">
+                            <div id="hideOrShow{!RIGHT(envByStage,1)}" class="slds-col slds-size--3-of-12 slds-has-dividers--around-space" style="padding: 17px 10px 17px 10px;">
+                                <apex:repeat value="{!allEnvironmentsByStageGroupMap[envByStage]}" var="envByGroup">
+                                    <apex:outputPanel layout="none" rendered="{!AND(envByGroup != 'Final',flowStepEnvSizeMap[envByGroup] > 1)}">
+                                        <article class="slds-card slds-card_boundary">
+                                            <div class="headerPadingAdjustment slds-grid"></div>
+                                            <div class="slds-card__body slds-card__body_inner">
+                                                <apex:repeat value="{!allEnvironmentsByStageGroupMap[envByStage][envByGroup]}" var="envWrapper">
+                                                    <article class="slds-card slds-card_boundary">
+                                                        <div class="headerPadingAdjustment slds-grid"></div>
+                                                        <div class="slds-card__body slds-card__body_inner">
+                                                            <p class="slds-truncate">
+                                                                {!envWrapper.currentEnvironment.Name}
+                                                                <span class="slds-float--right">
+                                                                    <button type="button" class="slds-button slds-button_icon {!IF(CONTAINS(envWrapper.currentEnvironment.Type__c, 'Scratch'), 'noDisplay', '')}" title="{!$Label.Pipeline_Back_Promotable_User_Stories}" aria-pressed="false" onclick="lockScreen();prepareUserStoriesForPromotion('{!envWrapper.currentStep.Destination_Environment__c}','{!envWrapper.currentEnvironment.Id}','pull')">
+                                                                        <span style="color: #3593c6;">{!envWrapper.userStoriesBehind} <span class="slds-icon_container slds-icon__svg--default backIcon"></span></span>
+                                                                    </button>
+                                                                    &nbsp;
+                                                                    <button type="button" class="slds-button slds-button_icon" title="{!$Label.Pipeline_Promotable_User_Stories}" aria-pressed="false" onclick="lockScreen();prepareUserStoriesForPromotion('{!envWrapper.currentEnvironment.Id}','{!envWrapper.currentStep.Destination_Environment__c}','merge')">
+                                                                        <span style="color: #3593c6;">{!envWrapper.userStoriesAhead} <span class="slds-icon_container slds-icon__svg--default forwardIcon"></span></span>
+                                                                    </button>
+                                                                    <apex:outputPanel layout="none" rendered="{!renderInApproval}">
+                                                                        &nbsp;
+                                                                        {!envWrapper.userStoriesInApproval} <span class="slds-icon_container slds-icon__svg--default approvalIcon" onclick="showApprovalModal('{!envWrapper.currentEnvironment.Id}')"></span>
+                                                                    </apex:outputPanel>
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </article>
+                                                </apex:repeat>
+                                            </div>
+                                        </article>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="none" rendered="{!OR(envByGroup == 'Final',flowStepEnvSizeMap[envByGroup] <= 1)}">
+                                        <apex:repeat value="{!allEnvironmentsByStageGroupMap[envByStage][envByGroup]}" var="envWrapper">
+                                            <article class="slds-card slds-card_boundary">
+                                                <div class="headerPadingAdjustment slds-grid"></div>
+                                                <div class="slds-card__body slds-card__body_inner">
+                                                    <p class="slds-truncate">
+                                                        {!envWrapper.currentEnvironment.Name}
+                                                        <span class="slds-float--right">
+                                                            <button type="button" class="slds-button slds-button_icon {!IF(OR(CONTAINS(envWrapper.currentEnvironment.Type__c, 'Scratch'), finalStep == envWrapper.currentEnvironment.Id), 'noDisplay', '')}" title="{!$Label.Pipeline_Back_Promotable_User_Stories}" aria-pressed="false" onclick="lockScreen();prepareUserStoriesForPromotion('{!envWrapper.currentStep.Destination_Environment__c}','{!envWrapper.currentEnvironment.Id}','pull')">
+                                                                <span style="color: #3593c6;">{!envWrapper.userStoriesBehind} <span class="slds-icon_container slds-icon__svg--default backIcon"></span></span>
+                                                            </button>
+                                                            &nbsp;
+                                                            <button type="button" class="slds-button slds-button_icon {!IF(finalStep == envWrapper.currentEnvironment.Id, 'noDisplay', '')}" title="{!$Label.Pipeline_Promotable_User_Stories}" aria-pressed="false" onclick="lockScreen();prepareUserStoriesForPromotion('{!envWrapper.currentEnvironment.Id}','{!envWrapper.currentStep.Destination_Environment__c}','merge')">
+                                                                <span style="color: #3593c6;">{!envWrapper.userStoriesAhead} <span class="slds-icon_container slds-icon__svg--default forwardIcon"></span></span>
+                                                            </button>
+                                                            <apex:outputPanel layout="none" rendered="{!renderInApproval}">
+                                                                        &nbsp;
+                                                                {!envWrapper.userStoriesInApproval} <span class="slds-icon_container slds-icon__svg--default approvalIcon" onclick="showApprovalModal('{!envWrapper.currentEnvironment.Id}')"></span>
+                                                                    </apex:outputPanel>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </article>
+                                        </apex:repeat>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </div>
+                        </apex:repeat>
+                    </div>
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:form>
+
+        <apex:include pageName="copado__PipelineManagerDialog" />
+        <apex:include pageName="copado__PipelinePromotion" />
+    </div>
+</apex:page>
