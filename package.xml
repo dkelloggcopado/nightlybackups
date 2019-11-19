@@ -1113,6 +1113,15 @@
         <members>Bicycle__ChangeEvent.Name</members>
         <members>Bicycle__ChangeEvent.OwnerId</members>
         <members>Bicycle__ChangeEvent.ReplayId</members>
+        <members>CLITest__ChangeEvent.ChangeEventHeader</members>
+        <members>CLITest__ChangeEvent.CreatedById</members>
+        <members>CLITest__ChangeEvent.CreatedDate</members>
+        <members>CLITest__ChangeEvent.Id</members>
+        <members>CLITest__ChangeEvent.LastModifiedById</members>
+        <members>CLITest__ChangeEvent.LastModifiedDate</members>
+        <members>CLITest__ChangeEvent.Name</members>
+        <members>CLITest__ChangeEvent.OwnerId</members>
+        <members>CLITest__ChangeEvent.ReplayId</members>
         <members>Campaign.ActualCost</members>
         <members>Campaign.AmountAllOpportunities</members>
         <members>Campaign.AmountWonOpportunities</members>
@@ -2538,6 +2547,7 @@
         <members>Pricebook2.LastViewedDate</members>
         <members>Pricebook2.Name</members>
         <members>Pricebook2.SystemModstamp</members>
+        <members>Product2.Color__c</members>
         <members>Product2.CreatedById</members>
         <members>Product2.CreatedDate</members>
         <members>Product2.Description</members>
@@ -2559,6 +2569,7 @@
         <members>Product2.StockKeepingUnit</members>
         <members>Product2.SystemModstamp</members>
         <members>Product2ChangeEvent.ChangeEventHeader</members>
+        <members>Product2ChangeEvent.Color__c</members>
         <members>Product2ChangeEvent.CreatedById</members>
         <members>Product2ChangeEvent.CreatedDate</members>
         <members>Product2ChangeEvent.Description</members>
@@ -5256,6 +5267,7 @@
         <members>AuthorizationFormText</members>
         <members>BatchApexErrorEvent</members>
         <members>Bicycle__c</members>
+        <members>CLITest__c</members>
         <members>Campaign</members>
         <members>CampaignMember</members>
         <members>Case</members>
