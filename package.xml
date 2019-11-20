@@ -1113,6 +1113,15 @@
         <members>Bicycle__ChangeEvent.Name</members>
         <members>Bicycle__ChangeEvent.OwnerId</members>
         <members>Bicycle__ChangeEvent.ReplayId</members>
+        <members>CLITest__ChangeEvent.ChangeEventHeader</members>
+        <members>CLITest__ChangeEvent.CreatedById</members>
+        <members>CLITest__ChangeEvent.CreatedDate</members>
+        <members>CLITest__ChangeEvent.Id</members>
+        <members>CLITest__ChangeEvent.LastModifiedById</members>
+        <members>CLITest__ChangeEvent.LastModifiedDate</members>
+        <members>CLITest__ChangeEvent.Name</members>
+        <members>CLITest__ChangeEvent.OwnerId</members>
+        <members>CLITest__ChangeEvent.ReplayId</members>
         <members>Campaign.ActualCost</members>
         <members>Campaign.AmountAllOpportunities</members>
         <members>Campaign.AmountWonOpportunities</members>
@@ -5256,6 +5265,7 @@
         <members>AuthorizationFormText</members>
         <members>BatchApexErrorEvent</members>
         <members>Bicycle__c</members>
+        <members>CLITest__c</members>
         <members>Campaign</members>
         <members>CampaignMember</members>
         <members>Case</members>
