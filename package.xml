@@ -4,12 +4,23 @@
         <members>*</members>
         <members>AccountOperations</members>
         <members>AccountOperationsTest</members>
+        <members>CallIterable</members>
+        <members>CopadoCCMutilities</members>
+        <members>CopadoMockHttpResponseGenerator</members>
+        <members>CustomIterable</members>
+        <members>ExecuteUserStoryUpsert</members>
+        <members>IIntegration</members>
         <members>InspectionServices</members>
         <members>InspectionsPackageTester</members>
+        <members>IntegrationFactory</members>
+        <members>JiraIntegration</members>
         <members>LocationServices</members>
+        <members>Method</members>
+        <members>ScheduleUserStoryFetch</members>
         <members>SelectInspectionController</members>
         <members>SurveyController</members>
         <members>SurveyControllerTest</members>
+        <members>SyncUserStoriesController</members>
         <members>TIMBASURVEYS__AnalyzerAdditionalResultsController</members>
         <members>TIMBASURVEYS__ApplicationOperations</members>
         <members>TIMBASURVEYS__ChangePasswordController</members>
@@ -106,6 +117,9 @@
         <members>TIMBASURVEYS__timbaSurveysTemplateController</members>
         <members>TIMBASURVEYS__tsSecurityManager</members>
         <members>TIMBASURVEYS__tsTemplatesOperations</members>
+        <members>TestIntegration</members>
+        <members>UserStoryHandler</members>
+        <members>VSTSIntegration</members>
         <members>copado__AddCCHRuleCriteriaExt</members>
         <members>copado__AddCCHRuleCriteriaExtTest</members>
         <members>copado__ApexTestResultTriggerHandler</members>
@@ -574,6 +588,7 @@
         <members>*</members>
         <members>SelectInspectionPage</members>
         <members>SurveyPage</members>
+        <members>SyncUserStories</members>
         <members>TIMBASURVEYS__AdditionalSurveyCollect</members>
         <members>TIMBASURVEYS__AdditionalSurveyList</members>
         <members>TIMBASURVEYS__AnalyzerAdditionalResults</members>
@@ -782,6 +797,7 @@
     </types>
     <types>
         <members>*</members>
+        <members>Copado_Integrations</members>
         <members>Getting_Started</members>
         <members>Inspections</members>
         <members>Shopping_List</members>
@@ -1122,6 +1138,20 @@
         <members>CLITest__ChangeEvent.Name</members>
         <members>CLITest__ChangeEvent.OwnerId</members>
         <members>CLITest__ChangeEvent.ReplayId</members>
+        <members>Callout_Log__ChangeEvent.ChangeEventHeader</members>
+        <members>Callout_Log__ChangeEvent.CreatedById</members>
+        <members>Callout_Log__ChangeEvent.CreatedDate</members>
+        <members>Callout_Log__ChangeEvent.Id</members>
+        <members>Callout_Log__ChangeEvent.LastModifiedById</members>
+        <members>Callout_Log__ChangeEvent.LastModifiedDate</members>
+        <members>Callout_Log__ChangeEvent.Name</members>
+        <members>Callout_Log__ChangeEvent.OwnerId</members>
+        <members>Callout_Log__ChangeEvent.Project__c</members>
+        <members>Callout_Log__ChangeEvent.ReplayId</members>
+        <members>Callout_Log__ChangeEvent.Response_Body__c</members>
+        <members>Callout_Log__ChangeEvent.Status_Code__c</members>
+        <members>Callout_Log__ChangeEvent.Status__c</members>
+        <members>Callout_Log__ChangeEvent.User_Story__c</members>
         <members>Campaign.ActualCost</members>
         <members>Campaign.AmountAllOpportunities</members>
         <members>Campaign.AmountWonOpportunities</members>
@@ -1726,6 +1756,17 @@
         <members>ContractChangeEvent.StartDate</members>
         <members>ContractChangeEvent.Status</members>
         <members>ContractChangeEvent.StatusCode</members>
+        <members>Copado_Integration_Setting__ChangeEvent.ChangeEventHeader</members>
+        <members>Copado_Integration_Setting__ChangeEvent.CreatedById</members>
+        <members>Copado_Integration_Setting__ChangeEvent.CreatedDate</members>
+        <members>Copado_Integration_Setting__ChangeEvent.External_System__c</members>
+        <members>Copado_Integration_Setting__ChangeEvent.Id</members>
+        <members>Copado_Integration_Setting__ChangeEvent.LastModifiedById</members>
+        <members>Copado_Integration_Setting__ChangeEvent.LastModifiedDate</members>
+        <members>Copado_Integration_Setting__ChangeEvent.Name</members>
+        <members>Copado_Integration_Setting__ChangeEvent.Named_Credential__c</members>
+        <members>Copado_Integration_Setting__ChangeEvent.OwnerId</members>
+        <members>Copado_Integration_Setting__ChangeEvent.ReplayId</members>
         <members>DataUseLegalBasis.CreatedById</members>
         <members>DataUseLegalBasis.CreatedDate</members>
         <members>DataUseLegalBasis.Description</members>
@@ -1957,6 +1998,21 @@
         <members>FeedItem.SystemModstamp</members>
         <members>FeedItem.Title</members>
         <members>FeedItem.Type</members>
+        <members>Field_Mapping__ChangeEvent.ChangeEventHeader</members>
+        <members>Field_Mapping__ChangeEvent.CreatedById</members>
+        <members>Field_Mapping__ChangeEvent.CreatedDate</members>
+        <members>Field_Mapping__ChangeEvent.Exclude_from_su__c</members>
+        <members>Field_Mapping__ChangeEvent.Exclude_from_tpu__c</members>
+        <members>Field_Mapping__ChangeEvent.Id</members>
+        <members>Field_Mapping__ChangeEvent.LastModifiedById</members>
+        <members>Field_Mapping__ChangeEvent.LastModifiedDate</members>
+        <members>Field_Mapping__ChangeEvent.Name</members>
+        <members>Field_Mapping__ChangeEvent.OwnerId</members>
+        <members>Field_Mapping__ChangeEvent.Project__c</members>
+        <members>Field_Mapping__ChangeEvent.ReplayId</members>
+        <members>Field_Mapping__ChangeEvent.Salesforce_Field_Name__c</members>
+        <members>Field_Mapping__ChangeEvent.Target_Field_Type__c</members>
+        <members>Field_Mapping__ChangeEvent.Third_Party_Field_Name__c</members>
         <members>Idea.Body</members>
         <members>Idea.Categories</members>
         <members>Idea.CommunityId</members>
@@ -4493,14 +4549,19 @@
         <members>copado__Personal_Settings__ChangeEvent.copado__DeployConnectionBox_height__c</members>
         <members>copado__Personal_Settings__ChangeEvent.copado__DeployConnectionBox_width__c</members>
         <members>copado__Project__ChangeEvent.ChangeEventHeader</members>
+        <members>copado__Project__ChangeEvent.Copado_Integration_Setting__c</members>
         <members>copado__Project__ChangeEvent.CreatedById</members>
         <members>copado__Project__ChangeEvent.CreatedDate</members>
+        <members>copado__Project__ChangeEvent.Enable_Logs__c</members>
         <members>copado__Project__ChangeEvent.Id</members>
+        <members>copado__Project__ChangeEvent.JQL_Extended_Filter__c</members>
         <members>copado__Project__ChangeEvent.LastModifiedById</members>
         <members>copado__Project__ChangeEvent.LastModifiedDate</members>
         <members>copado__Project__ChangeEvent.Name</members>
         <members>copado__Project__ChangeEvent.OwnerId</members>
+        <members>copado__Project__ChangeEvent.Project_External_Id__c</members>
         <members>copado__Project__ChangeEvent.ReplayId</members>
+        <members>copado__Project__ChangeEvent.Workspace_Id__c</members>
         <members>copado__Project__ChangeEvent.copado__Deployment_Flow__c</members>
         <members>copado__Project__ChangeEvent.copado__Description__c</members>
         <members>copado__Project__ChangeEvent.copado__End_Date__c</members>
@@ -5176,7 +5237,10 @@
         <members>copado__User_Story__ChangeEvent.ChangeEventHeader</members>
         <members>copado__User_Story__ChangeEvent.CreatedById</members>
         <members>copado__User_Story__ChangeEvent.CreatedDate</members>
+        <members>copado__User_Story__ChangeEvent.Enable_Logs__c</members>
+        <members>copado__User_Story__ChangeEvent.External_Id__c</members>
         <members>copado__User_Story__ChangeEvent.Id</members>
+        <members>copado__User_Story__ChangeEvent.JIRA_key__c</members>
         <members>copado__User_Story__ChangeEvent.LastModifiedById</members>
         <members>copado__User_Story__ChangeEvent.LastModifiedDate</members>
         <members>copado__User_Story__ChangeEvent.Name</members>
@@ -5268,6 +5332,7 @@
         <members>BatchApexErrorEvent</members>
         <members>Bicycle__c</members>
         <members>CLITest__c</members>
+        <members>Callout_Log__c</members>
         <members>Campaign</members>
         <members>CampaignMember</members>
         <members>Case</members>
@@ -5284,6 +5349,7 @@
         <members>ContentDocumentLink</members>
         <members>ContentVersion</members>
         <members>Contract</members>
+        <members>Copado_Integration_Setting__c</members>
         <members>DataUseLegalBasis</members>
         <members>DataUsePurpose</members>
         <members>Document</members>
@@ -5293,6 +5359,7 @@
         <members>Event</members>
         <members>FeedComment</members>
         <members>FeedItem</members>
+        <members>Field_Mapping__c</members>
         <members>Goal</members>
         <members>Idea</members>
         <members>IdeaComment</members>
@@ -5463,6 +5530,7 @@
     </types>
     <types>
         <members>*</members>
+        <members>Copado_Integration_Setting__c</members>
         <members>Getting_Started</members>
         <members>Inspection</members>
         <members>Inspection__c</members>
