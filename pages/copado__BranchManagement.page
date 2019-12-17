@@ -652,6 +652,11 @@
                     $copado('.messageText h4').css('color','white');
                     $copado('.messageTable ul').css('color','white');
 
+                    //***UCU : unlockScreen when a page message returns from apex side pageReference method
+                    if($copado('div.message.customMessage').length > 0){
+                        unlockScreen();
+                    }
+
                     if(cb) cb();
                 }
 
@@ -1089,7 +1094,7 @@
                                     <!--<apex:repeat value="{!$ObjectType.Promotion__c.FieldSets.ManageBranchesDialog}" var="pf">
                                                     <td>
                                                         <b><apex:outputText value="{!pf.Label}" /></b>
-                                                    </td>
+                                                    </td>                                                    
                                                 </apex:repeat>-->
                                     <td>
                                         <apex:outputLabel value="{!$ObjectType.copado__Promotion__c.fields.Name.Label}" />
@@ -2124,7 +2129,7 @@
                                                 <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
                                                     <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
                                                         <span class="slds-assistive-text">{!$Label.Sort}</span>
-                                                        <span class="slds-truncate" title="{!fld.Label}">{!fld.Label}</span>
+                                                        <span class="slds-truncate" title="Name">{!fld.Label}</span>
                                                         <div class="slds-icon_container">
                                                             <svg class="slds-icon slds-icon_x-small slds-icon-text-default slds-is-sortable__icon" aria-hidden="true">
                                                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#arrowdown')}"></use>
@@ -2152,7 +2157,9 @@
                                                 <apex:repeat value="{!$ObjectType.copado__User_Story__c.FieldSets.copado__CBM_Fields}" var="fld">
                                                     <td role="gridcell" class="">
                                                         <div class="slds-truncate" title="{!us.userStory[fld]}">
-                                                            <apex:outputField value="{!us.userStory[fld]}"/>
+                                                            <apex:outputPanel layout="none">
+                                                                <apex:outputField value="{!us.userStory[fld]}"/>
+                                                            </apex:outputPanel>
                                                         </div>
                                                     </td>
                                                 </apex:repeat>
@@ -2192,14 +2199,14 @@
                                             <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col" style="width: 7%">
                                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
                                                     <span class="slds-assistive-text">{!$Label.Sort} </span>
-                                                    <span class="slds-truncate" title="{!$Label.LEVEL}">{!$Label.LEVEL}</span>
+                                                    <span class="slds-truncate" title="Name">{!$Label.LEVEL}</span>
                                                 </a>
 
                                             </th>
                                             <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col" style="width: 70%">
                                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
                                                     <span class="slds-assistive-text">{!$Label.Sort} </span>
-                                                    <span class="slds-truncate" title="{!$Label.MESSAGE}">{!$Label.MESSAGE}</span>
+                                                    <span class="slds-truncate" title="Name">{!$Label.MESSAGE}</span>
                                                 </a>
                                                 <div class="slds-resizable">
                                                     <label for="cell-resize-handle-1" class="slds-assistive-text">{!$Label.Message_Column_Width}</label>
@@ -2212,7 +2219,7 @@
                                             <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col" style="width: 23%">
                                                 <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
                                                     <span class="slds-assistive-text">{!$Label.Sort} </span>
-                                                    <span class="slds-truncate" title="{!$Label.COPADO_TIP}">{!$Label.COPADO_TIP}</span>
+                                                    <span class="slds-truncate" title="Name">{!$Label.COPADO_TIP}</span>
                                                 </a>
                                                 <div class="slds-resizable">
                                                     <label for="cell-resize-handle-1" class="slds-assistive-text">{!$Label.Message_Column_Width}</label>
@@ -2904,7 +2911,6 @@
             <div class="slds-backdrop" id="USbackdrop"></div>
         </apex:outputPanel>
     </apex:form>
-
     </body>
     <c:CheckFeaturesComponent />
     </html>

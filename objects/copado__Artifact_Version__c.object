@@ -157,9 +157,9 @@
         <fullName>copado__Artifact__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <label>Artifact</label>
+        <label>Package</label>
         <referenceTo>copado__Artifact__c</referenceTo>
-        <relationshipLabel>Artifact Versions</relationshipLabel>
+        <relationshipLabel>Package Versions</relationshipLabel>
         <relationshipName>Artifact_Versions</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -233,7 +233,6 @@
         <externalId>false</externalId>
         <label>Release</label>
         <referenceTo>copado__Release__c</referenceTo>
-        <relationshipLabel>Artifact Versions</relationshipLabel>
         <relationshipName>Artifact_Versions</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -350,12 +349,12 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Artifact Version</label>
+    <label>Package Version</label>
     <nameField>
-        <label>Artifact Versions Name</label>
+        <label>Package Version Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Artifact Versions</pluralLabel>
+    <pluralLabel>Package Versions</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>

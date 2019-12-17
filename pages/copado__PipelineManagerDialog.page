@@ -2,7 +2,7 @@
     <apex:slds />
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
     <script>
-        $copado(document).ready(function(){
+        $copado(document).ready(function() {
             lockScreen();
         });
         function showApprovalModal(envId) {
@@ -18,6 +18,25 @@
             setTimeout(function(){
                 $copado('#approvalModal').removeClass('slds-fade-in-open');
                 $copado('#approvalBackdrop').removeClass('slds-backdrop--open');
+                unlockScreen();
+            },500);
+            return false;
+        }
+
+        function showDeploymentModal(envId) {
+            console.log('envId:', envId);
+            queryDeploymentsPerEnvironment(envId);
+            setTimeout(function() {
+                $copado('#deploymentBackdrop').addClass('slds-backdrop--open');
+                $copado('#deploymentModal').addClass('slds-fade-in-open');
+                unlockScreen();
+            }, 800);
+        };
+        function closeDeploymentModal() {
+            lockScreen();
+            setTimeout(function(){
+                $copado('#deploymentModal').removeClass('slds-fade-in-open');
+                $copado('#deploymentBackdrop').removeClass('slds-backdrop--open');
                 unlockScreen();
             },500);
             return false;
@@ -139,7 +158,6 @@
         function selectUnselectAll(tableName, elemid) {
             var table = $copado('#'+tableName);
             $copado('td input:checkbox', table).prop('checked', $copado('#'+elemid).prop('checked'));
-            promotionInfo();
         }
         function changeSelectAll(tableName, elemid) {
             var table = $copado('#'+tableName);
@@ -190,7 +208,6 @@
             }
         }
 
-
     </script>
 
     <style type="text/css">
@@ -209,25 +226,34 @@
 	          min-width: 250px;
 	      }
 
-
     </style>
 
     <apex:form >
+        <!-- deployment modal functions -->
+        <apex:actionFunction name="openConflictPage" reRender="copadoErrorPanel,copadoErrorPanelForDialog" action="{!openResolveConflictsPage}" onComplete="closeDeploymentModal();">
+            <apex:param name="promId" value="" />
+        </apex:actionFunction>
         <!-- Promotion / Back Promotion Panel -->
-        <apex:actionFunction name="promotionInfo" action="{!promotionInfo}" reRender="notify" />
+        <apex:actionFunction name="promotionInfo" action="{!promotionInfo}" reRender="copadoErrorPanelForDialog" />
         <apex:actionFunction name="switchToSelenium" action="{!showSeleniumResultsTab}" onComplete="renderTable4Selenium();unlockScreen();" reRender="fieldSets,GeneralActionButtons" />
         <apex:actionFunction name="switchToCompliance" action="{!showComplianceResultsTab}" onComplete="renderTable4Compliance();unlockScreen();" reRender="fieldSets,GeneralActionButtons" />
         <apex:actionFunction name="switchToUserStory" action="{!showUserStoriesTab}" onComplete="renderTable();unlockScreen();" reRender="fieldSets,GeneralActionButtons" />
         <apex:actionFunction name="prepareEnvApprovals" reRender="approvalRenderPanel" onComplete="rerenderApprovalDatatable()">
             <apex:param name="approvalEnvId" value="" />
         </apex:actionFunction>
+        <apex:actionFunction name="queryDeploymentsPerEnvironment" reRender="deploymentRenderPanel" onComplete="rerenderDeploymentDatatable()">
+            <apex:param name="deploymentEnvId" value="" />
+        </apex:actionFunction>
         <apex:actionFunction name="renderPromotionPoller" reRender="rebasePromotionPoller" />
-        <apex:actionFunction name="resetPromotionList" action="{!resetPromotionList}" oncomplete="closePromotionListModal();changeSelectAll('userStoriesTable', 'selectAll');unlockScreen();" reRender="fieldSets" />
-        <apex:actionFunction name="deployPromotionList" action="{!deployPromotionList}" reRender="createdPromotionListPanel,rebasePromotionPoller,notify" oncomplete="unlockScreen();" />
+        <apex:actionFunction name="resetPromotionList" action="{!resetPromotionList}" oncomplete="renderTable();closePromotionListModal();changeSelectAll('userStoriesTable', 'selectAll');unlockScreen();" reRender="fieldSets,pins" />
+        <apex:actionFunction name="deployPromotionList" action="{!deployPromotionList}" reRender="createdPromotionListPanel,rebasePromotionPoller,copadoErrorPanelForDialog" oncomplete="unlockScreen();" />
         <apex:outputPanel id="operationModal">
             <section role="dialog" tabindex="-1" id="modal" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_large" style="height: 100%">
                 <div class="slds-modal__container" style="width: 100% !important;">
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="min-height: 85%; height: 100%; overflow-x:scroll;">
+                        <apex:outputPanel id="copadoErrorPanelForDialog" layout="none">
+                            <c:CopadoErrorPanel pageMessagesMap="{!pageMessagesMap}" />
+                        </apex:outputPanel>
                         <div class="slds-grid slds-wrap slds-clearfix">
                             <div id="modalHeader" class="slds-col slds-size_1-of-2">
                                 <button class="slds-button" onclick="closeToastMessage(); closeModal(); return false;">
@@ -238,9 +264,9 @@
                                 </button>
                             </div>
                             <apex:outputPanel id="GeneralActionButtons" styleClass="slds-col slds-size_1-of-2" style="text-align:right;">
-                                <apex:commandButton value="{!$Label.copado__pipeline_validate_selections}" styleClass="slds-button slds-button_neutral slds-m-horizontal_small" id="validateSelections" action="{!createPromotionforValidation}" reRender="maodalHeader, notify, createdPromotionListPanel" onClick="lockScreen();" oncomplete="openPromotionListModal();renderPromotionPoller();" disabled="{!NOT(showUserStories)}" />
-                                <apex:commandButton value="{!$Label.copado__pipeline_promote}" styleClass="slds-button slds-button_neutral slds-m-horizontal_small" id="createPromotion" action="{!createPromotion}" reRender="maodalHeader, notify,createdPromotionListButtons, createdPromotionListPanel" onClick="lockScreen();" onComplete="openPromotionListModal();" disabled="{!NOT(showUserStories)}" />
-                                <apex:commandButton value="{!$Label.copado__pipeline_promote_and_deploy}" styleClass="slds-button slds-button_brand slds-m-horizontal_small" id="createPromotionAndDeploy" action="{!createPromotionListAndDeploy}" reRender="maodalHeader, notify, createdPromotionListPanel,rebasePromotionPoller" onClick="lockScreen();" onComplete="openPromotionListModal(); unlockScreen();" disabled="{!NOT(showUserStories)}" />
+                                <apex:commandButton value="{!$Label.copado__pipeline_validate_selections}" styleClass="slds-button slds-button_neutral slds-m-horizontal_small" id="validateSelections" action="{!createPromotionforValidation}" reRender="maodalHeader, copadoErrorPanelForDialog, createdPromotionListPanel" onClick="lockScreen();" oncomplete="openPromotionListModal();renderPromotionPoller();" disabled="{!NOT(showUserStories)}" />
+                                <apex:commandButton value="{!IF(newOverlay.pathType == 'merge', $Label.copado__pipeline_promote, $Label.copado__pipeline_back_promote)}" styleClass="slds-button slds-button_neutral slds-m-horizontal_small" id="createPromotion" action="{!createPromotion}" reRender="maodalHeader, copadoErrorPanelForDialog,createdPromotionListButtons, createdPromotionListPanel" onClick="lockScreen();" onComplete="openPromotionListModal();" disabled="{!NOT(showUserStories)}" />
+                                <apex:commandButton value="{!IF(newOverlay.pathType == 'merge', $Label.copado__pipeline_promote_and_deploy, $Label.copado__pipeline_back_promote_and_deploy)}" styleClass="slds-button slds-button_brand slds-m-horizontal_small" id="createPromotionAndDeploy" action="{!createPromotionListAndDeploy}" reRender="maodalHeader, copadoErrorPanelForDialog, createdPromotionListPanel,rebasePromotionPoller" onClick="lockScreen();" onComplete="openPromotionListModal(); unlockScreen();" disabled="{!NOT(showUserStories)}" />
                             </apex:outputPanel>
 
                         </div>
@@ -346,12 +372,12 @@
                                                 <apex:repeat value="{!$ObjectType.copado__User_Story__c.FieldSets.copado__CBM_Fields}" var="fld">
                                                     <td role="gridcell" style="max-width:200px;overflow: hidden !important;text-overflow: ellipsis;white-space: nowrap !important;">
                                                         <div class="slds-truncate" title="{!us.userStory[fld]}">
-                                                            <apex:outputPanel layout="none" rendered="{!OR(fld.Type == 'reference', AND(fld.Type != 'reference', fld.Label == $ObjectType.copado__User_Story__c.fields.copado__Last_Validation_Deployment_Status__c.Label))}">
+                                                            <apex:outputPanel layout="none" rendered="{!OR(fld.Type == 'reference', AND(fld.Type != 'reference', fld.Label == $ObjectType.copado__User_Story__c.fields.copado__Last_Validation_Deployment_Status__c.Label), fld.Type == 'boolean')}">
                                                                 <apex:outputField value="{!us.userStory[fld.fieldPath]}" />
                                                             </apex:outputPanel>
-                                                            <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Label != $ObjectType.copado__User_Story__c.fields.copado__Last_Validation_Deployment_Status__c.Label,fld.Label != $ObjectType.copado__User_Story__c.fields.Name.Label)}">
-                                                                    {!us.userStory[fld.fieldPath]}
-                                                                </apex:outputPanel>
+                                                            <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Label != $ObjectType.copado__User_Story__c.fields.copado__Last_Validation_Deployment_Status__c.Label,fld.Label != $ObjectType.copado__User_Story__c.fields.Name.Label, fld.Type != 'boolean')}">
+                                                                {!us.userStory[fld.fieldPath]}
+                                                            </apex:outputPanel>
                                                             <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Label == $ObjectType.copado__User_Story__c.fields.Name.Label)}">
                                                                 <a href="#" onclick="copadoNavigateToUrl('{!us.userStory.Id}','{!URLFOR($Action.copado__User_Story__c.View,us.userStory.Id)}', '_blank'); return false;"> {!us.userStory[fld.fieldPath]} </a>
                                                             </apex:outputPanel>
@@ -394,10 +420,10 @@
                                                 <apex:repeat value="{!$ObjectType.copado__Compliance_Scan_Result__c.FieldSets.copado__Compliance_Result_Tab}" var="fld">
                                                     <td role="gridcell" class="">
                                                         <div class="slds-truncate" title="{!cr[fld]}">
-                                                            <apex:outputPanel layout="none" rendered="{!fld.Type == 'referenc'}">
+                                                            <apex:outputPanel layout="none" rendered="{!OR(fld.Type == 'reference', fld.Type == 'boolean')}">
                                                                 <apex:outputField value="{!cr[fld.fieldPath]}" />
                                                             </apex:outputPanel>
-                                                            <apex:outputPanel layout="none" rendered="{!fld.Type != 'reference'}">
+                                                            <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Type != 'boolean')}">
                                                                 {!cr[fld.fieldPath]}
                                                             </apex:outputPanel>
                                                         </div>
@@ -439,12 +465,12 @@
                                                 <apex:repeat value="{!$ObjectType.copado__Selenium_Test_Group__c.FieldSets.copado__Selenium_Results_Tab}" var="fld">
                                                     <td role="gridcell" class="">
                                                         <div class="slds-truncate" title="{!sr[fld]}">
-                                                            <apex:outputPanel layout="none" rendered="{!OR(fld.Type == 'reference', AND(fld.Type != 'reference', fld.Label == $ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Icon__c.Label))}">
+                                                            <apex:outputPanel layout="none" rendered="{!OR(fld.Type == 'reference', AND(fld.Type != 'reference', fld.Label == $ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Icon__c.Label), fld.Type == 'boolean')}">
                                                                 <apex:outputField value="{!sr[fld.fieldPath]}" />
                                                             </apex:outputPanel>
-                                                            <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Label != $ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Icon__c.Label)}">
-                                                                    {!sr[fld.fieldPath]}
-                                                                </apex:outputPanel>
+                                                            <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Label != $ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Icon__c.Label, fld.Type != 'boolean')}">
+                                                                {!sr[fld.fieldPath]}
+                                                            </apex:outputPanel>
                                                         </div>
                                                     </td>
                                                 </apex:repeat>
@@ -494,8 +520,8 @@
                                         </apex:repeat>
                                         <td style="background-color: #fafaf9">
                                             <h2 id="approvalHT" class="slds-text-heading_medium slds-hyphenate" style="padding-left:20px">
-                                                    {!$Label.Action}
-                                                </h2>
+                                                {!$Label.Action}
+                                            </h2>
                                         </td>
                                     </tr>
                                     </thead>
@@ -523,7 +549,6 @@
                                         $copado('#dt4Approval').DataTable();
                                     }
 
-
                                 </script>
                             </apex:outputPanel>
                         </apex:outputPanel>
@@ -533,6 +558,81 @@
             <div class="slds-backdrop" id="approvalBackdrop"></div>
         </div>
         <!-- END OF Approvals modal -->
+
+        <!-- Deployment modal -->
+        <div id="deploymentPanel">
+            <section role="dialog" tabindex="-1" id="deploymentModal" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_large" style="height: 100%">
+                <div class="slds-modal__container" style="width: 100% !important;">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="min-height: 85%; height: 100%; overflow-x:scroll;">
+                        <apex:outputPanel id="deploymentPanelHeader" layout="block">
+                            <div id="deploymentHeading" style="float: left;margin-bottom:40px">
+                                <button class="slds-button" onclick="closeDeploymentModal(); return false;">
+                                    <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, '/assets/icons/utility-sprite/svg/symbols.svg#back')}"></use>
+                                    </svg>
+                                    {!$Label.copado__pipeline_back_to_pipeline}
+                                </button>
+                                <h2 class="slds-text-heading_medium slds-hyphenate">
+                                    {!$Label.copado__deployment_activity}
+                                </h2>
+                            </div>
+                            <apex:outputPanel id="deploymentRenderPanel" layout="block" style="margin-top:20px">
+                                <table id="dt4Deployment" class="compact row-border">
+                                    <thead>
+                                    <tr>
+                                        <apex:repeat value="{!$ObjectType.copado__Deployment__c.FieldSets.copado__Pipeline_Deployment_Modal}" var="usf">
+                                            <td style="background-color: #fafaf9">
+                                                <h2 id="deploymentHT" class="slds-text-title_caps slds-hyphenate" style="padding-left:20px">
+                                                    <apex:outputText value="{!usf.Label}" />
+                                                </h2>
+                                            </td>
+                                        </apex:repeat>
+                                        <td style="background-color: #fafaf9">
+                                            <h2 id="deploymentHT" class="slds-text-title_caps slds-hyphenate" style="padding-left:20px">
+                                                {!$Label.Action}
+                                            </h2>
+                                        </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <apex:repeat value="{!LatestDeploymentsByEnvironment}" var="deployment">
+                                        <tr>
+                                            <apex:repeat value="{!$ObjectType.copado__Deployment__c.FieldSets.copado__Pipeline_Deployment_Modal}" var="dep">
+                                                <td style="padding-left:28px">
+                                                    <apex:outputPanel layout="none" rendered="{!dep.Label == $ObjectType.copado__Deployment__c.fields.Name.Label}">
+                                                        <a href="#" onclick="copadoNavigateToUrl('{!deployment.Id}','{!URLFOR($Action.copado__Deployment__c.View,deployment.Id)}', '_blank'); return false;"> {!deployment[dep.fieldPath]} </a>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!dep.Label != $ObjectType.copado__Deployment__c.fields.Name.Label}">
+                                                        <apex:outputField value="{!deployment[dep]}" rendered="{!dep.Label != $ObjectType.copado__Deployment__c.fields.copado__Flag_Status__c.Label}"/>
+                                                    </apex:outputPanel>
+                                                    <apex:image url="{!deployment[dep]}" rendered="{!dep.Label == $ObjectType.copado__Deployment__c.fields.copado__Flag_Status__c.Label}" height="20" width="20"/>
+                                                </td>
+                                            </apex:repeat>
+                                            <td style="padding-left:28px">
+                                                <apex:outputPanel layout="none" rendered="{!deployment.Promotion__r.copado__Status__c == 'Merge Conflict'}">
+                                                    <a href="javascript:void(0)" target="_blank" class="slds-button" onclick="openConflictPage('{!deployment.Promotion__c}');return false;" style="border: none;">{!$Label.MERGE_CONFLICT_REVIEW}
+                                                    </a>
+                                                </apex:outputPanel>
+                                            </td>
+
+                                        </tr>
+                                    </apex:repeat>
+                                    </tbody>
+                                </table>
+                                <script>
+                                    function rerenderDeploymentDatatable() {
+                                        $copado('#dt4Deployment').DataTable({"order": []});
+                                    }
+
+                                </script>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop" id="deploymentBackdrop"></div>
+        </div>
+        <!-- END OF Deployments modal -->
 
         <!-- START OF Dependencies Panel -->
         <apex:outputPanel layout="block" id="dependencyUSComponent" style="display: none;" styleClass="slds-scope">
@@ -626,10 +726,10 @@
                                         </td>
                                         <apex:repeat value="{!$ObjectType.copado__Promotion__c.FieldSets.copado__Pipeline_Manager}" var="pf">
                                             <td class="slds-is-resizable">
-                                                <apex:outputPanel layout="none" rendered="{!pf.Type == 'reference'}">
+                                                <apex:outputPanel layout="none" rendered="{!OR(pf.Type == 'reference', pf.Type == 'boolean')}">
                                                     <apex:outputField value="{!prom.promotion[pf.fieldPath]}" />
                                                 </apex:outputPanel>
-                                                <apex:outputPanel layout="none" rendered="{!AND(pf.Type != 'reference', pf.Label != $ObjectType.copado__Promotion__c.fields.Name.Label)}">
+                                                <apex:outputPanel layout="none" rendered="{!AND(pf.Type != 'reference', pf.Label != $ObjectType.copado__Promotion__c.fields.Name.Label, pf.Type != 'boolean')}">
                                                     {!prom.promotion[pf.fieldPath]}
                                                 </apex:outputPanel>
                                                 <apex:outputPanel layout="none" rendered="{!AND(pf.Type != 'reference', pf.Label == $ObjectType.copado__Promotion__c.fields.Name.Label)}">
@@ -662,7 +762,6 @@
                                                         item.html(item.html());
                                                     });
 
-
                                                 </script>
                                             </apex:outputPanel>
                                             <apex:outputPanel layout="none" rendered="{!prom.promotion.copado__Status__c == 'In Progress'}">
@@ -689,7 +788,6 @@
                                                         item.html(item.html());
                                                     });
 
-
                                                 </script>
                                             </apex:outputPanel>
                                             <apex:outputPanel layout="none" rendered="{!prom.promotion.copado__Status__c == 'Completed with errors' || prom.promotion.copado__Status__c == 'Validated with errors'}">
@@ -713,7 +811,6 @@
                                                         item.html(item.html());
                                                     });
 
-
                                                 </script>
                                             </apex:outputPanel>
                                         </td>
@@ -721,7 +818,6 @@
                                             <apex:outputPanel rendered="{!prom.hasDependency}">
                                                 <script>
                                                     $copado('[Id$="depPros"]').addClass('WarningColor');
-
 
                                                 </script>
                                                 <center>
@@ -749,7 +845,6 @@
                                         "searching":false
                                     } );
                                 });
-
 
                             </script>
                         </apex:outputPanel>

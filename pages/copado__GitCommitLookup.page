@@ -17,7 +17,7 @@
     <apex:form id="theForm" styleClass="copado-lightning-container" style="margin-top:16px;">
         <apex:pageMessages id="theMessages" />
 
-        <apex:pageBlock id="pb" mode="detailMode" title="Search by any of the following" >
+        <apex:pageBlock id="pb" mode="detail" title="Search by any of the following" >
             <apex:pageBlockSection >
                 <apex:pageBlockSectionItem >
 
@@ -246,12 +246,12 @@
                         columnsresize: true,
                         localization: localizationobj,
                         columns: [
-                          {text: copadoLabels.name, columntype:'textbox', filtertype: 'textbox', filtercondition: 'contains', editable:false, datafield: 'n', width: 100 },
-                          {text: 'Repository',  columntype:'textbox', filtertype:'textbox', filtercondition: 'contains', editable:false, datafield: 'r' },
-                          {text: 'Branch',  columntype:'textbox', filtertype: 'textbox', filtercondition: 'contains', editable:false, datafield: 'b', width: 100},
-                          {text: 'Commit Date', columntype:'textbox', filtertype: 'textbox', filtercondition: 'contains', editable:false, datafield: 'd', width: 90, cellsformat: 'yyyy-MM-dd'},
-                          {text: 'Commit Id', columntype:'textbox', filtertype: 'textbox', filtercondition: 'contains', editable:false, datafield: 'i', width: 300},
-                          {text: 'Commit Message', columntype:'textbox', filtertype: 'textbox', filtercondition: 'contains', editable:false, datafield: 'm', width: 300}
+                          {text: copadoLabels.name, columntype:'textbox', filtertype: 'input', editable:false, datafield: 'n', width: '10%' },
+                          {text: 'Repository',  columntype:'textbox', filtertype:'input', editable:false, datafield: 'r', width: '10%' },
+                          {text: 'Branch',  columntype:'textbox', filtertype: 'input', editable:false, datafield: 'b', width: '10%'},
+                          {text: 'Commit Date', cellsformat: 'yyyy/MM/dd', filtertype: 'range', editable:false, datafield: 'd', width: '10%'},
+                          {text: 'Commit Id', columntype:'textbox', filtertype: 'input',  editable:false, datafield: 'i', width: '30%'},
+                          {text: 'Commit Message', columntype:'textbox', filtertype: 'input', editable:false, datafield: 'm', width: '30%'}
 
                         ]
                     });

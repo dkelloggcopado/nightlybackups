@@ -1,66 +1,65 @@
 <apex:page id="thePage" controller="copado.ManageGitBranchesController" tabStyle="copado__Git_Repository__c" extensions="copado.Settings" lightningStylesheets="true" showHeader="{!$User.UIThemeDisplayed=='Theme3'}" standardStylesheets="true" sidebar="{!$User.UIThemeDisplayed=='Theme3'}" applyHtmlTag="{!$User.UIThemeDisplayed=='Theme3'}" applyBodyTag="false" docType="html-5.0">
     <apex:slds />
     <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <head>
-            <title>{!$Label.MANAGE_GIT_BRANCHES} | Copado</title>
-            <c:GAnalytics />
-            <c:WizardUtils />
+    <head>
+        <title>{!$Label.MANAGE_GIT_BRANCHES} | Copado</title>
+        <c:GAnalytics />
+        <c:WizardUtils />
 
-            <c:IncludeStaticsResourceComponent addJQuery="true"/>
-            <c:IncludeConnectionJsComponent />
+        <c:IncludeStaticsResourceComponent addJQuery="true" />
+        <c:IncludeConnectionJsComponent />
 
-            <apex:includeScript value="{!URLFOR($Resource.metadataGrid2) }"/>
-            <apex:includeScript value="{!URLFOR($Resource.copado__JsRemoting)}"/>
-            <apex:includeScript value="{!URLFOR($Resource.utils) }"/>
+        <apex:includeScript value="{!URLFOR($Resource.metadataGrid2) }" />
+        <apex:includeScript value="{!URLFOR($Resource.copado__JsRemoting)}" />
+        <apex:includeScript value="{!URLFOR($Resource.utils) }" />
 
-            <apex:stylesheet value="{!IF($User.UIThemeDisplayed == 'Theme4d', URLFOR($Resource.copado__CopadoLightningCSS),'')}" />
-            <c:IncludeJqxResourceComponent addjqxAlljs="true" addjqxBasecss="true" addjqxEBcss="true"/>
+        <apex:stylesheet value="{!IF($User.UIThemeDisplayed == 'Theme4d', URLFOR($Resource.copado__CopadoLightningCSS),'')}" />
+        <c:IncludeJqxResourceComponent addjqxAlljs="true" addjqxBasecss="true" addjqxEBcss="true" />
 
 
+    </head>
 
-        </head>
+    <body>
+    <div class="copado-lightning-VF">
+        <apex:pageMessages id="pmessage" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}" />
 
-        <body>
-            <div class="copado-lightning-VF">
-                <apex:pageMessages id="pmessage" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}"/>
-
-                <apex:outputPanel layout="block" styleClass="slds-scope copado-lightning-container" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
-                    <div class="slds-page-header">
-                        <apex:outputPanel layout="block" id="pageMessages">
-                            <apex:pagemessages id="msg"/>
-                        </apex:outputPanel>
-                        <div class="slds-grid">
-                            <div class="slds-col slds-has-flexi-truncate">
-                                <div class="slds-media">
-                                    <div class="slds-media__figure">
+        <apex:outputPanel layout="block" styleClass="slds-scope copado-lightning-container" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
+            <div class="slds-page-header">
+                <apex:outputPanel layout="block" id="pageMessages">
+                    <apex:pagemessages id="msg" />
+                </apex:outputPanel>
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
                                           <span class="slds-icon_container slds-icon-custom-custom26" title="">
                                             <svg class="slds-icon" aria-hidden="true">
                                               <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS,'/assets/icons/custom-sprite/svg/symbols.svg#custom26')}"></use>
                                             </svg>
                                           </span>
-                                    </div>
-                                    <div class="slds-media__body">
-                                        <p class="slds-text-heading--label slds-line-height--reset">{!$Label.MANAGE_GIT_BRANCHES}</p>
-                                        <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="{!$Label.MANAGE_GIT_BRANCHES}">
-                                            <!-- <apex:outputField value="{!$Label.MANAGE_GIT_BRANCHES}"/> -->
-                                        </h1>
-                                    </div>
-                                </div>
                             </div>
-                            <!-- ACTION BUTTONS -->
-                            <div class="slds-col slds-no-flex slds-grid slds-align-top ">
-                                <div class="slds-button-group" role="group">
-
-                                </div>
+                            <div class="slds-media__body">
+                                <p class="slds-text-heading--label slds-line-height--reset">{!$Label.MANAGE_GIT_BRANCHES}</p>
+                                <h1 class="slds-page-header__title slds-truncate slds-align-middle" title="{!$Label.MANAGE_GIT_BRANCHES}">
+                                    <!-- <apex:outputField value="{!$Label.MANAGE_GIT_BRANCHES}"/> -->
+                                </h1>
                             </div>
-                            <!-- / ACTION BUTTONS -->
                         </div>
                     </div>
-                </apex:outputPanel>
+                    <!-- ACTION BUTTONS -->
+                    <div class="slds-col slds-no-flex slds-grid slds-align-top ">
+                        <div class="slds-button-group" role="group">
 
-                <apex:form id="theForm" rendered="{!!showError}" styleClass="copado-lightning-container" style="padding-top:12px;">
-                    <c:ScreenLocker msg="{!$Label.copado__loading}" useJobsManager="true" possibleRunningJobs=",DxListRepositoryBranches,,true;,GitDeleteBranches,,true;"/>
-                    <script>
+                        </div>
+                    </div>
+                    <!-- / ACTION BUTTONS -->
+                </div>
+            </div>
+        </apex:outputPanel>
+
+        <apex:form id="theForm" rendered="{!!showError}" styleClass="copado-lightning-container" style="padding-top:12px;">
+            <c:ScreenLocker msg="{!$Label.copado__loading}" useJobsManager="true" possibleRunningJobs=",DxListRepositoryBranches,,true;,GitDeleteBranches,,true;" />
+            <script>
                         window.addEventListener('copadoJobsManagerFinished', function (evt) {
                             for(var i=0 ; i < evt.detail.length ; i++ ) {
                                 var jobFinished = evt.detail[i].isFinished;
@@ -83,38 +82,40 @@
                                 }
                             }
                         }, false);
-                    </script>
-
-                    <apex:pageBlock id="pb_deleteBranches">
-
-                        <apex:pageblockButtons >
-                            <apex:commandButton value="{!$Label.copado__delete_selected_branches}" onclick="openConfirmModal(); return false;" id="btnDelete" />
-                            <apex:commandButton value="{!$Label.site.cancel}"  action="{!Cancel}" id="btnCancel"/>
-                        </apex:pageblockButtons>
-
-                        <apex:actionFunction name="deleteSelectedBranches" action="{!deleteGitBranches}" rerender="pmessage, msg">
-                            <apex:param value="deleteGitBranches" name="deleteGitBranches"/>
-                        </apex:actionFunction>
-                        <apex:actionFunction name="refreshBranches" action="{!refreshBranchCache}" rerender="pmessage, msg"></apex:actionFunction>
-
-                        <apex:actionStatus id="screenlocker" onstart="lockScreen();" onstop="unlockScreen();" />
-
-                        <apex:actionFunction name="getRepoBranches" reRender="branchGridContainer" onComplete="unlockScreen();">
-                            <apex:param value="" name="repoName" assignTo="{!repoName}"/>
-                            <apex:param value="" name="repoId" assignTo="{!repoId}"/>
-                        </apex:actionFunction>
-                        <apex:actionFunction name="rerenderbranchGridContainer" reRender="branchGridContainer" onComplete="unlockScreen();"/>
-                        <apex:pageBlockSection >
-                            <apex:outputField value="{!gitRepo.Name}"/>
-                            <apex:outputField value="{!gitRepo.copado__URI__c}"/>
-                        </apex:pageBlockSection>
 
 
-                        <apex:pageBlockSection title="{!$Label.copado__select_branches}" collapsible="false" columns="1" showHeader="true">
-                            <apex:outputPanel layout="block" id="branchGridContainer">
-                                <apex:outputPanel id="branchGrid" layout="block">
-                                    <apex:outputPanel layout="none">
-                                        <script type="application/javascript">
+            </script>
+
+            <apex:pageBlock id="pb_deleteBranches">
+
+                <apex:pageblockButtons >
+                    <apex:commandButton value="{!$Label.copado__delete_selected_branches}" onclick="openConfirmModal(); return false;" id="btnDelete" />
+                    <apex:commandButton value="{!$Label.site.cancel}" action="{!Cancel}" id="btnCancel" />
+                </apex:pageblockButtons>
+
+                <apex:actionFunction name="deleteSelectedBranches" action="{!deleteGitBranches}" rerender="pmessage, msg">
+                    <apex:param value="deleteGitBranches" name="deleteGitBranches" />
+                </apex:actionFunction>
+                <apex:actionFunction name="refreshBranches" action="{!refreshBranchCache}" rerender="pmessage, msg"></apex:actionFunction>
+
+                <apex:actionStatus id="screenlocker" onstart="lockScreen();" onstop="unlockScreen();" />
+
+                <apex:actionFunction name="getRepoBranches" reRender="branchGridContainer" onComplete="unlockScreen();">
+                    <apex:param value="" name="repoName" assignTo="{!repoName}" />
+                    <apex:param value="" name="repoId" assignTo="{!repoId}" />
+                </apex:actionFunction>
+                <apex:actionFunction name="rerenderbranchGridContainer" reRender="branchGridContainer" onComplete="unlockScreen();" />
+                <apex:pageBlockSection >
+                    <apex:outputField value="{!gitRepo.Name}" />
+                    <apex:outputField value="{!gitRepo.copado__URI__c}" />
+                </apex:pageBlockSection>
+
+
+                <apex:pageBlockSection title="{!$Label.copado__select_branches}" collapsible="false" columns="1" showHeader="true">
+                    <apex:outputPanel layout="block" id="branchGridContainer">
+                        <apex:outputPanel id="branchGrid" layout="block">
+                            <apex:outputPanel layout="none">
+                                <script type="application/javascript">
                                             var repoId = '{!JSENCODE(repoId)}';
 
                                             var _config = {
@@ -127,64 +128,67 @@
                                                 window.setTimeout(initBraches(_config), 0);
                                                 unlockScreen();
                                             });
-                                        </script>
-                                        <div>
-                                            <div id="removeCacheContainer">
-                                                <apex:commandLink style="display:none;" action="{!refreshBranchCache}" onComplete="unlockScreen();"
-                                                                  value="{!$Label.copado__cache_refreshed_now}"
-                                                                  onclick="lockScreen();"
-                                                                  rerender="opDummy" id="removeCache"/>
-                                            </div>
-                                            <div class="branchesGrid" style="display: none;">
-                                                <label style="display: none;" class="mg2_mtFilter">Metadata Type
-                                                    Filter</label>&nbsp;
-                                                <div class="mg2_scaleFilter" style="display: none;"/>
-                                            </div>
 
-                                            <div id="branchSelectorGrid">
-                                                <center><img src="/img/loading.gif"/><i><span
-                                                                id="retry-label">{!$Label.copado__loading}</span></i></center>
-                                            </div>
-                                        </div>
-                                    </apex:outputPanel>
-                                </apex:outputPanel>
-                            </apex:outputPanel>
-                        </apex:pageBlockSection>
-                    </apex:pageBlock>
 
-                    <div class="slds-scope">
-                        <div class="slds-modal" aria-hidden="false" role="dialog" id="modal">
-                            <div class="slds-modal__container">
-                                <header class="slds-modal__header">
-                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{!$Label.CLOSE}" onclick="closeModal(); return false;">
-                                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
-                                        </svg>
-                                        <span class="slds-assistive-text">{!$Label.CLOSE}</span>
-                                    </button>
-                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.DELETE_CONFIRM}</h2>
-                                </header>
-                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                                    <div class="slds-form slds-form_horizontal">
-                                        <div class="slds-form-element">
-                                            <label class="slds-form-element__label" for="input-id-01">To confirm, type the word <strong>DELETE</strong></label>
-                                            <div class="slds-form-element__control">
-                                                <input type="text" id="deleteText" class="slds-input" value="" autocomplete="off"/>
-                                            </div>
-                                        </div>
+                                </script>
+                                <div>
+                                    <div id="removeCacheContainer">
+                                        <apex:commandLink style="display:none;" action="{!refreshBranchCache}" onComplete="unlockScreen();"
+                                                          value="{!$Label.copado__cache_refreshed_now}"
+                                                          onclick="lockScreen();"
+                                                          rerender="opDummy" id="removeCache" />
+                                    </div>
+                                    <div class="branchesGrid" style="display: none;">
+                                        <label style="display: none;" class="mg2_mtFilter">Metadata Type
+                                            Filter</label>&nbsp;
+                                        <div class="mg2_scaleFilter" style="display: none;" />
+                                    </div>
+
+                                    <div id="branchSelectorGrid">
+                                        <center><img src="/img/loading.gif" /><i><span
+                                                        id="retry-label">{!$Label.copado__loading}</span></i></center>
                                     </div>
                                 </div>
-                                <footer class="slds-modal__footer">
-                                    <button type="button" class="slds-button slds-button_neutral" onclick="closeModal(); return false;">{!$Label.CANCEL}</button>
-                                    <button type="button" id="deleteInModal" class="slds-button slds-button_destructive" onclick="lockScreen(); closeModal(); deleteSelectedBranches(JSON.stringify(getSelectedBranches())); return false;" disabled="true">{!$Label.DELETE}</button>
-                                </footer>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+
+            <div class="slds-scope">
+                <div class="slds-modal" aria-hidden="false" role="dialog" id="modal">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="{!$Label.CLOSE}" onclick="closeModal(); return false;">
+                                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+                                </svg>
+                                <span class="slds-assistive-text">{!$Label.CLOSE}</span>
+                            </button>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.DELETE_CONFIRM}</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div class="slds-form slds-form_horizontal">
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label" for="input-id-01">To confirm, type the word
+                                        <strong>DELETE</strong></label>
+                                    <div class="slds-form-element__control">
+                                        <input type="text" id="deleteText" class="slds-input" value="" autocomplete="off" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="slds-backdrop" id="backdrop"></div>
+                        <footer class="slds-modal__footer">
+                            <button type="button" class="slds-button slds-button_neutral" onclick="closeModal(); return false;">{!$Label.CANCEL}</button>
+                            <button type="button" id="deleteInModal" class="slds-button slds-button_destructive" onclick="lockScreen(); closeModal(); deleteSelectedBranches(JSON.stringify(getSelectedBranches())); return false;" disabled="true">{!$Label.DELETE}</button>
+                        </footer>
                     </div>
-                </apex:form>
+                </div>
+                <div class="slds-backdrop" id="backdrop"></div>
+            </div>
+        </apex:form>
 
-                <script>
+        <script>
                     // OpenModal
                     function openConfirmModal(){
                       $copado('#deleteText').val('');
@@ -252,9 +256,11 @@
                             .prepend($unselectAll)
                             .prepend($selectAll);
                             });
-                </script>
 
-                <script>
+
+        </script>
+
+        <script>
                     var cacheDate;
                     var initBraches = function (conf) {
                         var branchsInUse = '{!branchNamesInUse}';
@@ -272,6 +278,7 @@
 
                         if(conf.repoId && conf.repoId != '000000000000000') {
                             listOfBranches = loadBranches(conf.repoId, conf.attachmentName, true, branchSet);
+                            console.log('listOfBranches...', listOfBranches);
                         } else {
                             unlockScreen();
                         }
@@ -283,7 +290,7 @@
                                 {name: 's', type: 'bool'},
                                 {name: 'name', type: 'string'},
                                 {name: 'type', type: 'string'},
-                                {name: 'lastUpdate', type: 'string'}
+                                {name: 'lastUpdate', type: 'date'}
                             ],
                             datatype: 'array'
                         };
@@ -310,12 +317,12 @@
                                     columntype: 'checkbox',
                                     filtertype: 'bool',
                                     datafield: 's',
-                                    width: 60
+                                    width: '10%'
                                 },
                                 {
                                     text: copadoLabels.name,
-                                    filtertype: 'textbox',
-                                    filtercondition: 'contains',
+                                    columntype: 'textbox',
+                                    filtertype: 'input',
                                     editable: false,
                                     datafield: 'name',
                                     width: '40%'
@@ -326,14 +333,15 @@
                                     filtertype: 'checkedlist',
                                     editable: false,
                                     columntype: 'textbox',
-                                    width: '30%'
+                                    width: '20%'
                                 },
                                 {
                                     text: copadoLabels.LastModifiedDate,
-                                    filtertype: 'textbox',
+                                    filtertype: 'range',
                                     editable: false,
                                     datafield: 'lastUpdate',
-                                    width: '30%'
+                                    width: '30%',
+                                    cellsformat: 'yyyy/MM/dd'
                                 }
                             ]
                         });
@@ -413,17 +421,21 @@
 
                         $btn.show();
                     };
-                </script>
 
-                <script>
+
+        </script>
+
+        <script>
                     ga('send', 'pageview', {
                       'page': '/ManageGitBranches',
                       'title': 'Manage Git Branches'
                     });
-                </script>
-                <c:CheckFeaturesComponent />
 
-            </div>
-        </body>
+
+        </script>
+        <c:CheckFeaturesComponent />
+
+    </div>
+    </body>
     </html>
 </apex:page>
