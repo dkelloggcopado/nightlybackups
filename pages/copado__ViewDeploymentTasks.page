@@ -229,19 +229,7 @@
 										<apex:outputPanel layout="none" rendered="{!copado__Deployment_Task__c.copado__Type__c == 'URL Callout'}">
 											<c:URLCalloutComponent isEdit="false"/>
 											<script type="text/javascript">
-												datasetup.setPreviousData = function(data){
-													data = data ? JSON.parse(data) : false;
-													//fill or reset if field is empty
-													$copado('[id=jsUrlCalloutTypeView]').val(data ? data.type : '');
-													$copado('[id=jsUrlCalloutMethodView]').val(data ? data.method : '');
-													$copado('[id$=jsUrlCalloutUrlView]').text(data ? data.url : '');
-													$copado('[id$=jsUrlCalloutBodyView]').text(data ? data.body : '');
-													urlCallout.urlParams = (data && data.queryParameters) ? data.queryParameters : [];
-													urlCallout.headers = (data && data.headers) ? data.headers : [];
-													if (data && data.headers) urlCallout.header.decode();
-													urlCallout.createStaticChildRows(urlCallout.urlParams, 'param');
-													urlCallout.createStaticChildRows(urlCallout.headers, 'header');
-												}
+												datasetup.setPreviousData = urlCallout.setPreviousDataView;
 											</script>
 										</apex:outputPanel>
 										<apex:outputPanel layout="none" rendered="{!copado__Deployment_Task__c.copado__Type__c == 'Apex'}">
@@ -269,6 +257,17 @@
 														$copado('[id$=queryView]').text(dw.qb.preQuery.q);
 													}
 													init();
+												}
+											</script>
+										</apex:outputPanel>
+										<apex:outputPanel layout="none" rendered="{!copado__Deployment_Task__c.copado__Type__c == 'Data Template'}">
+											<c:DataTemplateTaskComponent isEdit="false"/>
+											<script type="text/javascript">
+												datasetup.setPreviousData = function(data){
+													if(data) {
+														data = JSON.parse(data);
+														$copado('[id$=jsDataTemplate_View]').val(data.dataTemplateName);
+													}
 												}
 											</script>
 										</apex:outputPanel>

@@ -37,6 +37,7 @@
                     }
                 }
             });
+
         </script>
         <apex:stylesheet value="{!IF($User.UIThemeDisplayed == 'Theme4d',URLFOR($Resource.copado__CopadoLightningCSS),'')}" />
     </head>
@@ -111,6 +112,7 @@
                     </apex:pageblockButtons>
                     <apex:pageBlockSection columns="1">
                         <apex:outputField id="of_name" value="{!git.Name}" />
+                        <apex:outputField id="sourceFormat" value="{!git.copado__Source_Format__c}" />
                         <apex:outputField id="of_uri" value="{!git.copado__URI__c}" />
                         <apex:pageBlockSectionItem rendered="{!!isSSHauthentication}">
                             {!$Label.copado__username}

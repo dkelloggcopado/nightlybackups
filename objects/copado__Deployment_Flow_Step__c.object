@@ -205,6 +205,34 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>copado__Connection_Behavior_Override__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>This field manages override of Connection Behavior on Pipeline Connection basis</description>
+        <externalId>false</externalId>
+        <label>Connection Behavior Override</label>
+        <referenceTo>copado__Connection_Behavior__c</referenceTo>
+        <relationshipLabel>Pipeline Connections</relationshipLabel>
+        <relationshipName>Pipeline_Connections</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>copado__Connection_Behavior__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>If( NOT(ISBLANK( copado__Connection_Behavior_Override__c )), copado__Connection_Behavior_Override__c,  copado__Destination_Environment__r.copado__Connection_Behavior__c  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Connection Behavior</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__Deployment_Flow__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>

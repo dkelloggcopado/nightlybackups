@@ -34,14 +34,18 @@
                     console.debug("Job Type: ", jobType);
                     console.debug("job detail ", evt.detail[i]);
                     jobstatus(jobFinished,jobSuccess,jobMessage,jobType);
-                    if(jobFinished && jobSuccess) {
-                        if(jobType == 'DXCreatePackage'){
-                            location.reload();
-                        }else{
-                            location.href = '/{!copado__Artifact__c.Id}';
+                    if(jobFinished) {
+                        if(jobSuccess) {
+                            if(jobType == 'DXCreatePackage') {
+                                location.reload();
+                            } else {
+                                location.href = '/{!copado__Artifact__c.Id}';
+                            }
+                        } else {
+                            if(jobType == 'DxPackageVersionCreateJob') {
+                                deleteInstallationKeyRecord();
+                            }
                         }
-                    }
-                    if(jobFinished){
                         setLockScreenMessage('{!JSENCODE($Label.copado__loading)}');
                     }
                 }

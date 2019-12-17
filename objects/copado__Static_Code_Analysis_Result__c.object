@@ -275,6 +275,20 @@
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>copado__Deployment_Step__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Deployment Step</label>
+        <referenceTo>copado__Step__c</referenceTo>
+        <relationshipLabel>Static Code Analysis Results</relationshipLabel>
+        <relationshipName>Static_Code_Analysis_Results</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>copado__Details__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
