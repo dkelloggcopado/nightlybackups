@@ -125,6 +125,10 @@
                                 <apex:outputLabel value="{!$Label.copado__branch_licenses}" />
                                 <apex:outputText id="txtCBMlicenses" value="{!CBMLicensesUsed}/{!cbmBranchesAvailable}" />
                             </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$Label.copado__add_licenses_used}" />
+                                <apex:outputText id="txtADDlicenses" value="{!addLicensesUsed}/{!addLicensesAvailable}" />
+                            </apex:pageBlockSectionItem>
                         </apex:pageBlockSection>
 
                         <apex:pageBlockSection columns="1" title="{!$Label.copado__add_update_user}" collapsible="false">
@@ -155,12 +159,16 @@
                                 <apex:inputCheckbox id="chkAssignCST" value="{!assignCST}" disabled="{!fieldDisableFlag}" />
                             </apex:pageBlockSectionItem>
                             <apex:pageBlockSectionItem helpText="CAD = Copado Agile Delivery" rendered="{!enableMultiLicenses}">
-                                <apex:outputLabel value="{!$Label.copado__assign_cad_license}" />  <!-- ASSIGNE CAD LICENSE-->
+                                <apex:outputLabel value="{!$Label.copado__assign_cad_license}" />
                                 <apex:inputCheckbox id="chkAssignCAD" value="{!assignCAD}" disabled="{!fieldDisableFlag}" />
                             </apex:pageBlockSectionItem>
                             <apex:pageBlockSectionItem helpText="CCH = Copado Compliance Hub" rendered="{!enableMultiLicenses}">
-                                <apex:outputLabel value="{!$Label.copado__assign_cch_license}" />  <!-- ASSIGNE CCH LICENSE-->
+                                <apex:outputLabel value="{!$Label.copado__assign_cch_license}" />
                                 <apex:inputCheckbox id="chkAssignCCH" value="{!assignCCH}" disabled="{!fieldDisableFlag}" />
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem helpText="ADD = Advance Data Deployment" rendered="{!enableMultiLicenses}">
+                                <apex:outputLabel value="{!$Label.copado__assign_add_license}" />
+                                <apex:inputCheckbox id="chkAssignCCH" value="{!assignADD}" disabled="{!fieldDisableFlag}" />
                             </apex:pageBlockSectionItem>
                             <apex:pageBlockSectionItem helpText="{!$Label.copado__cbm_feature_based_license}" rendered="{!enableMultiLicenses}">
                                 <apex:outputLabel value="{!$Label.copado__cbm_license}" />
@@ -250,6 +258,24 @@
                                 </apex:column>
                             </apex:pageBlockTable>
                         </apex:pageBlockSection>
+
+
+                        <!--ADD USERS************************************************************+ DIV-->
+                        <apex:pageBlockSection title="{!$Label.copado__add_users}" columns="1" collapsible="false" id="pbsADD">
+                            <apex:pageBlockTable value="{!addUsage}" var="row" id="tblADDUsage">
+                                <apex:column width="100">
+                                    <apex:facet name="header">{!$Label.copado__action_column_header}</apex:facet>
+                                    <apex:outputPanel >
+                                        <apex:commandLink id="lnkADDRemove" value="{!$Label.copado__remove}" action="{!row.removeAssignment}" reRender="theForm" status="status" styleClass="{!if(fieldDisableFlag,'removeLink','')}"/>
+                                    </apex:outputPanel>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">{!$Label.copado__name}</apex:facet>
+                                    <apex:outputText id="txtCCHUserName" value="{!row.license.SetupOwner.Name}" />
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSection>
+                        <!--ADD USERS************************************************************+ DIV-->
                     </apex:pageBlock>
                 </apex:outputPanel>
             </apex:form>

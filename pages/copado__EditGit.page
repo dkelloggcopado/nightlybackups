@@ -8,7 +8,7 @@
     </head>
     <body>
     <div class="copado-lightning-VF">
-        <apex:sectionHeader title="{!$ObjectType.copado__Git_Repository__c.Label} {!$Label.copado__edit}" subtitle="{!IF(ISBLANK(git.Name),'New '+ $ObjectType.copado__Git_Repository__c.Label ,git.Name)}" description="{!$Label.copado__git_repository_edit_description}" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}" />
+        <!--<apex:sectionHeader title="{!$ObjectType.Git_Repository__c.Label} {!$Label.EDIT}" subtitle="{!IF(ISBLANK(git.Id),'New '+ $ObjectType.Git_Repository__c.Label ,git.Name)}" description="{!$Label.GIT_REPOSITORY_EDIT_DESCRIPTION}" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}" />-->
         <apex:pageMessages id="pmessage" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}" />
         <apex:outputPanel layout="block" styleClass="slds-scope copado-lightning-container" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
 
@@ -67,7 +67,14 @@
                             <apex:outputLabel value="{!$ObjectType.copado__Git_Repository__c.fields.Name.Label}" />
                             <apex:outputPanel styleClass="requiredInput" layout="block">
                                 <apex:outputPanel styleClass="requiredBlock" layout="block" />
-                                <apex:inputField id="name" value="{!git.Name}" style="width:100%;"/>
+                                <apex:inputField id="name" value="{!git.Name}" style="width:100%;" />
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="gitrepoformat">
+                            <apex:outputLabel value="{!$ObjectType.copado__Git_Repository__c.fields.copado__Source_Format__c.Label}" />
+                            <apex:outputPanel layout="block">
+                                <apex:outputPanel layout="block" />
+                                <apex:inputField id="sourceFormat" value="{!git.copado__Source_Format__c}" style="width:100%;" />
                             </apex:outputPanel>
                         </apex:pageBlockSectionItem>
                         <apex:pageBlockSectionItem id="pbsi_authType">
@@ -75,7 +82,7 @@
                             <apex:selectList value="{!authTypeValue}" id="authType" size="1" multiselect="false">
                                 <apex:selectOption itemValue="ssh" itemLabel="SSH" />
                                 <apex:selectOption itemValue="https" itemLabel="Https" />
-                                <apex:actionSupport event="onchange" rerender="pbsMain"/>
+                                <apex:actionSupport event="onchange" rerender="pbsMain" />
                             </apex:selectList>
                         </apex:pageBlockSectionItem>
                         <apex:pageBlockSectionItem id="gitrepouri">
@@ -107,7 +114,7 @@
                         </apex:pageBlockSectionItem>
                     </apex:pageBlockSection>
                     <apex:pageBlockSection columns="1" title="{!$Label.copado__other_information}" rendered="{!showOtherInformation}" id="gitRepoOtherFlds">
-                        <apex:inputField id="gitprovider" value="{!git.copado__Git_Provider__c}" style="width:100%;" >
+                        <apex:inputField id="gitprovider" value="{!git.copado__Git_Provider__c}" style="width:100%;">
                             <apex:actionSupport event="onchange" action="{!populateURLFields}" reRender="gitRepoOtherFlds" />
                         </apex:inputField>
 
@@ -137,6 +144,7 @@
                         }
                     }
                 });
+
             </script>
 
             <apex:outputPanel rendered="false" layout="block" styleClass="copado-lightning-container">

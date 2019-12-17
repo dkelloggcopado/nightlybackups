@@ -1,7 +1,7 @@
 <apex:page id="GitCommitMain" controller="copado.GitCommit_MainPageController" lightningStylesheets="true" sideBar="false" docType="html-5.0" title="{!$Label.copado__git_commit_page}">
     <apex:slds />
     <c:IncludeStaticsResourceComponent addJQuery="true" addUIjs="true" />
-    <c:IncludeJqxResourceComponent addjqxAlljs="true" addjqxBasecss="true"/>
+    <c:IncludeJqxResourceComponent addjqxAlljs="true" addjqxBasecss="true" />
     <script>
         var svgButtonsId = [];
         var svgButtonsClass = ['editIcon', 'refreshIcon', 'fullSizeIcon', 'informationIcon', 'approvalIcon', 'errorIcon', 'pinIcon', 'warningIcon', 'warningToastIcon', 'successToastIcon', 'errorToastIcon', 'closeToastIcon'];
@@ -98,6 +98,7 @@
                 advancedComponentDiv.style.display = "none";
             }
         }
+
     </script>
     <style>
         .approvalIcon {
@@ -119,6 +120,7 @@
             color: orange;
             margin-right: 5px;
         }
+
     </style>
     <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <body class="slds-scope">

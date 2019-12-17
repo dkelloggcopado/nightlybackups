@@ -477,7 +477,7 @@
                 <c:CopadoHelp sectionText="{!$Label.copado__manage_artifact_help_text}" />
                 <apex:pageBlock title="{!$Label.copado__artifacts}">
 
-                    <apex:commandButton onClick="showModal('#artifactModal','#artifactBackdrop');" reRender="artifactContent,artifactFooter,dxOperationErrors" value="New Artifact" />
+                    <apex:commandButton onClick="showModal('#artifactModal','#artifactBackdrop');" reRender="artifactContent,artifactFooter,dxOperationErrors" value="{!$Label.copado__new_package}" />
 
                     <apex:pageBlockSection columns="2" rendered="{!selectedOperation == '4'}">
                         <apex:pageBlockSectionItem >
@@ -530,8 +530,8 @@
                                         </td>
                                         <td class="dataCell" colspan="1">
                                                 <span>
-                                                    <apex:outputLink rendered="{!OR(al.RecordType.Name == 'Git Artifact', AND(al.RecordType.Name == 'Package Artifact', al.copado__Package_Type__c != 'Unmanaged'))}" value="{!URLFOR($Page.copado__ArtifactManageMetadata,null,[id=al.Id])}" target="_blank" styleClass="slds-button slds-button--neutral slds-col--bump-left">{!$Label.copado__manage_metadata}</apex:outputLink>
-                                                    <apex:outputLink rendered="{!AND(al.RecordType.Name == 'Package Artifact', al.copado__Package_Type__c == 'Unmanaged')}" value="{!URLFOR($Page.copado__ArtifactPackage,null,[id=al.Id])}" target="_blank" styleClass="slds-button slds-button--neutral slds-col--bump-left">{!$Label.copado__manage_package_selection}</apex:outputLink>
+                                                    <apex:outputLink rendered="{!OR(al.RecordType.Name == 'Git Package', AND(al.RecordType.Name == 'Salesforce Package', al.copado__Package_Type__c != 'First-Generation Package'))}" value="{!URLFOR($Page.copado__ArtifactManageMetadata,null,[id=al.Id])}" target="_blank" styleClass="slds-button slds-button--neutral slds-col--bump-left">{!$Label.copado__manage_metadata}</apex:outputLink>
+                                                    <apex:outputLink rendered="{!AND(al.RecordType.Name == 'Salesforce Package', al.copado__Package_Type__c == 'First-Generation Package')}" value="{!URLFOR($Page.copado__ArtifactPackage,null,[id=al.Id])}" target="_blank" styleClass="slds-button slds-button--neutral slds-col--bump-left">{!$Label.copado__manage_package_selection}</apex:outputLink>
                                                 </span>
                                         </td>
                                     </tr>

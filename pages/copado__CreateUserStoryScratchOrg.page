@@ -12,6 +12,8 @@
 
         </script>
         <c:IncludeConnectionJsComponent />
+        <c:IncludeCodeMirrorResourceComponent addCMjs="true" addYamljs="false" addActiveLinejs="true" addJSONLintjs="true" addLintjs="true" addAutoRefreshjs="false" addCommentjs="true" addCMcss="true" addEclipsecss="true" addLintcss="true"/>
+
         <apex:stylesheet value="{!IF($User.UIThemeDisplayed == 'Theme4d',URLFOR($Resource.copado__CopadoLightningCSS),'')}" />
     </head>
     <body>
@@ -135,8 +137,17 @@
                             </li>
                         </ul>
                     </div>
-                    <apex:outputLink id="btn_validate" rendered="{!!disableNextButton}"
+                    <apex:outputLink id="btn_validate" rendered="{!!disableNextButton && definition != 'CURRENT'}"
                                      onClick="lockScreen();nextStep(); return false;" value="#"
+                                     styleClass="slds-button slds-button_brand slds-path__mark-complete slds-no-flex slds-m-horizontal_small">
+                        {!nextButtonLabel} &nbsp;
+                        <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 xlink:href="{!URLFOR($Resource.SLDS,'/assets/icons/utility-sprite/svg/symbols.svg#forward')}"></use>
+                        </svg>
+                    </apex:outputLink>
+                    <apex:outputLink id="btn_validate_scratchOrgTemplate" rendered="{!!disableNextButton && definition == 'CURRENT'}"
+                                     onClick="lockScreen();cmapp.validate('validate'); return false;" value="#"
                                      styleClass="slds-button slds-button_brand slds-path__mark-complete slds-no-flex slds-m-horizontal_small">
                         {!nextButtonLabel} &nbsp;
                         <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
@@ -158,7 +169,7 @@
                 <apex:outputPanel layout="block" rendered="{!definition == 'CURRENT'}">
                     <apex:actionFunction name="renderParent" reRender="progressContainer" />
                     <c:ScratchOrgTemplate parentPageController="{!this}" componentName="ScratchOrgTemplate"
-                                          showActionButtons="false" mode="wizard" showAllTemplateButtons="true" />
+                                          showActionButtons="false" mode="wizard" showAllTemplateButtons="true" /> 
                 </apex:outputPanel>
                 <apex:outputPanel layout="block" rendered="{!extension == 'CURRENT'}">
                     <apex:actionFunction name="renderParent" reRender="progressContainer" />
@@ -187,6 +198,11 @@
                 </apex:outputPanel>
             </apex:outputPanel>
         </apex:outputPanel>
+        <apex:actionFunction action="{!nextStepOrgTemplate}" name="nextStepOrgTemplate" onComplete="unlockScreen();"
+                             reRender="componentContainer,progressContainer,userStoryWizardMessage">
+            <apex:param name="jsonfile" value="" assignTo="{!jsonSettingsFeatures}"/>
+            <apex:param value="" name="nextStepParam" />
+        </apex:actionFunction>
         <apex:actionFunction action="{!nextStep}" name="nextStep" onComplete="unlockScreen();"
                              reRender="componentContainer,progressContainer,userStoryWizardMessage">
             <apex:param value="" name="nextStepParam" />
