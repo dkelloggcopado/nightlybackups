@@ -78,7 +78,6 @@ var apexTestResult = {
             return;
         }
     },
-
     getOrgTestClasses: function(cb){
         var me = apexTestResult;
         url = copadoApp.urlBase+'testClasses/'+copadoApp.orgId+copadoApp.urlParameters;
@@ -697,7 +696,7 @@ apexTestResult.init =  function(){
         var url_string = location.href;
         var url = new URL(url_string);
         var reload = url.searchParams.get("rl");
-        
+
         $copado('#summaryUserStory').show();
     }
     else{

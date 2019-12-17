@@ -123,7 +123,7 @@
                 <apex:form ><c:ScreenLocker msg="{!$Label.copado__loading}" /></apex:form>
 
                 <apex:form id="theForm" styleClass="copado-lightning-container" style="padding-top:12px;4">
-                    <apex:actionFunction name="doBackup" action="{!doBackup}" reRender="">
+                    <apex:actionFunction name="doBackup" action="{!doBackup}" reRender="pmessage" onComplete="{!IF(pageHasErrors,'unlockScreen();','')}">
                         <apex:param name="commitComment" value=""/>
                         <apex:param name="applyEnvVars" value=""/>
                         <apex:param name="applyYAML" value=""/>

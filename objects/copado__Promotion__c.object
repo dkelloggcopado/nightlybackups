@@ -620,6 +620,17 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>copado__Connection_Behavior__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Connection Behavior</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__Create_Full_Permission_Sets_Step__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>

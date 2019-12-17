@@ -86,6 +86,7 @@
         git_metadata_url: '{!JSENCODE(git_metadata_url)}'
     };
     rock.EditGitPromotion = '{!$Permission.copado__Edit_Git_Promotion_Step}';
+    rock.EditQualityGate = '{!$Permission.copado__Edit_Quality_Gate_Step}';
     rock.scalable = {!scalableGrid};
     rock.deploymentId = '{!JSENCODE(dep.id)}';
     rock.org__c = '{!JSENCODE(dep.copado__From_Org__c)}';
@@ -102,16 +103,10 @@
     rock.config.ns = copadoApp.ns;
     deploymentStreamingService.ns = copadoApp.ns;
 
-    $copado( document ).ready(function() {
+    $copado(document).ready(function() {
         copadoApp.mirrorBlockHeight();
-        deploymentStreamingService.ns = copadoApp.ns;
-        copadoStreamingService.ns = copadoApp.ns;
-        copadoStreamingService.init();
-        $copado.cometd.subscribe('/topic/CopadoNotifications', function(message) {
-            console.info('Push message: ', message);
-            deploymentStreamingService.readStream(message);
-        });
-        window.onbeforeunload = copadoStreamingService.disconnect;
+        //deploymentStreamingService.initStreaming();
+        //window.onbeforeunload = copadoStreamingService.disconnect;
     });
 
     //TODO move this to header
@@ -255,19 +250,22 @@
 
                                 </apex:repeat>
 
-
-                                <!--<apex:outputPanel layout="block" rendered="{!ISBLANK(dep.Id)}"><i> </i></apex:outputPanel>
-                                <apex:outputPanel layout="block" rendered="{!ISBLANK(dep.Id)}"><i> </i></apex:outputPanel>-->
-
-
-
-
-                                <apex:outputPanel id="pnlAddDestinationOrg" layout="block" rendered="{!!ISBLANK(dep.Id)}">
-                                    <a id="lnkAddDestinationOrg" href="javascript:void(0);" onclick="copadoApp.checkOneNewDestination();return false;" ><span>{!$Label.ADD_DESTINATION_ORG}</span></a>
+                                <apex:outputPanel rendered="{!!ISBLANK(dep.Id)}">
+                                    <apex:outputPanel id="pnlAddDestinationOrg" layout="block" rendered="{!NOT(ccdEnabled)}">
+                                        <a id="lnkAddDestinationOrg" href="javascript:void(0);" onclick="copadoApp.checkOneNewDestination();return false;" ><span>{!$Label.ADD_DESTINATION_ORG}</span></a>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!ccdEnabled}" title="Disabled based on CCD manual activation for selected destination environment">
+                                        <u style="opacity: 0.5;cursor:not-allowed;">{!$Label.copado__add_destination_org}</u>
+                                    </apex:outputPanel>
                                 </apex:outputPanel>
-
                                 <apex:outputPanel layout="block">
                                 <script type="text/javascript">
+                                    var ccdEnabled = {!ccdEnabled};
+                                    console.log('ccdEnabled==> ',ccdEnabled);
+                                    copadoApp.ccdEnabled = ccdEnabled;
+                                    if(ccdEnabled){
+                                        copadoApp.statusCheckerCallBack();
+                                    }
                                     copadoApp.mirrorBlockHeight();
                                     copadoApp.unlock();
                                 </script>
@@ -314,7 +312,7 @@
 
                             <apex:pageBlockSection id="pbsPbStatus" columns="1">
                                 <apex:outputField id="ofStatus" value="{!dep.copado__Status__c}">
-                                    <span class="orgIcon"><apex:image styleClass="js-status-icon" value="{!HTMLENCODE(dep.copado__Flag_Status__c)}" /></span>
+                                    <span class="orgIcon"><apex:image styleClass="js-status-icon" value="{!HTMLENCODE(dep.copado__Flag_Status__c)}" style="width:20px; height:auto;"/></span>
                                 </apex:outputField>
                                 <apex:outputField id="ofDate" value="{!dep.copado__Date__c}" />
                                 <apex:outputField id="ofCompleted" value="{!dep.copado__Completed__c}" />
@@ -384,6 +382,7 @@
                                             <option value="Full Permission Sets">{!$Label.STEP_TYPE_FULL_PERMISSION_SETS}</option>
                                             <option value="Users">{!$Label.STEP_TYPE_USERS}</option>
                                             <option value="Translations">{!$Label.STEP_TYPE_TRANSLATIONS}</option>
+                                            <option value="Data Template">{!$Label.Data_Template}</option>
                                             <option value="Data">{!$Label.STEP_TYPE_DATA}</option>
                                             <option value="Bulk Data">{!$Label.STEP_TYPE_BULK_DATA}</option>
                                             <option value="Delete MetaData">{!$Label.STEP_TYPE_DELETE_METADATA}</option>
@@ -453,6 +452,7 @@
         ga('send', 'event', 'Deployment', 'view','loading');
         copadoApp.start(JSON.parse("{!JSENCODE(DepJson)}"),JSON.parse("{!JSENCODE(stepsJson)}"));
         ga('send', 'event', 'Deployment', 'view','loaded');
+
     </script>
 
     <apex:outputPanel id="msg">

@@ -49,6 +49,18 @@
         <name>copado__Work_Manager_Relations</name>
     </fieldSets>
     <fields>
+        <label><!-- Enable Logs --></label>
+        <name>Enable_Logs__c</name>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- JIRA key --></label>
+        <name>JIRA_key__c</name>
+    </fields>
+    <fields>
         <label><!-- Acceptance Criteria Status --></label>
         <name>copado__Acceptance_Criteria_Status__c</name>
         <picklistValues>
@@ -241,6 +253,10 @@
     <fields>
         <label><!-- Legal --></label>
         <name>copado__Legal__c</name>
+    </fields>
+    <fields>
+        <label><!-- Manual Step Required --></label>
+        <name>copado__Manual_Step_Required__c</name>
     </fields>
     <fields>
         <label><!-- Manual Tests Passed --></label>
@@ -615,7 +631,7 @@
     </fields>
     <fields>
         <help><!-- If checked, the User Story is marked as ready to be promoted. The user story will appear as &apos;Ahead&apos; and available to be selected in the Promotion and Branch Management pages. --></help>
-        <label><!-- Promote Change --></label>
+        <label><!-- Ready to Promote --></label>
         <name>copado__Promote_Change__c</name>
     </fields>
     <fields>
@@ -862,6 +878,10 @@
     <webLinks>
         <label><!-- Pull_Request --></label>
         <name>copado__Pull_Request</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Ready_for_Promotion --></label>
+        <name>copado__Ready_for_Promotion</name>
     </webLinks>
     <webLinks>
         <label><!-- Run_Compliance_Scan --></label>
