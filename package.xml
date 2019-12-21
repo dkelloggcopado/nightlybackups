@@ -1,52 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>AccountContactRole</members>
-        <members>AccountRating</members>
-        <members>AccountType</members>
-        <members>AssetStatus</members>
-        <members>CampaignMemberStatus</members>
-        <members>CampaignStatus</members>
-        <members>CampaignType</members>
-        <members>CaseOrigin</members>
-        <members>CasePriority</members>
-        <members>CaseReason</members>
-        <members>CaseStatus</members>
-        <members>CaseType</members>
-        <members>ContactRole</members>
-        <members>ContactRole</members>
-        <members>ContractContactRole</members>
-        <members>ContractStatus</members>
-        <members>EventSubject</members>
-        <members>IdeaMultiCategory</members>
-        <members>IdeaStatus</members>
-        <members>Industry</members>
-        <members>Industry</members>
-        <members>LeadSource</members>
-        <members>LeadSource</members>
-        <members>LeadStatus</members>
-        <members>OpportunityCompetitor</members>
-        <members>OpportunityStage</members>
-        <members>OpportunityType</members>
-        <members>OrderStatus</members>
-        <members>OrderType</members>
-        <members>PartnerRole</members>
-        <members>Product2Family</members>
-        <members>QuantityUnitOfMeasure</members>
-        <members>QuickTextCategory</members>
-        <members>QuickTextChannel</members>
-        <members>Salutation</members>
-        <members>Salutation</members>
-        <members>Salutation</members>
-        <members>Salutation</members>
-        <members>SocialPostClassification</members>
-        <members>SocialPostEngagementLevel</members>
-        <members>SocialPostReviewedStatus</members>
-        <members>SolutionStatus</members>
-        <members>TaskPriority</members>
-        <members>TaskStatus</members>
-        <members>TaskSubject</members>
-        <name>StandardValueSet</name>
+        <members>Account.Standard_Account_Duplicate_Rule</members>
+        <members>Contact.Standard_Contact_Duplicate_Rule</members>
+        <members>Contact.Standard_Rule_for_Contacts_with_Duplicate_Leads</members>
+        <members>Lead.Standard_Lead_Duplicate_Rule</members>
+        <members>Lead.Standard_Rule_for_Leads_with_Duplicate_Contacts</members>
+        <name>DuplicateRule</name>
     </types>
     <version>46.0</version>
 </Package>
