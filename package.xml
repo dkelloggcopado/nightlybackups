@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>Account.Standard_Account_Duplicate_Rule</members>
-        <members>Contact.Standard_Contact_Duplicate_Rule</members>
-        <members>Contact.Standard_Rule_for_Contacts_with_Duplicate_Leads</members>
-        <members>Lead.Standard_Lead_Duplicate_Rule</members>
-        <members>Lead.Standard_Rule_for_Leads_with_Duplicate_Contacts</members>
-        <name>DuplicateRule</name>
+        <members>Account</members>
+        <members>Activities</members>
+        <members>Address</members>
+        <members>Analytics</members>
+        <members>BusinessHours</members>
+        <members>Case</members>
+        <members>Company</members>
+        <members>Contract</members>
+        <members>FileUploadAndDownloadSecurity</members>
+        <members>Forecasting</members>
+        <members>GoogleApps</members>
+        <members>Ideas</members>
+        <members>Macro</members>
+        <members>MapsAndLocation</members>
+        <members>Mobile</members>
+        <members>Name</members>
+        <members>Notifications</members>
+        <members>OmniChannel</members>
+        <members>Opportunity</members>
+        <members>Order</members>
+        <members>Org</members>
+        <members>OrgPreference</members>
+        <members>PathAssistant</members>
+        <members>Product</members>
+        <members>Quote</members>
+        <members>Search</members>
+        <members>Security</members>
+        <members>SocialCustomerService</members>
+        <members>Territory2</members>
+        <members>UserInterface</members>
+        <members>UserManagement</members>
+        <name>Settings</name>
     </types>
     <version>46.0</version>
 </Package>
