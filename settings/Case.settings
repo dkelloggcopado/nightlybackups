@@ -2,10 +2,10 @@
 <CaseSettings xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseFeedItemSettings>
         <characterLimit>400</characterLimit>
-        <collapseThread>false</collapseThread>
         <displayFormat>Default</displayFormat>
         <feedItemType>EmailMessageEvent</feedItemType>
     </caseFeedItemSettings>
+    <caseFeedReadUnreadLtng>false</caseFeedReadUnreadLtng>
     <caseMergeInLightning>false</caseMergeInLightning>
     <closeCaseThroughStatusChange>false</closeCaseThroughStatusChange>
     <defaultCaseFeedLayoutOn>false</defaultCaseFeedLayoutOn>
@@ -13,6 +13,7 @@
         <enableEmailToCase>false</enableEmailToCase>
     </emailToCase>
     <enableCaseFeed>false</enableCaseFeed>
+    <enableCollapseEmailThread>false</enableCollapseEmailThread>
     <enableEarlyEscalationRuleTriggers>false</enableEarlyEscalationRuleTriggers>
     <enableSuggestedSolutions>true</enableSuggestedSolutions>
     <escalateCaseBefore>false</escalateCaseBefore>
