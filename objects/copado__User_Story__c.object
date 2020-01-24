@@ -7580,6 +7580,13 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
+        <fullName>Approved_pull_request_for_Pr_and_Depl</fullName>
+        <active>true</active>
+        <description>Check to make sure there is an approved pull request review before allowing promote and deploy checkbox</description>
+        <errorConditionFormula>AND(copado__Pull_Requests_Approved__c = False,OR(copado__Environment__c = &apos;Developer 1&apos;,copado__Environment__c = &apos;Developer 2&apos;))</errorConditionFormula>
+        <errorMessage>There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>copado__Cancellation_reason_required</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
