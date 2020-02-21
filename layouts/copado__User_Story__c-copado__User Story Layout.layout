@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>copado__Commit_Files</customButtons>
+    <customButtons>copado__Add_Commits</customButtons>
     <customButtons>copado__Perform_Validation</customButtons>
     <customButtons>copado__Run_Static_Code_Analysis</customButtons>
-    <customButtons>copado__Add_Metadata</customButtons>
     <customButtons>copado__Apex_Test</customButtons>
+    <customButtons>copado__Pull_Request</customButtons>
     <customButtons>copado__Manage_Selenium_Tests</customButtons>
     <customButtons>copado__Run_Compliance_Scan</customButtons>
-    <customButtons>copado__Pull_Request</customButtons>
     <customButtons>copado__Create_Scratch_Org</customButtons>
     <customButtons>copado__Copado_DX</customButtons>
     <customButtons>copado__Select_Base_Branch</customButtons>
+    <customButtons>copado__Add_Metadata</customButtons>
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>false</detailHeading>
