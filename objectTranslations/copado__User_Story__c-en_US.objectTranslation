@@ -816,6 +816,10 @@
         <name>Approved_pull_request_for_Pr_and_Depl</name>
     </validationRules>
     <validationRules>
+        <errorMessage><!-- Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate. --></errorMessage>
+        <name>Successful_Validation_Required</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- A cancellation reason must be given. --></errorMessage>
         <name>copado__Cancellation_reason_required</name>
     </validationRules>

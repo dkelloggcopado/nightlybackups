@@ -7590,6 +7590,31 @@ AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy
         <errorMessage>There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Successful_Validation_Required</fullName>
+        <active>false</active>
+        <description>Before a user story can be promoted there must be a successful validation deployment.</description>
+        <errorConditionFormula>AND(
+OR(
+AND(
+PRIORVALUE(copado__Promote_Change__c) = false,
+copado__Promote_Change__c = true
+),
+AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true
+)
+),
+OR(
+ISNULL(copado__Last_Validation_Deployment__c),
+ISNULL(copado__Last_Validation_Deployment_Status__c),
+ISBLANK(copado__Last_Validation_Deployment__c),
+ISBLANK(copado__Last_Validation_Deployment_Status__c),
+NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed Successfully&quot;))
+)
+)</errorConditionFormula>
+        <errorMessage>Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>copado__Cancellation_reason_required</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
