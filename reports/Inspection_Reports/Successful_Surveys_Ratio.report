@@ -24,6 +24,7 @@
     <filter>
         <criteriaItems>
             <column>Store__c.Inspections__r$Completed__c</column>
+            <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>1</value>

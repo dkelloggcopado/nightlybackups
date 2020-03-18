@@ -15,6 +15,7 @@
     <enableCaseFeed>false</enableCaseFeed>
     <enableCollapseEmailThread>false</enableCollapseEmailThread>
     <enableEarlyEscalationRuleTriggers>false</enableEarlyEscalationRuleTriggers>
+    <enableEscalateQfiToCaseInternal>false</enableEscalateQfiToCaseInternal>
     <enableSuggestedSolutions>true</enableSuggestedSolutions>
     <escalateCaseBefore>false</escalateCaseBefore>
     <notifyContactOnCaseComment>false</notifyContactOnCaseComment>
@@ -23,6 +24,7 @@
     <notifyOwnerOnCaseOwnerChange>false</notifyOwnerOnCaseOwnerChange>
     <showEmailAttachmentsInCaseAttachmentsRL>true</showEmailAttachmentsInCaseAttachmentsRL>
     <useSystemEmailAddress>true</useSystemEmailAddress>
+    <visibleInCssCheckbox>false</visibleInCssCheckbox>
     <webToCase>
         <enableWebToCase>false</enableWebToCase>
     </webToCase>
