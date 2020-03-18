@@ -6,6 +6,7 @@
     <filter>
         <criteriaItems>
             <column>Inspection__c.Completed__c</column>
+            <columnToColumn>false</columnToColumn>
             <isUnlocked>false</isUnlocked>
             <operator>equals</operator>
             <value>0</value>
