@@ -2,6 +2,7 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>Account</members>
+        <members>AccountIntelligence</members>
         <members>Actions</members>
         <members>Activities</members>
         <members>Address</members>
@@ -21,9 +22,11 @@
         <members>Content</members>
         <members>Contract</members>
         <members>Currency</members>
+        <members>CustomerDataPlatform</members>
         <members>Deployment</members>
         <members>DevHub</members>
         <members>Discovery</members>
+        <members>DocumentChecklist</members>
         <members>EAC</members>
         <members>EmailAdministration</members>
         <members>EmailIntegration</members>
@@ -58,15 +61,17 @@
         <members>Opportunity</members>
         <members>Order</members>
         <members>Org</members>
-        <members>OrgPreference</members>
         <members>Pardot</members>
         <members>PardotEinstein</members>
         <members>PartyDataModel</members>
         <members>PathAssistant</members>
         <members>Picklist</members>
         <members>PlatformEncryption</members>
+        <members>Portals</members>
+        <members>PredictionBuilder</members>
         <members>Privacy</members>
         <members>Product</members>
+        <members>QuickText</members>
         <members>Quote</members>
         <members>RecordPage</members>
         <members>RetailExecution</members>
@@ -86,8 +91,9 @@
         <members>UserInterface</members>
         <members>UserManagement</members>
         <members>Voice</members>
+        <members>WebToX</members>
         <members>WorkDotCom</members>
         <name>Settings</name>
     </types>
-    <version>47.0</version>
+    <version>48.0</version>
 </Package>
