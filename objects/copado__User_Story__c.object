@@ -7591,9 +7591,9 @@ AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy
     </validationRules>
     <validationRules>
         <fullName>Successful_Validation_Required</fullName>
-        <active>false</active>
+        <active>true</active>
         <description>Before a user story can be promoted there must be a successful validation deployment.</description>
-        <errorConditionFormula>AND(
+        <errorConditionFormula>AND( NOT(ISBLANK( copado__Metadata_Types_in_Selection__c )), 
 OR(
 AND(
 PRIORVALUE(copado__Promote_Change__c) = false,
