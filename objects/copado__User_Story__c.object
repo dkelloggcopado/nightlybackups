@@ -7615,6 +7615,12 @@ NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed Succe
         <errorMessage>Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>User_must_own_org_credential</fullName>
+        <active>true</active>
+        <errorConditionFormula>$User.Id &lt;&gt;  copado__Org_Credential__r.OwnerId</errorConditionFormula>
+        <errorMessage>You must own the org credential you are adding to the user story.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>copado__Cancellation_reason_required</fullName>
         <active>true</active>
         <errorConditionFormula>AND(

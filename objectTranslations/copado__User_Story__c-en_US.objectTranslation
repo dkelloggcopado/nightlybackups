@@ -820,6 +820,10 @@
         <name>Successful_Validation_Required</name>
     </validationRules>
     <validationRules>
+        <errorMessage><!-- You must own the org credential you are adding to the user story. --></errorMessage>
+        <name>User_must_own_org_credential</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- A cancellation reason must be given. --></errorMessage>
         <name>copado__Cancellation_reason_required</name>
     </validationRules>

@@ -258,6 +258,16 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>JR_Simplot_Test__c</fullName>
+        <externalId>false</externalId>
+        <label>JR Simplot Test</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Jigsaw</fullName>
         <trackFeedHistory>false</trackFeedHistory>
     </fields>
