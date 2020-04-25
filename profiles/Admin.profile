@@ -8946,6 +8946,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>copado__User_Story__c.Fixes_Bug_From__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>copado__User_Story__c.JIRA_key__c</field>
         <readable>true</readable>
     </fieldPermissions>
