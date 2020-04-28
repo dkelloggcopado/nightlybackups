@@ -7630,7 +7630,7 @@ NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed Succe
     </validationRules>
     <validationRules>
         <fullName>User_must_own_org_credential</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>$User.Id &lt;&gt;  copado__Org_Credential__r.OwnerId</errorConditionFormula>
         <errorMessage>You must own the org credential you are adding to the user story.</errorMessage>
     </validationRules>
