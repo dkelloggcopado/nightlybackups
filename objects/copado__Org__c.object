@@ -871,6 +871,12 @@ IMAGE(&apos;/resource/1516617568000/&apos;+IF($Setup.copado__Settings__c.copado_
         <searchResultsCustomButtons>copado__Add_to_Deployment</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Admin_or_Owner_Changes_Only</fullName>
+        <active>true</active>
+        <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp; $User.Id &lt;&gt; OwnerId</errorConditionFormula>
+        <errorMessage>You can only change org credentials you own.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
     <webLinks>
         <fullName>copado__Add_to_Deployment</fullName>

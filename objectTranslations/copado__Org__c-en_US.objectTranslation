@@ -204,6 +204,10 @@
         <label><!-- Is Developer Hub Org --></label>
         <name>copado__is_Developer_Hub_Org__c</name>
     </fields>
+    <validationRules>
+        <errorMessage><!-- You can only change org credentials you own. --></errorMessage>
+        <name>Admin_or_Owner_Changes_Only</name>
+    </validationRules>
     <webLinks>
         <label><!-- Add_to_Deployment --></label>
         <name>copado__Add_to_Deployment</name>
