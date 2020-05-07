@@ -57,13 +57,13 @@
         <name>External_Id__c</name>
     </fields>
     <fields>
-        <label><!-- Fixes Bug From --></label>
-        <name>Fixes_Bug_From__c</name>
-        <relationshipLabel><!-- User Stories --></relationshipLabel>
-    </fields>
-    <fields>
         <label><!-- JIRA key --></label>
         <name>JIRA_key__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent --></label>
+        <name>Parent__c</name>
+        <relationshipLabel><!-- User Stories --></relationshipLabel>
     </fields>
     <fields>
         <label><!-- Acceptance Criteria Status --></label>
