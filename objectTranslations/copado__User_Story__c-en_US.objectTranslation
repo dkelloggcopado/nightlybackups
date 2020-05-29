@@ -49,6 +49,14 @@
         <name>copado__Work_Manager_Relations</name>
     </fieldSets>
     <fields>
+        <label><!-- Datetime Completed --></label>
+        <name>Datetime_Completed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Datetime Deployed To Production --></label>
+        <name>Datetime_Deployed_To_Production__c</name>
+    </fields>
+    <fields>
         <label><!-- Enable Logs --></label>
         <name>Enable_Logs__c</name>
     </fields>
@@ -61,9 +69,29 @@
         <name>JIRA_key__c</name>
     </fields>
     <fields>
+        <label><!-- Lead Time (Hours) --></label>
+        <name>Lead_Time_Hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lead Time (Minutes) --></label>
+        <name>Lead_Time_Minutes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number Of Components --></label>
+        <name>Number_Of_Components__c</name>
+    </fields>
+    <fields>
         <label><!-- Parent --></label>
         <name>Parent__c</name>
         <relationshipLabel><!-- User Stories --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- SCA Score --></label>
+        <name>SCA_Score__c</name>
+    </fields>
+    <fields>
+        <label><!-- SCA Violations --></label>
+        <name>SCA_Violations__c</name>
     </fields>
     <fields>
         <label><!-- Acceptance Criteria Status --></label>
@@ -819,6 +847,14 @@
     <validationRules>
         <errorMessage><!-- There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval. --></errorMessage>
         <name>Approved_pull_request_for_Pr_and_Depl</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- A pull request must first be approved in order to promote this User Story. --></errorMessage>
+        <name>Pull_Request_Approved</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Static Code Analysis has either not been run or the SCA Score is too high. --></errorMessage>
+        <name>Static_Code_Analysis_Results</name>
     </validationRules>
     <validationRules>
         <errorMessage><!-- Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate. --></errorMessage>

@@ -4688,6 +4688,26 @@
         <label>Work Manager Relations</label>
     </fieldSets>
     <fields>
+        <fullName>Datetime_Completed__c</fullName>
+        <description>This will get filled out with the current datetime the very first time this User Story gets marked as either &quot;Promote And Deploy&quot; or &quot;Ready To Promote&quot;. If this field is already filled out, it will not be updated, so this is filled in once and only once. This is filled in via the workflow rule &quot;Fill In Datetime Completed Field&quot;.</description>
+        <externalId>false</externalId>
+        <label>Datetime Completed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Datetime_Deployed_To_Production__c</fullName>
+        <description>This will get filled in with the current datetime once this User Story has the &quot;Environment&quot; field filled in with the value &quot;Production&quot;. This will happen when the User Story is successfully deployed there. This is filled in by the process builder labeled &quot;Stop Indexing Metadata &amp; Mark &quot;Datetime Deployed&quot; Once User Story Reaches Production (Invocable)&quot;.</description>
+        <externalId>false</externalId>
+        <label>Datetime Deployed To Production</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Enable_Logs__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -4719,6 +4739,45 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Lead_Time_Hours__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Datetime_Deployed_To_Production__c  -  Datetime_Completed__c) * 24</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Time (Hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Time_Minutes__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Datetime_Deployed_To_Production__c  -  Datetime_Completed__c) * 1440</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Time (Minutes)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_Of_Components__c</fullName>
+        <description>Displays the number of components currently linked to the User Story.</description>
+        <externalId>false</externalId>
+        <label>Number Of Components</label>
+        <summaryForeignKey>copado__User_Story_Metadata__c.copado__User_Story__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Parent__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>Allows leadership to add bug causing user stories to the fixes that are being pushed through the pipeline.</description>
@@ -4731,6 +4790,32 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SCA_Score__c</fullName>
+        <description>This field is updated by a process that pastes the most recent SCA results.</description>
+        <externalId>false</externalId>
+        <label>SCA Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SCA_Violations__c</fullName>
+        <description>This field is updated by a process that pastes the most recent SCA results.</description>
+        <externalId>false</externalId>
+        <label>SCA Violations</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>copado__Acceptance_Criteria_Status__c</fullName>
@@ -7600,6 +7685,48 @@ OR( copado__Environment__r.Name = &apos;Developer 1&apos;,
   copado__Environment__r.Name = &apos;Developer 2&apos;),
 AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy__c = true))</errorConditionFormula>
         <errorMessage>There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Pull_Request_Approved</fullName>
+        <active>false</active>
+        <description>This enforces that a pull request for this User Story must first be approved before the User Story can be marked as &quot;Promote Change&quot; or &quot;Promote &amp; Deploy&quot;. The checkbox Pull Request Approved must equal true,</description>
+        <errorConditionFormula>AND( 
+OR( 
+AND( 
+PRIORVALUE(copado__Promote_Change__c) = false, 
+copado__Promote_Change__c = true 
+), 
+AND( 
+PRIORVALUE(copado__Promote_and_Deploy__c) = false, 
+copado__Promote_and_Deploy__c = true 
+) 
+), 
+ copado__Pull_Requests_Approved__c = false
+)</errorConditionFormula>
+        <errorMessage>A pull request must first be approved in order to promote this User Story.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Static_Code_Analysis_Results</fullName>
+        <active>false</active>
+        <description>This enforces any sort of conditions you may want on the Static Code Analysis results of a User Story (i.e. whether they have to be run and/or achieve certain results). What is written here is that the SCA Score cannot be blank or greater than zero.</description>
+        <errorConditionFormula>AND(
+copado__Has_Apex_Code__c = true,
+OR( 
+AND( 
+PRIORVALUE(copado__Promote_Change__c) = false, 
+copado__Promote_Change__c = true 
+), 
+AND( 
+PRIORVALUE(copado__Promote_and_Deploy__c) = false, 
+copado__Promote_and_Deploy__c = true 
+) 
+), 
+OR( 
+ISBLANK( SCA_Score__c ), 
+SCA_Score__c &gt; 0 
+) 
+)</errorConditionFormula>
+        <errorMessage>Static Code Analysis has either not been run or the SCA Score is too high.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Successful_Validation_Required</fullName>

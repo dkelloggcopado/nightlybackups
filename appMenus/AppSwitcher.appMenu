@@ -164,4 +164,8 @@
         <name>Copado_DX</name>
         <type>ConnectedApp</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>Copado_Trial</name>
+        <type>CustomApplication</type>
+    </appMenuItems>
 </AppMenu>
