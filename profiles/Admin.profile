@@ -8951,6 +8951,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>copado__User_Story__c.Change_Approved__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>copado__User_Story__c.Datetime_Completed__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8992,6 +8997,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>copado__User_Story__c.Parent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>copado__User_Story__c.Requires_Approval__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

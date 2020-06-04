@@ -4688,6 +4688,16 @@
         <label>Work Manager Relations</label>
     </fieldSets>
     <fields>
+        <fullName>Change_Approved__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Once this checkbox is checked, the change has been approved and can be deployed forward.</description>
+        <externalId>false</externalId>
+        <label>Change Approved</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Datetime_Completed__c</fullName>
         <description>This will get filled out with the current datetime the very first time this User Story gets marked as either &quot;Promote And Deploy&quot; or &quot;Ready To Promote&quot;. If this field is already filled out, it will not be updated, so this is filled in once and only once. This is filled in via the workflow rule &quot;Fill In Datetime Completed Field&quot;.</description>
         <externalId>false</externalId>
@@ -4790,6 +4800,17 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Requires_Approval__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If opportunity is selected, require an approval process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>You are attempting to deploy a change to the opportunity object.  This requires an approval process. Please submit an approval process.</inlineHelpText>
+        <label>Requires Approval</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>SCA_Score__c</fullName>
@@ -7685,6 +7706,19 @@ OR( copado__Environment__r.Name = &apos;Developer 1&apos;,
   copado__Environment__r.Name = &apos;Developer 2&apos;),
 AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy__c = true))</errorConditionFormula>
         <errorMessage>There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Opportunity_metadata_validation</fullName>
+        <active>true</active>
+        <description>AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy__c = true))</description>
+        <errorConditionFormula>AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true,
+PRIORVALUE( copado__Promote_Change__c) = false, 
+copado__Promote_Change__c = true, 
+Change_Approved__c = false
+)</errorConditionFormula>
+        <errorMessage>Your change includes metadata that alters the opportunity object.  Changes must be approved before pushing forward.  Please submit approval request by clicking &quot;Submit for Approval&quot;.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Pull_Request_Approved</fullName>
