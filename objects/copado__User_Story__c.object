@@ -6290,6 +6290,15 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
     </fields>
     <label>User Story</label>
     <listViews>
+        <fullName>User_Story_Reviewers_User_Story</fullName>
+        <filterScope>Queue</filterScope>
+        <label>User Story Reviewers</label>
+        <queue>User_Story_Reviewers</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__User_Story_Title__c</columns>
