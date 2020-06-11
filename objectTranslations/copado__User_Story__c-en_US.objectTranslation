@@ -874,6 +874,10 @@
         <name>Successful_Validation_Required</name>
     </validationRules>
     <validationRules>
+        <errorMessage><!-- This change requires an approval.  Please wait until approval process is complete. --></errorMessage>
+        <name>Uber_Approval_Process</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- You must own the org credential you are adding to the user story. --></errorMessage>
         <name>User_must_own_org_credential</name>
     </validationRules>

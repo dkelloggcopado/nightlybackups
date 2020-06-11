@@ -7797,6 +7797,24 @@ NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed Succe
         <errorMessage>Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Uber_Approval_Process</fullName>
+        <active>true</active>
+        <description>Checks to make sure there is an approval before deployment</description>
+        <errorConditionFormula>AND(
+Change_Approved__c = false,
+OR(
+AND(
+PRIORVALUE(copado__Promote_Change__c) = false,
+copado__Promote_Change__c = true
+),
+AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true
+)
+))</errorConditionFormula>
+        <errorMessage>This change requires an approval.  Please wait until approval process is complete.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>User_must_own_org_credential</fullName>
         <active>false</active>
         <errorConditionFormula>$User.Id &lt;&gt;  copado__Org_Credential__r.OwnerId</errorConditionFormula>
