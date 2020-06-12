@@ -39,6 +39,16 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Ready_to_promote</fullName>
+        <description>Check &quot;Ready to Promote&quot;</description>
+        <field>copado__Promote_Change__c</field>
+        <literalValue>1</literalValue>
+        <name>Ready to promote</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Update_Datetime_Completed_Field_with_NOW</fullName>
         <description>This updates the field &quot;Datetime Completed&quot; with the current datetime, or NOW.</description>
         <field>Datetime_Completed__c</field>
