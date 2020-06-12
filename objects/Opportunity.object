@@ -155,6 +155,17 @@
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
+        <fullName>Approval_Test_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Approval Test 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Approval_Test__c</fullName>
         <description>Test for uber approval process</description>
         <externalId>false</externalId>
