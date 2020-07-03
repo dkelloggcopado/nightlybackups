@@ -138,10 +138,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>SCA_Score__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>copado__Pull_Requests_Approved__c</field>
             </layoutItems>
         </layoutColumns>
