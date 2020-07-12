@@ -12918,10 +12918,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>SkipIdentityConfirmation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>SolutionImport</name>
     </userPermissions>
     <userPermissions>
