@@ -7800,7 +7800,8 @@ NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed Succe
         <fullName>Uber_Approval_Process</fullName>
         <active>true</active>
         <description>Checks to make sure there is an approval before deployment</description>
-        <errorConditionFormula>AND(
+        <errorConditionFormula>AND( NOT(ISBLANK( copado__Metadata_Types_in_Selection__c )),
+Requires_Approval__c = true,
 Change_Approved__c = false,
 OR(
 AND(
@@ -7811,7 +7812,8 @@ AND(
 PRIORVALUE(copado__Promote_and_Deploy__c) = false,
 copado__Promote_and_Deploy__c = true
 )
-))</errorConditionFormula>
+)
+)</errorConditionFormula>
         <errorMessage>This change requires an approval.  Please wait until approval process is complete.</errorMessage>
     </validationRules>
     <validationRules>
