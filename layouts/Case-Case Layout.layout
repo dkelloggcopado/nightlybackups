@@ -28,6 +28,10 @@
                 <behavior>Readonly</behavior>
                 <field>Case_Age__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Kaiser_Rollback__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
