@@ -223,7 +223,8 @@
                 	unselectAll: '{!$Label.SELECT_ALL}',
                 	prev_meta_missing: '{!SUBSTITUTE($Label.ERROR_MSG_PREV_META_MISSING,"'","\'")} ',
                 	MATCH_OWNER_WARNING : '{!JSENCODE($Label.Match_Owner_Warning)}',
-                    MATCH_RECORD_TYPE_WARNING : '{!JSENCODE($Label.Match_Record_Type_Warning)}'
+                    MATCH_RECORD_TYPE_WARNING : '{!JSENCODE($Label.Match_Record_Type_Warning)}',
+                    SOQL_HASNOT_ID_ERROR: '{!JSENCODE($Label.SOQL_HASNOT_ID_ERROR)}'
                 };
 
                 
@@ -486,7 +487,7 @@
                                         if(data) {
                                             data = JSON.parse(data);
 											$copado('[id$=auxDataTemplateId_lkid]').val(data.dataTemplateId);
-											$copado('[id$=auxDataTemplateId]').val(data.dataTemplateName);
+                                            $copado('[id$=auxDataTemplateId]').val(data.dataTemplateName);
                                         }
                                     }
                                 </script>

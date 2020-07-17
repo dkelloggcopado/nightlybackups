@@ -41,7 +41,7 @@ utilsV2 = {
                     me.onFailureCB(obj);
                 }
                 else{
-                    var errorMsgs = (obj.messages && obj.messages.length>0)?obj.messages.join('\n'):'Unexpected Error. Please contact support@copa.do';
+                    var errorMsgs = (obj.messages && obj.messages.length>0)?obj.messages.join('\n'):'Unexpected Error. Please contact support@copado.com';
                     alert(errorMsgs);
                     console.error('Error Messages: ', errorMsgs); 
                 }

@@ -51,7 +51,7 @@
             <apex:param name="errorLevel" assignTo="{!errorLevel}" value="" />
             <apex:param name="messageName" assignTo="{!messageName}" value="" />
         </apex:actionFunction> 
-        <apex:pageBlock helpUrl="https://docs.copa.do/org-differences/org-differences-overview" helpTitle="{!$Label.copado__help_for_this_page}" id="pg_all" title="{!$Label.copado__details}">
+        <apex:pageBlock helpUrl="https://docs.copado.com/org-differences/org-differences-overview" helpTitle="{!$Label.copado__help_for_this_page}" id="pg_all" title="{!$Label.copado__details}">
             <apex:pageMessages />
             <apex:pageBlockSection title="">
                 <apex:outputField value="{!copado__OrgDiff__c.Name}"/>

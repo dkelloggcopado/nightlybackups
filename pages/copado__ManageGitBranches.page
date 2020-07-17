@@ -240,13 +240,13 @@
                             setTimeout(function(){initBraches.branchGrid.jqxGrid('updatebounddata','cells');},222);
                         },
 
-                        $unselectAll = $copado('<button>{!$Label.copado__unselect_all}</button>').
+                        $unselectAll = $copado('<button>{!$Label.UNSELECT_ALL}</button>').
                             on('click',function(e){
                                 e.preventDefault();
                                 selectAll(false);
                         }),
 
-                        $selectAll = $copado('<button>{!$Label.copado__select_all}</button>').
+                        $selectAll = $copado('<button>{!$Label.SELECT_ALL}</button>').
                             on('click',function(e){
                                 e.preventDefault();
                                 selectAll(true);
@@ -263,11 +263,7 @@
         <script>
                     var cacheDate;
                     var initBraches = function (conf) {
-                        var branchsInUse = '{!branchNamesInUse}';
-                        branchsInUse = branchsInUse.replace('[','').replace(']','');
-                        while(branchsInUse.indexOf(', ') > -1){
-                            branchsInUse = branchsInUse.replace(', ',',');
-                        }
+                        var branchsInUse = '{!JSENCODE(branchNamesInUseJoined)}';
                         var branchSet = branchsInUse.split(',');
                         console.log('branchSet===> ',branchSet);
 
@@ -283,68 +279,79 @@
                             unlockScreen();
                         }
 
-                        // prepare the data
-                        initBraches.source = {
-                            localdata: listOfBranches,
-                            datafields: [
-                                {name: 's', type: 'bool'},
-                                {name: 'name', type: 'string'},
-                                {name: 'type', type: 'string'},
-                                {name: 'lastUpdate', type: 'date'}
-                            ],
-                            datatype: 'array'
-                        };
+                        if(listOfBranches) {
+                            // prepare the data
+                            initBraches.source = {
+                                localdata: listOfBranches,
+                                datafields: [
+                                    {name: 's', type: 'bool'},
+                                    {name: 'name', type: 'string'},
+                                    {name: 'type', type: 'string'},
+                                    {name: 'lastUpdate', type: 'date'}
+                                ],
+                                datatype: 'array'
+                            };
 
-                        var dataAdapter = new $copado.jqx.dataAdapter(initBraches.source);
-
-                        initBraches.branchGrid = $copado("#branchSelectorGrid").jqxGrid({
-                            width: '100%',
-                            height: '100%',
-                            source: dataAdapter,
-                            pageable: true,
-                            autoheight: false,
-                            filterable: true,
-                            sortable: true,
-                            editable: true,
-                            selectionmode: 'none',
-                            pagesizeoptions: ['10', '50', '100', '500', '1000', '5000'],
-                            pagesize: 200,
-                            theme: 'base',
-                            showfilterrow: true,
-                            columns: [
-                                {
-                                    text: copadoLabels.selected,
-                                    columntype: 'checkbox',
-                                    filtertype: 'bool',
-                                    datafield: 's',
-                                    width: '10%'
-                                },
-                                {
-                                    text: copadoLabels.name,
-                                    columntype: 'textbox',
-                                    filtertype: 'input',
-                                    editable: false,
-                                    datafield: 'name',
-                                    width: '40%'
-                                },
-                                {
-                                    text: copadoLabels.type,
-                                    datafield: 'type',
-                                    filtertype: 'checkedlist',
-                                    editable: false,
-                                    columntype: 'textbox',
-                                    width: '20%'
-                                },
-                                {
-                                    text: copadoLabels.LastModifiedDate,
-                                    filtertype: 'range',
-                                    editable: false,
-                                    datafield: 'lastUpdate',
-                                    width: '30%',
-                                    cellsformat: 'yyyy/MM/dd'
+                            var dataAdapter = new $copado.jqx.dataAdapter(initBraches.source);
+                            var types = [];
+                            for (i =0; i<listOfBranches.length; i++){
+                                if(!types.includes(listOfBranches[i].type) && listOfBranches[i].type){
+                                    types.push(listOfBranches[i].type);
                                 }
-                            ]
-                        });
+                            }
+                            initBraches.branchGrid = $copado("#branchSelectorGrid").jqxGrid({
+                                width: '100%',
+                                height: '100%',
+                                source: dataAdapter,
+                                pageable: true,
+                                autoheight: false,
+                                filterable: true,
+                                sortable: true,
+                                editable: true,
+                                selectionmode: 'none',
+                                pagesizeoptions: ['10', '50', '100', '500', '1000', '5000'],
+                                pagesize: 200,
+                                theme: 'base',
+                                showfilterrow: true,
+                                columns: [
+                                    {
+                                        text: copadoLabels.selected,
+                                        columntype: 'checkbox',
+                                        filtertype: 'bool',
+                                        datafield: 's',
+                                        width: '10%'
+                                    },
+                                    {
+                                        text: copadoLabels.name,
+                                        columntype: 'textbox',
+                                        filtertype: 'input',
+                                        editable: false,
+                                        datafield: 'name',
+                                        width: '40%'
+                                    },
+                                    {
+                                        text: copadoLabels.type,
+                                        datafield: 'type',
+                                        filtertype: 'checkedlist',
+                                        filterItems: types,
+                                        editable: false,
+                                        columntype: 'textbox',
+                                        width: '20%'
+                                    },
+                                    {
+                                        text: copadoLabels.LastModifiedDate,
+                                        filtertype: 'range',
+                                        editable: false,
+                                        datafield: 'lastUpdate',
+                                        width: '30%',
+                                        cellsformat: 'yyyy-MM-dd'
+                                    }
+                                ]
+                        	});
+                        } else {
+                            $copado("#branchSelectorGrid").hide();
+                        }
+
                         if(conf.repoId && conf.repoId != '000000000000000') {
                             createCacheDeleteButton(conf.repoId);
                         }
@@ -354,10 +361,12 @@
                         var jsonD = {
                             gitBranches : []
                         };
-                        var a = $copado("#branchSelectorGrid").jqxGrid('getrows');
-                        for (i =0; i<a.length; i++){
-                            if(a[i].s){
-                                jsonD.gitBranches.push(a[i].name);
+                        var gridRows = $copado("#branchSelectorGrid").jqxGrid('getrows');
+                        if(gridRows) {
+                        	for (i =0; i<gridRows.length; i++){
+                                if(gridRows[i].s){
+                                    jsonD.gitBranches.push(gridRows[i].name);
+                                }
                             }
                         }
                         return jsonD;

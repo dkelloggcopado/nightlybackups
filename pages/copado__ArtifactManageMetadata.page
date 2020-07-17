@@ -65,13 +65,12 @@
                 var msgcJob = '{!JSENCODE(slockerMessage)}';
             </script>
         </apex:outputPanel>
-        <c:CopadoHelp sectionText="{!$Label.copado__artifact_help}" sectionTitle="{!$Label.copado__help}" sectionLink="https://docs.copa.do/" sectionLinkTitle="{!$Label.copado__more_information_here}" sectionOpen="false" />
+        <c:CopadoHelp sectionText="{!$Label.copado__artifact_help}" sectionTitle="{!$Label.copado__help}" sectionLink="https://docs.copado.com/" sectionLinkTitle="{!$Label.copado__more_information_here}" sectionOpen="false" />
         <apex:pageBlock id="pb" rendered="{!AND(showOptions,!showError)}" title="{!copado__Artifact__c.Name}">
             <apex:pageBlockButtons id="pbb_Save" location="top">
-                <apex:commandButton id="btnFindDependency" value="Find Dependencies" onClick="lockScreen();findDependencies(JSON.stringify(metadataGrid2.dependencyRetrieveArray));" reRender="xxx" />&nbsp;
+                <!--<apex:commandButton id="btnFindDependency" value="Find Dependencies" onClick="lockScreen();findDependencies(JSON.stringify(metadataGrid2.dependencyRetrieveArray));" reRender="xxx" />&nbsp;-->
                 <apex:commandButton id="btnSave" value="{!$Label.site.save}" onclick="lockScreen();copadoApp.save(callJob);" reRender="cJFlag, msg" />&nbsp;
                 <apex:commandButton id="btnClose" value="Back" action="{!cancel}" />
-                &nbsp;
                 <apex:outputPanel id="removeCacheContainer">&nbsp;
                     <apex:commandLink style="display:none;" value="{!$Label.copado__cache_refreshed_now}" onclick="return copadoApp.refreshCache();" rerender="opDummy" id="removeCache" />
                 </apex:outputPanel>
@@ -83,7 +82,7 @@
                         <ul style="margin-left: 20px;">
                             <li>All Metadata</li>
                             <li>Selected Metadata</li>
-                            <li>Retrieve Dependencies</li>
+                            <!--<li>Retrieve Dependencies</li>-->
                         </ul>
                         <div>
                             <div class="mg2_scaleFilterFrame" style="padding: 5px; display: none;">
@@ -93,7 +92,7 @@
                             </div>
                         </div>
                         <div><!-- empty div, needed as content for the two tabs --></div>
-                        <div><!-- empty div, needed as content for the three tabs --></div>
+                        <!--<div> empty div, needed as content for the three tabs </div>-->
                     </div>
                     <div class="mg2_jqxgrid">
                         <center><img src="/img/loading.gif" /><i><span id="retry-label">{!$Label.copado__loading}</span></i>
@@ -185,11 +184,11 @@
         <apex:includeScript value="{!URLFOR($Resource.metadataGrid2) }" />
         <apex:includeScript value="{!URLFOR($Resource.artifactmanagemetadata) }" />
 
-        <apex:actionFunction name="findDependencies" action="{!metadataDependency}" onComplete="rerenderGrid(); " reRender="dependencyBlock,theMessages">
+        <!--<apex:actionFunction name="findDependencies" action="{!metadataDependency}" onComplete="rerenderGrid(); " reRender="dependencyBlock,theMessages">
             <apex:param name="selectedMetadata" value="" />
-        </apex:actionFunction>
+        </apex:actionFunction>-->
 
-        <apex:outputPanel layout="block" id="dependencyBlock">
+        <!--<apex:outputPanel layout="block" id="dependencyBlock">
             <script>
                 var jsonFile = [];
                 function rerenderGrid(){
@@ -212,10 +211,16 @@
                         var currentTab = metadataGrid2.eltTabs.jqxTabs('selectedItem');
                         var idx_allItems = [];
                         var cleanDependencies = [];
+                        var types = [];
                         for(i=0 ; i < metadataGrid2.allMetaData.length ; i++ ) {
                             e = metadataGrid2.allMetaData[i];
                             idx_allItems[e.t+' '+e.n] = e;
+                            if(!types.includes(e.t)){
+                                types.push(e.t);
+                            }
                         }
+                        console.log('types===> ',types);
+                        metadataGrid2.eltGrid.jqxGrid('setcolumnproperty', 't', 'filteritems',types.sort());
 
                         for(i=0 ; i < dependencies.length ; i++) {
                             e = metadataGrid2.allMetaData.length[i];
@@ -238,7 +243,7 @@
                     unlockScreen();
                 }
             </script>
-        </apex:outputPanel>
+        </apex:outputPanel>-->
     </apex:form>
 
     <script>

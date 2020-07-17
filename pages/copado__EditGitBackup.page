@@ -80,7 +80,7 @@
                     </apex:repeat>
                 </apex:outputPanel>
                 <apex:form id="theForm" rendered="{!AND(showOptions,!showError)}" styleClass="copado-lightning-container" style="padding-top:12px;" html-novalidate="true">
-                    <apex:pageBlock id="pb_viewGitBackup"  mode="edit" helpUrl="https://docs.copa.do/git-snapshot/git-snapshot-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="{!$Label.copado__details}">
+                    <apex:pageBlock id="pb_viewGitBackup"  mode="edit" helpUrl="https://docs.copado.com/git-snapshot/git-snapshot-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="{!$Label.copado__details}">
                         <apex:pageblockButtons >
                             <apex:commandButton action="{!save}" value="{!$Label.site.save}"/>
                             <apex:commandButton action="{!cancel}" value="{!$Label.site.cancel}"/>

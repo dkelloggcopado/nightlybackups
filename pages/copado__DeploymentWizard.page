@@ -38,7 +38,7 @@
           </apex:outputPanel>  
           <c:JobsManager matchingKeys="{!$CurrentPage.parameters.jobsManagerMatchingKey}" rendered="{! !ISBLANK($CurrentPage.parameters.jobsManagerMatchingKey)}" />
           
-          <apex:pageBlock id="pb_createDeployment" rendered="{!step_createDeployment}" mode="edit" helpUrl="https://docs.copa.do/deployment-steps/deployment-steps" helpTitle="{!$Label.copado__help_for_this_page}">
+          <apex:pageBlock id="pb_createDeployment" rendered="{!step_createDeployment}" mode="edit" helpUrl="https://docs.copado.com/deployment-steps/deployment-steps" helpTitle="{!$Label.copado__help_for_this_page}">
               <apex:pageblockButtons >
                   <apex:commandButton value="{!$Label.copado__close}" styleClass="btn" action="{!cancel}" />
                   <apex:commandButton value="{!$Label.copado__next}" styleClass="btnImportant" action="{!save_deployment}" />
@@ -62,7 +62,7 @@
               </script>
           </apex:pageBlock>
           
-          <apex:pageBlock id="pb_addStep" rendered="{!step_addStep}" mode="edit" helpUrl="https://docs.copa.do/" helpTitle="{!$Label.copado__help_for_this_page}">
+          <apex:pageBlock id="pb_addStep" rendered="{!step_addStep}" mode="edit" helpUrl="https://docs.copado.com/" helpTitle="{!$Label.copado__help_for_this_page}">
 
              
               <script language="javascript">
@@ -326,7 +326,7 @@
               </apex:pageBlockSection>
           </apex:pageBlock>
           
-          <apex:pageBlock id="pb_selectDestinationOrgs" rendered="{!step_selectDestinationOrgs}" mode="edit" helpUrl="https://docs.copa.do/" helpTitle="{!$Label.copado__help_for_this_page}">
+          <apex:pageBlock id="pb_selectDestinationOrgs" rendered="{!step_selectDestinationOrgs}" mode="edit" helpUrl="https://docs.copado.com/" helpTitle="{!$Label.copado__help_for_this_page}">
               <apex:pageblockButtons >
                   <apex:commandButton value="{!$Label.copado__back}" action="{!goto_addStep}" rendered="{!NOT(step_DestOrg_edit)}" />
                   <apex:commandButton value="{!$Label.copado__close}" styleClass="btn" action="{!cancel}" />
@@ -365,7 +365,7 @@
           <!-- Show the component in the final setup schedule screen with the pb_setupSchedule -->
           <c:credits id="cmp_credits" rendered="{!step_setupSchedule}" />
           
-          <apex:pageBlock id="pb_setupSchedule" rendered="{!step_setupSchedule}" mode="edit" helpUrl="https://docs.copa.do/" helpTitle="{!$Label.copado__help_for_this_page}">
+          <apex:pageBlock id="pb_setupSchedule" rendered="{!step_setupSchedule}" mode="edit" helpUrl="https://docs.copado.com/" helpTitle="{!$Label.copado__help_for_this_page}">
               
               <script>
                   ga('send', 'pageview', {

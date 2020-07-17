@@ -56,9 +56,9 @@ var dtor = dtor || {};
             var _datafields = [];
 
             var columns = [
-                {text: 'Source Record ID', filtertype: 'textbox', filtercondition: 'contains', editable: false, datafield: 'sourceRecordId', cellsrenderer: cellsNavigateToRecord},
-                {text: 'Target Record ID', filtertype: 'textbox', filtercondition:  'contains', editable: false, datafield: 'destinationRecordId',cellsrenderer: cellsNavigateToRecord},
-                {text: 'Status', filtertype: 'checkedlist', editable: false, cellsalign: 'center', datafield: 'status', cellsrenderer: cellsIconStatus},
+                {text: 'Source Record ID', filtertype: 'textbox', filtercondition: 'contains', editable: false, datafield: 'sourceRecordId', cellsrenderer: cellsNavigateToRecord, width: '180px'},
+                {text: 'Target Record ID', filtertype: 'textbox', filtercondition:  'contains', editable: false, datafield: 'destinationRecordId',cellsrenderer: cellsNavigateToRecord, width: '180px'},
+                {text: 'Status', filtertype: 'checkedlist', editable: false, cellsalign: 'center', datafield: 'status', cellsrenderer: cellsIconStatus, width: '130px'},
                 {text: 'Error Message', filtertype: 'textbox', filtercondition: 'contains', editable: false, datafield: 'errorMessage'}
             ];
 

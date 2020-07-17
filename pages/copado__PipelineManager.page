@@ -1,5 +1,12 @@
 <apex:page id="PipelineManager" standardController="copado__Deployment_Flow__c" extensions="copado.PipelineManagerExtension" lightningStylesheets="true" sideBar="false" docType="html-5.0" title="Pipeline Manager" showHeader="true">
     <apex:slds />
+    <c:GAnalytics />
+    <script>
+        ga('send', 'pageview', {
+          'page': '/PipelineManager',
+          'title': 'Pipeline Manager'
+        });
+    </script>
     <c:IncludeConnectionJsComponent />
     <apex:includeScript value="{!URLFOR($Resource.utils) }" />
     <c:IncludeStaticsResourceComponent addJQuery="true" addUIjs="true" addUIcss="true" addCometdjs="true" addJCometdjs="true" addJSON2js="true" addJSzipjs="true" />
@@ -35,10 +42,10 @@
         };
         function togglePipelineMode() {
             lockScreen();
-            if ('{!pipelineMode}' === '{!MANAGER}') {
+            if ('{!JSENCODE(pipelineMode)}' === '{!JSENCODE(MANAGER)}') {
                 changePipelineMode();
             } else if ({!NOT(CheckPipelineStepsAuthenticated) }) {
-                addWarningToPage("{!$Label.Pipeline_Activate_Pipeline_Prompt}");
+                addWarningToPage("{!JSENCODE($Label.Pipeline_Activate_Pipeline_Prompt)}");
                 unlockScreen();
             } else if ({!NOT(currentPipeline.Active__c) }) {
                 openWarningModal();
@@ -49,7 +56,7 @@
         };
         var defineVariables = () => {
             ccd.config.ns = copadoApp.ns;
-            ccd.config.mode = '{!pipelineMode}';
+            ccd.config.mode = '{!JSENCODE(pipelineMode)}';
             ccd.config.currentUserId = '{!$User.Id}';
         };
         $copado(document).ready(() => {
@@ -60,8 +67,8 @@
             defineVariables();
             try {
                 if({!currentPipeline.Active__c}) {
-                    var streamingSettingsMap = JSON.parse('{!streamingSettingsJSON}');
-                    var environmentStreamSettings = streamingSettingsMap[ccdStream.pushTopicName];
+                    var streamingSettingsMap = JSON.parse('{!JSENCODE(streamingSettingsJSON)}');
+                    var environmentStreamSettings = streamingSettingsMap[ccdStream.config.pushTopicName];
                     if(environmentStreamSettings && environmentStreamSettings[copadoApp.ns + 'Enabled__c']) {
                         console.info('Pipeline streaming is enabled.');
                         ccdStream.statusMap = {
@@ -71,20 +78,20 @@
                             'Outdated' : copadoApp.icons.warning
                         };
                         if(environmentStreamSettings[copadoApp.ns + 'Timeout__c']) {
-                            ccdStream.duration = ccdStream.timeout = environmentStreamSettings[copadoApp.ns + 'Timeout__c'];
+                            ccdStream.config.duration = ccdStream.config.timeout = environmentStreamSettings[copadoApp.ns + 'Timeout__c'];
                         }
-                        ccdStream.ns = copadoApp.ns;
-                        ccdStream.sobjectAccessError = '{!$Label.SObject_Access_Error}';
+                        ccdStream.config.ns = copadoApp.ns;
+                        ccdStream.config.sobjectAccessError = '{!JSENCODE($Label.SObject_Access_Error)}';
                         ccdStream.initStreaming();
                     }
-                    var storyStreamSettings = streamingSettingsMap[ccdStoryStream.pushTopicName];
+                    var storyStreamSettings = streamingSettingsMap[ccdStoryStream.config.pushTopicName];
                     if(storyStreamSettings && storyStreamSettings[copadoApp.ns + 'Enabled__c']) {
                         console.info('User Story streaming is enabled.');
                         if(storyStreamSettings[copadoApp.ns + 'Timeout__c']) {
-                            ccdStoryStream.duration = ccdStoryStream.timeout = storyStreamSettings[copadoApp.ns + 'Timeout__c'];
+                            ccdStoryStream.config.duration = ccdStoryStream.config.timeout = storyStreamSettings[copadoApp.ns + 'Timeout__c'];
                         }
-                        ccdStoryStream.ns = copadoApp.ns;
-                        ccdStoryStream.sobjectAccessError = '{!$Label.SObject_Access_Error}';
+                        ccdStoryStream.config.ns = copadoApp.ns;
+                        ccdStoryStream.config.sobjectAccessError = '{!JSENCODE($Label.SObject_Access_Error)}';
                         updateStoryStreamVariables();
                         ccdStoryStream.initStreaming();
                     }
@@ -110,17 +117,20 @@
         function callHeaderMode() {
             return '{!JSENCODE(pipelineMode)}';
         }
+
     </script>
     <div class="slds-scope">
         <apex:form id="filterModalForm">
             <apex:actionFunction name="addFilterConditionEntry" action="{!addFilterConditionEntry}" reRender="userStoryFilterSection,addRowButtonContainer,pageMsgs" status="loadingScreen" />
-            <apex:actionFunction name="removeFilterConditionEntry" action="{!removeFilterConditionEntry}" reRender="userStoryFilterSection,addRowButtonContainer,pageMsgs" status="loadingScreen" immediate="true"/>
+            <apex:actionFunction name="removeFilterConditionEntry" action="{!removeFilterConditionEntry}" reRender="userStoryFilterSection,addRowButtonContainer,pageMsgs" status="loadingScreen" immediate="true">
+                <apex:param value="" name="selectedIndex" assignTo="{!selectedConditionIndex}" />
+            </apex:actionFunction>
             <apex:actionFunction name="deleteSelectedFilter" action="{!deleteSelectedFilter}"
                                  reRender="filterModalForm,filterManagerPanel,flowStepPanel,calculatedStepsPanel,pageMsgs" status="loadingScreen" onComplete="repositionBoxes();ccd.reRenderFunction();" />
             <apex:actionFunction name="createFromExistingFilter" action="{!createFromExistingFilter}" onComplete="saveFilter();"
                                  reRender="JSModalCodePanel,filterConditionSection,nameInput,pageMsgs" />
             <apex:actionFunction name="saveFilter" action="{!saveFilter}" reRender="flowStepPanel,pageMsgs"
-                                 onComplete="assignAndApplySelectedFilter({!filterSaveError || popupHasMessages});"/>
+                                 onComplete="assignAndApplySelectedFilter({!filterSaveError || popupHasMessages});" />
             <apex:actionFunction name="applySelectedFilter" action="{!applySelectedFilter}" onComplete="showFilterModal(false); updatePageGraphics();" status="loadingScreen"
                                  reRender="editViewHeader,environmentMultiselectPanel,userStoryFilterSection,footerButtonSection,confirmDeleteHeader,flowStepPanel,calculatedStepsPanel,copadoErrorPanel,pageMsgs" />
             <div class="slds-grid" id="filterModalDiv" style="display: none;">
@@ -264,7 +274,7 @@
                                                             </div>
                                                             <div class="slds-col slds-size_1-of-12 {!IF(condition.fieldType != 'MULTIPICKLIST', 'slds-align-middle', '')}">
                                                                 <apex:outputPanel layout="block" id="deleteButtonPanel" styleClass="deleteIcon">
-                                                                    <img src="{!URLFOR($Resource.SLDS, '/assets/icons/utility/delete_60.png')}" onclick="deleteConditionEntry({!index});" />
+                                                                    <img src="{!URLFOR($Resource.SLDS, '/assets/icons/utility/delete_60.png')}" onclick="removeFilterConditionEntry({!index});" />
                                                                 </apex:outputPanel>
                                                             </div>
                                                         </div>
@@ -369,10 +379,6 @@
                             filterModalDiv.style.display = show ? 'block' : 'none';
                         }
                     }
-                    function deleteConditionEntry(index) {
-                        setSelectedIndex(index);
-                        removeFilterConditionEntry();
-                    }
                     function setSharingMode(sharingMode) {
                         var shareWithInput = document.querySelector('.shareWithInput');
                         if(shareWithInput) {
@@ -387,6 +393,7 @@
                     function preventNonNumericInput(thisInput) {
                         thisInput.value = thisInput.value.replace('[^0-9]','');
                     }
+
                 </script>
             </apex:outputPanel>
         </apex:form>
@@ -399,7 +406,7 @@
             <apex:actionFunction action="{!recalculate}" name="refreshPipeline" reRender="pipelineWrapper" onComplete="ccd.reRenderFunction();" />
             <apex:actionFunction name="reRenderPipelineWrapper" reRender="filterModalForm, pipelineWrapper" onComplete="ccd.reRenderFunction();" />
             <apex:actionFunction name="closeToastMessage" action="{!closeToastMessage}" reRender="notify" />
-            <apex:actionFunction action="{!populateFlowGridMap}" name="calculateFlowSteps" onComplete="repositionBoxes();ccd.isManagerRunning('{!pipelineMode}');updateStoryStreamVariables();" reRender="calculatedStepsPanel,notify" />
+            <apex:actionFunction action="{!populateFlowGridMap}" name="calculateFlowSteps" onComplete="repositionBoxes();ccd.isManagerRunning('{!JSINHTMLENCODE(pipelineMode)}');updateStoryStreamVariables();" reRender="calculatedStepsPanel,notify" />
             <apex:actionFunction name="prepareUserStoriesForPromotion" action="{!getPromotableBackPromotableUserStoriesList}" reRender="operationModal,notify" onComplete="showModal();switchToUserStory();">
                 <apex:param name="fromId" value="" />
                 <apex:param name="toId" value="" />
@@ -427,7 +434,7 @@
             <apex:actionFunction name="addWarningToPage" action="{!addMessageToPage}" reRender="copadoErrorPanel">
                 <apex:param value="" name="warningMessage" />
             </apex:actionFunction>
-            <apex:actionFunction name="createNewConnectionBehaviorAndBind" action="{!createConnectionBehavior}" reRender="copadoErrorPanel, pipelineWrapper, flowStepsPanel">
+            <apex:actionFunction name="createNewConnectionBehaviorAndBind" action="{!createConnectionBehavior}" reRender="copadoErrorPanel">
                 <apex:param value="" name="pipelineStepId" />
                 <apex:param value="" name="environmentId" />
                 <apex:param value="" name="sourceName" />
@@ -594,10 +601,11 @@
                                         var returnErrorMessage = $copado('[Id$=theErrorMessage]');
                                         if(!returnErrorMessage || returnErrorMessage.text() === "") {
                                             closeWarningModal();
-                                        } 
+                                        }
                                         unlockScreen();
                                         return false;
                                     }
+
                                 </script>
                             </apex:outputPanel>
                             <div class="slds-page-header__row">
@@ -640,7 +648,7 @@
                                                             <ul class="slds-dropdown__list" role="menu">
                                                                 <li class="slds-dropdown__item" role="presentation">
                                                                     <a href="javascript:void(0);" role="menuitem" tabindex="0">
-                                                                        <apex:commandLink onClick="lockScreen();showVarModal();" value="{!$Label.copado__variables}" reRender="headerPanel,filterWrapper" styleClass="slds-button" style="margin-top: -15px;"/> <!-- margin top is for a on top -->
+                                                                        <apex:commandLink onClick="lockScreen();showVarModal();" value="{!$Label.copado__variables}" reRender="headerPanel,filterWrapper" styleClass="slds-button" style="margin-top: -15px;" /> <!-- margin top is for a on top -->
                                                                     </a>
                                                                 </li>
                                                                 <li class="slds-dropdown__item" role="presentation">
@@ -666,9 +674,11 @@
                                     <div class="filter-main-object">
                                         <div class="slds-grid slds-grid_align-end slds-m-around_x-small filter-wrapper">
                                             <div class="slds-col slds-p-right_small slds-text-body_regular slds-align-middle">
+                                                <apex:outputPanel layout="none" rendered="{!pipelineMode == MANAGER}">
                                                 <apex:commandLink action="{!recalculate}" reRender="pipelineWrapper" onComplete="ccd.reRenderFunction();" status="loadingScreen">
-                                                    <img class="connection" src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-reload.png')}" rendered="{!pipelineMode == MANAGER}" /> {!$Label.Refresh_Pipeline}
+                                                        <img class="connection" src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-reload.png')}" /> {!$Label.Refresh_Pipeline}
                                                 </apex:commandLink>
+                                                </apex:outputPanel>
                                             </div>
                                             <div class="slds-col slds-p-right_small slds-text-body_regular slds-align-middle">
                                                 <b>{!$Label.copado__view}:</b>
@@ -722,7 +732,7 @@
                                         </div>
                                     </div>
                                 </apex:outputPanel>
-                                <div id="minimap"></div>
+                                <div id="minimap"><div id="minimapHeader" class="minimap-header" title="{!$Label.Move_Minimap}">&#x2725;</div></div>
                                 <div class="pipeline">
                                     <apex:repeat value="{!allEnvironmentsByStageGroupMap}" var="envByStage">
                                         <div class="column">
@@ -739,7 +749,7 @@
                                                                                     <button type="button" class="storyCountAheadBtn" onclick="lockScreen();prepareUserStoriesForPromotion('{!envWrapper.currentEnvironment.Id}','{!envWrapper.currentStep.Destination_Environment__c}','merge')">{!envWrapper.userStoriesAhead}</button>
                                                                                 </div>
                                                                                 <div class="image-wrapper">
-                                                                                    <img src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-right-arrow.png')}" title="{!$Label.Pipeline_Promote}"/>
+                                                                                    <img src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-right-arrow.png')}" title="{!$Label.Pipeline_Promote}" />
                                                                                 </div>
                                                                             </div>
                                                                             <div class="icon storyCountBehind {!IF(envWrapper.userStoriesBehind == 0, 'disabled', '')}">
@@ -747,7 +757,7 @@
                                                                                     <button type="button" class="storyCountBehindBtn" onclick="lockScreen();prepareUserStoriesForPromotion('{!envWrapper.currentStep.Destination_Environment__c}','{!envWrapper.currentEnvironment.Id}','pull')">{!envWrapper.userStoriesBehind}</button>
                                                                                 </div>
                                                                                 <div class="image-wrapper">
-                                                                                    <img src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-left-arrow.png')}" title="{!$Label.Pipeline_Back_Promote}"/>
+                                                                                    <img src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-left-arrow.png')}" title="{!$Label.Pipeline_Back_Promote}" />
                                                                                 </div>
                                                                             </div>
                                                                         </apex:outputPanel>
@@ -804,13 +814,13 @@
                                                                     </div>
                                                                 </div>
                                                             </apex:outputPanel>
-                                                            <apex:outputPanel rendered="{!AND(pipelineMode == DIAGRAM, envWrapper.currentStep.Connection_Behavior_Override__c == null)}">
-                                                                <div class="connection-info" onmouseover="ccd.toggleNewConnectionIcon(this); return true;" onmouseout="ccd.toggleNewConnectionIcon(this); return true;">
+                                                            <apex:outputPanel rendered="{!AND(envByGroup != 'Final', pipelineMode == DIAGRAM, envWrapper.currentStep.Connection_Behavior_Override__c == null)}">
+                                                            <div class="connection-info" onmouseover="ccd.toggleNewConnectionIcon(this); return true;" onmouseout="ccd.toggleNewConnectionIcon(this); return true;">
                                                                     <div class="{!CASE(pipelineMode, "manager", "commits", "diagram", "connection-behaviour-override", "")} hide">
                                                                         <div>
-                                                                            <a href="javascript:void(0);" onclick="lockScreen();createNewConnectionBehaviorAndBind('{!envWrapper.currentStep.Id}', '', '{!envWrapper.currentStep.Source_Environment__r.Name}', '{!envWrapper.currentStep.Destination_Environment__r.Name}');">
+                                                                            <div onclick="lockScreen();createNewConnectionBehaviorAndBind('{!envWrapper.currentStep.Id}', '', '{!JSINHTMLENCODE(IF(envWrapper.currentStep.Source_Environment__r.Name != null, envWrapper.currentStep.Source_Environment__r.Name, envWrapper.currentStep.Branch__c))}', '{!JSINHTMLENCODE(IF(envWrapper.currentStep.Destination_Environment__r.Name != null, envWrapper.currentStep.Destination_Environment__r.Name, envWrapper.currentStep.Destination_Branch__c))}');">
                                                                                 <img class="new" src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/new-connection.png')}" title="Create new connection" />
-                                                                            </a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -818,10 +828,10 @@
                                                             <apex:outputPanel rendered="{!pipelineMode == DIAGRAM}">
                                                                 <div class="create-env-btn">
                                                                     <apex:outputPanel rendered="{!envWrapper.currentEnvironment.Id == NULL}" layout="none">
-                                                                        <input type="button" onclick="ccd.createOrg('{!envWrapper.currentStep.Id}', '{!envWrapper.currentEnvironment.Id}', '{!envWrapper.currentEnvironment.Name}', false);" data-branch="undefined" data-parentselector="box_undefined" class="noCreateEnv" value="+" title="{!$Label.Pipeline_Environment_Setup_Should_Be_Complete}" disabled="true"/>
+                                                                        <input type="button" onclick="ccd.createOrg('{!envWrapper.currentStep.Id}', '{!envWrapper.currentEnvironment.Id}', '{!JSINHTMLENCODE(envWrapper.currentEnvironment.Name)}', false);" data-branch="undefined" data-parentselector="box_undefined" class="noCreateEnv" value="+" title="{!$Label.Pipeline_Environment_Setup_Should_Be_Complete}" disabled="true" />
                                                                     </apex:outputPanel>
                                                                     <apex:outputPanel rendered="{!envWrapper.currentEnvironment.Id != NULL}" layout="none">
-                                                                        <input type="button" onclick="ccd.createOrg('{!envWrapper.currentStep.Id}', '{!envWrapper.currentEnvironment.Id}', '{!envWrapper.currentEnvironment.Name}', false);" data-branch="undefined" data-parentselector="box_undefined" class="createEnv" value="+" title="{!$Label.Create_new_Environment_Connection}" />
+                                                                        <input type="button" onclick="ccd.createOrg('{!envWrapper.currentStep.Id}', '{!envWrapper.currentEnvironment.Id}', '{!JSINHTMLENCODE(envWrapper.currentEnvironment.Name)}', false);" data-branch="undefined" data-parentselector="box_undefined" class="createEnv" value="+" title="{!$Label.Create_new_Environment_Connection}" />
                                                                     </apex:outputPanel>
 
                                                                 </div>
@@ -860,7 +870,7 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </apex:outputPanel>
-                                                                                        <apex:outputPanel rendered="{!envWrapper.currentEnvironment.Latest_Deployment__c == null}">
+                                                                                        <apex:outputPanel rendered="{!AND(envWrapper.currentEnvironment.Latest_Deployment__c == null, envWrapper.currentEnvironment.Latest_Deployment_Status__c == NULL)}">
                                                                                             <img id="noDeploymentStatus_{!envWrapper.currentEnvironment.Id}" src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-no-status.png')}" />
                                                                                         </apex:outputPanel>
                                                                                     </apex:outputPanel>
@@ -886,8 +896,8 @@
                                                                 <div>
                                                                     <apex:outputPanel rendered="{!pipelineMode == DIAGRAM}" layout="none">
                                                                         <hr style="width: 90%;margin: 0 auto;" />
-                                                                        <apex:outputPanel layout="none" rendered="{!envWrapper.currentEnvironment.Connection_Behavior__c != null}">
-                                                                            <div class="env-connection-info" onclick="ccd.openConnectionBehavior('{!envWrapper.currentEnvironment.Connection_Behavior__c}')">
+                                                                        <apex:outputPanel layout="none" rendered="{!AND(envWrapper.currentEnvironment.Connection_Behavior__c != null, envWrapper.isDestinationEnv)}">
+                                                                            <div class="env-connection-info">
                                                                                 <div class="env-connection-behaviour-override">
                                                                                     <div class="minipagelayout" style="opacity: 0;position:fixed;">
                                                                                         <apex:outputField value="{!envWrapper.currentEnvironment.Connection_Behavior__c}" />
@@ -932,8 +942,8 @@
                                                                                 </div>
                                                                             </div>
                                                                         </apex:outputPanel>
-                                                                        <apex:outputPanel layout="none" rendered="{!AND(envWrapper.currentEnvironment.Connection_Behavior__c == null, envWrapper.currentEnvironment.Id != null)}">
-                                                                            <div class="env-connection-info" onclick="lockScreen();createNewConnectionBehaviorAndBind('','{!envWrapper.currentEnvironment.Id}', '{!envWrapper.currentEnvironment.Name}','');">
+                                                                        <apex:outputPanel layout="none" rendered="{!AND(envWrapper.currentEnvironment.Connection_Behavior__c == null, envWrapper.currentEnvironment.Id != null, envWrapper.isDestinationEnv)}">
+                                                                            <div class="env-connection-info" onclick="lockScreen();createNewConnectionBehaviorAndBind('','{!envWrapper.currentEnvironment.Id}', '{!JSINHTMLENCODE(envWrapper.currentEnvironment.Name)}','');">
                                                                                 <div title="Click here to create a connection behavior" class="env-connection-behaviour-override" style="filter: grayscale(100%);opacity:60%;">
                                                                                     <div class="icon">
                                                                                         <div style="height:11px;">
@@ -962,7 +972,7 @@
                                                                     </apex:outputPanel>
                                                                     <div class="authenticate-icon" style="{!IF(CONTAINS($User.UIThemeDisplayed, 'Theme4'), '', 'margin-top:-15px;')}">
                                                                         <apex:outputPanel layout="none" rendered="{!AND(envWrapper.needsOauth, pipelineMode == DIAGRAM)}">
-                                                                            <div onclick="doOauth('{!envWrapper.currentStep.Id}','{!envWrapper.currentEnvironment.Id}', '{!envWrapper.currentEnvironment.Name}', '{!envWrapper.currentStep.Branch__c}');">
+                                                                            <div onclick="doOauth('{!envWrapper.currentStep.Id}','{!envWrapper.currentEnvironment.Id}', '{!JSINHTMLENCODE(envWrapper.currentEnvironment.Name)}', '{!JSINHTMLENCODE(envWrapper.currentStep.Branch__c)}');">
                                                                                 <apex:commandButton title="{!$Label.copado__add_oauth}" styleClass="btn slds-button" style="color:#3593c6;" status="loadingScreen">
                                                                                     <img src="{!URLFOR($Resource.SetupDashboardIcons, 'PipelineSvgIcons/pipeline-authenticate.png')}" />
                                                                                 </apex:commandButton>
@@ -1009,23 +1019,25 @@
                     </div>
                 </apex:outputPanel>
                 <apex:outputPanel id="calculatedStepsPanel">
+                    <apex:inputHidden value="{!allEnvironmentsByStageGroupMapJson}" id="allEnvJSONMap" />
                     <script>
                         function repositionBoxes() {
-                            ccd.data.connections = '{!allEnvironmentsByStageGroupMapJson}';
+                            ccd.data.connections = $copado('[id$="allEnvJSONMap"]').val();
                         }
                         function updateStoryStreamVariables() {
-                            var streamingSettingsMap = JSON.parse('{!streamingSettingsJSON}');
-                            var storyStreamSettings = streamingSettingsMap[ccdStoryStream.pushTopicName];
+                            var streamingSettingsMap = JSON.parse('{!JSENCODE(streamingSettingsJSON)}');
+                            var storyStreamSettings = streamingSettingsMap[ccdStoryStream.config.pushTopicName];
                             if(storyStreamSettings && storyStreamSettings[copadoApp.ns + 'Enabled__c']) {
-                                ccdStoryStream.pipelineId = '{!currentPipeline.Id}';
-                                ccdStoryStream.sourceIds = '{!allSourceIdsSet}';
-                                ccdStoryStream.destinationIds = '{!allDestinationIdsSet}';
-                                ccdStoryStream.filterJSON = '{!selectedFilterJSON}';
-                                ccdStoryStream.flowStepToEnvJSON = '{!flowStepToEnvironmentJSON}';
-                                ccdStoryStream.allEnvironmentKeyJSON = '{!allEnvironmentsKeysetJSON}';
-                                ccdStoryStream.allEnvironmentToStageJSON = '{!allEnvironmentsToStageGroupKeysetJSON}';
+                                ccdStoryStream.params.pipelineId = '{!currentPipeline.Id}';
+                                ccdStoryStream.params.sourceIds = JSON.parse('{!JSENCODE(allSourceIdsJSON)}');
+                                ccdStoryStream.params.destinationIds = JSON.parse('{!JSENCODE(allDestinationIdsJSON)}');
+                                ccdStoryStream.params.filterJSON = '{!JSENCODE(selectedFilterJSON)}';
+                                ccdStoryStream.params.flowStepToEnvJSON = '{!JSENCODE(flowStepToEnvironmentJSON)}';
+                                ccdStoryStream.params.allEnvironmentKeyJSON = '{!JSENCODE(allEnvironmentsKeysetJSON)}';
+                                ccdStoryStream.params.allEnvironmentToStageJSON = '{!JSENCODE(allEnvironmentsToStageGroupKeysetJSON)}';
                             }
                         }
+
                     </script>
                 </apex:outputPanel>
             </apex:outputPanel>

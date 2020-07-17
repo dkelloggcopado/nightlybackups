@@ -67,7 +67,7 @@
                         <apex:form >
                             <apex:outputPanel rendered="{!APIKey!=''}" layout="none">
                                 <!-- non-classic button -->
-                                <apex:commandButton action="{!cstBindExtensionToOrg}" value="{!$Label.copado__selenium_getting_started_bind} ({!$Organization.Name})" immediate="true" styleClass="slds-button slds-button--neutral" rendered="{!$User.UIThemeDisplayed != 'Theme3'}" />
+                                <apex:commandButton action="{!cstBindExtensionToOrg}" html-href="{!LinkCstBindExtensionToOrg}" value="{!$Label.copado__selenium_getting_started_bind} ({!$Organization.Name})" immediate="true" styleClass="slds-button slds-button--neutral" rendered="{!$User.UIThemeDisplayed != 'Theme3'}" />
                                 <!-- classic button -->
                                 <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3'}" layout="none">
                                 <a id="copadoRecorderExtensionNotInstalled1" href="{!LinkCstBindExtensionToOrg}" class="slds-button slds-button--neutral"><apex:outputText value="{!$Label.copado__selenium_getting_started_bind} ({!$Organization.Name})"></apex:outputText></a>
@@ -102,7 +102,7 @@
                     <p>&nbsp;</p>
                 </apex:outputPanel>
                 
-                <iframe frameBorder="0" src="https://docs.copa.do/copado-selenium-testing/selenium-setup" style="width: 100%; min-height: 1200px"></iframe>
+                <iframe frameBorder="0" src="https://docs.copado.com/copado-selenium-testing/selenium-setup" style="width: 100%; min-height: 1200px"></iframe>
             </apex:outputPanel>
         </div>
     </body>

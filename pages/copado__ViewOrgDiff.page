@@ -23,10 +23,10 @@
           $copado(document).ready(function(){
                   //Buttons To middle No PBtitle
                   if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
-                  var mTitle = $copado('.pbTitle')[0];
+                  var mTitle = $copado('.pbTitle');
                   if(mTitle){
                     mTitle.remove();
-                    var tdrow = $copado($copado('.pbButton')[0]);
+                    var tdrow = $copado($copado('.pbButton'));
                     if(tdrow){
                         tdrow.css( "text-align", "center" );
                     }  
@@ -89,7 +89,7 @@
             </apex:outputPanel>
             <apex:outputPanel layout="block" rendered="{!AND(showOptions,!showError)}" styleClass="copado-lightning-container copado-lightning-radius">
                 <apex:form id="theForm" styleClass="copado-lightning-container" style="padding-top:12px;">
-                    <apex:pageBlock helpUrl="https://docs.copa.do/org-differences/org-differences-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="{!$Label.copado__details}">
+                    <apex:pageBlock helpUrl="https://docs.copado.com/org-differences/org-differences-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="{!$Label.copado__details}">
                         <apex:pageBlockButtons >
                             <apex:commandButton action="{!edit}" value="{!$Label.site.edit}" rendered="{!isDiffEnabled}"/>
                             <apex:commandButton action="{!deploy}" value="{!$Label.copado__create} {!$ObjectType.copado__Deployment__c.Label}" rendered="{!isDiffEnabled}"/>
@@ -141,15 +141,15 @@
                                         var div = parentDiv.nextSibling;
                                         var elemWasOn = false;
                                         if (div.style.display != 'none'){
-                                            div.style.display = 'none';
-                                            twisty.className ='showListButton';
-                                            twisty.alt = twisty.title = 'Show Section - '+twisty.name;
-                                            elemWasOn = true;
+                                        div.style.display = 'none';
+                                        twisty.className ='showListButton';
+                                        twisty.alt = twisty.title = 'Show Section - '+twisty.name;
+                                        elemWasOn = true;
                                         } else{
-                                            div.style.display = 'block';
-                                            twisty.className ='showListButton';
-                                            twisty.alt = twisty.title = 'Show Section - '+twisty.name;
-                                            elemWasOn = false;
+                                        div.style.display = 'block';
+                                        twisty.className ='showListButton';
+                                        twisty.alt = twisty.title = 'Show Section - '+twisty.name;
+                                        elemWasOn = false;
                                         }
                                     }
                                     twistSection( $copado('[id$="typesSection"]').find('img')[0]);

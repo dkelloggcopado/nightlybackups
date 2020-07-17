@@ -405,6 +405,6 @@
         <masterLabel>Add Test Script Steps</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>/apex/{!IF($Setup.copado__Settings__c.copado__Namespace__c=&apos;none&apos;,&apos;&apos;,if(isblank($Setup.copado__Settings__c.copado__Namespace__c),&apos;copado__&apos;,$Setup.copado__Settings__c.copado__Namespace__c))}CreateTestScriptSteps?tId={!copado__Test_Script__c.Id}</url>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}CreateTestScriptSteps?tId={!copado__Test_Script__c.Id}</url>
     </webLinks>
 </CustomObject>

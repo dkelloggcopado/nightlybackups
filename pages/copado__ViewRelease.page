@@ -68,7 +68,7 @@
 
             <apex:form id="theForm" style="padding-top:12px;" styleClass="copado-lightning-container">
                 <!-- RELEASE HELP SECTION -->
-                <c:CopadoHelp sectionText="{!$Label.copado__release_help}" sectionLink="https://docs.copa.do/release/release-overview" />
+                <c:CopadoHelp sectionText="{!$Label.copado__release_help}" sectionLink="https://docs.copado.com/release/release-overview" />
                 <!-- / RELEASE HELP SECTION -->
 
                 <!-- APEX DETAIL -->

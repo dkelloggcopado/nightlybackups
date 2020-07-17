@@ -38,11 +38,13 @@
             var isTestRun;
 
             if(!wasJobStarted) {
+                // added co_ in front of the type names, because customer test classes can contain those words and it will break the test run process
+                // If you change the values here, you have to make changes at following classes and buttons: (JobWaitingExtension, GitCommit_HeaderController, GitCommitChangesController, UserStoryApexTestResultExtension, Snapshotwaitingforpage and User story "pull request and perform validation" buttons)
                 var newUrl = new window.URL(window.location.href);
-                isValidation = newUrl.href.indexOf('validation')>=0;
-                isPullRequest = newUrl.href.indexOf('pullRequest')>=0;
-                isCommitChanges = newUrl.href.indexOf('commitChanges')>=0;
-                isTestRun = newUrl.href.indexOf('apexTestRun')>=0;
+                isValidation = newUrl.href.indexOf('co_validation')>=0;
+                isPullRequest = newUrl.href.indexOf('co_pullRequest')>=0;
+                isCommitChanges = newUrl.href.indexOf('co_commitChanges')>=0;
+                isTestRun = newUrl.href.indexOf('co_apexTestRun')>=0;
                 newUrl.hash = '&jobStarted=';
                 window.history.replaceState('copado', document.title, newUrl);
             }
@@ -204,7 +206,7 @@
                     <script>
                         function updateURLForRefresh(){
                             var newUrls = new window.URL(window.location.href);
-                            var copadoJobId = '{!copadoNotificationId}';
+                            var copadoJobId = '{!JSENCODE(copadoNotificationId)}';
                             newUrls.hash = '&jobStarted=' + copadoJobId;
                             window.history.replaceState('copado', document.title, newUrls);
                         }

@@ -57,16 +57,16 @@
             }
             function openApexTestResultsSummary() {
                 if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
-                    sforce.one.navigateToURL('/apex/{!namespace}OrgApexTestResultsSummary?id={!copado__Org__c.Id}');
+                    sforce.one.navigateToURL('/apex/{!JSENCODE(namespace)}OrgApexTestResultsSummary?id={!copado__Org__c.Id}');
                 } else {
-                    window.location.href = '/apex/{!namespace}OrgApexTestResultsSummary?id={!copado__Org__c.Id}';
+                    window.location.href = '/apex/{!JSENCODE(namespace)}OrgApexTestResultsSummary?id={!copado__Org__c.Id}';
                 }
             }
             function openStaticCodeAnalysisSummary() {
                 if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
-                    sforce.one.navigateToURL('/apex/{!namespace}StaticCodeAnalysisSummary?id={!copado__Org__c.Id}&entity=Org');
+                    sforce.one.navigateToURL('/apex/{!JSENCODE(namespace)}StaticCodeAnalysisSummary?id={!copado__Org__c.Id}&entity=Org');
                 } else {
-                    window.location.href = '/apex/{!namespace}StaticCodeAnalysisSummary?id={!copado__Org__c.Id}&entity=Org';
+                    window.location.href = '/apex/{!JSENCODE(namespace)}StaticCodeAnalysisSummary?id={!copado__Org__c.Id}&entity=Org';
                 }
             }
 
@@ -172,7 +172,7 @@
             
             <apex:form id="theForm" rendered="{!AND(showOptions,!showError)}" styleClass="copado-lightning-container" style="padding-top:12px;">
             <c:ScreenLocker msg="{!$Label.copado__loading}" />
-            <apex:pageBlock id="pb_createOrg"  mode="view" helpUrl="https://docs.copa.do/org-credentials/how-to-create-an-org-credential" helpTitle="{!$Label.copado__help_for_this_page}">
+            <apex:pageBlock id="pb_createOrg"  mode="view" helpUrl="https://docs.copado.com/org-credentials/how-to-create-an-org-credential" helpTitle="{!$Label.copado__help_for_this_page}">
                     <div>
                         <center>
                             <apex:commandButton value="{!$Label.site.edit}" action="{!edit}" id="btnEdit"/>&nbsp;

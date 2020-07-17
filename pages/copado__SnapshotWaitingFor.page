@@ -35,7 +35,7 @@
 
             if(!wasJobStarted) {
                 var newUrl = new window.URL(window.location.href);
-                isCommitChanges = newUrl.href.indexOf('commitChanges')>=0;
+                isCommitChanges = newUrl.href.indexOf('co_commitChanges')>=0;
                 newUrl.hash = '&jobStarted';
                 window.history.replaceState('copado', document.title, newUrl);
             }
@@ -183,7 +183,7 @@
                     <script>
                         function updateURLForRefresh(){
                             var newUrls = new window.URL(window.location.href);
-                            var copadoJobId = '{!copadoNotificationId}';
+                            var copadoJobId = '{!JSENCODE(copadoNotificationId)}';
                             newUrls.hash = '&jobStarted=' + copadoJobId;
                             window.history.replaceState('copado', document.title, newUrls);
                         }

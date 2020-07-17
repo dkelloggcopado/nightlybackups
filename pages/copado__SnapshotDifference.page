@@ -239,6 +239,7 @@
                     }
                     return me.data.selectedNames;
                 },
+                
                 prepareAtt:function(){
                     const endUrl = '/apex/'+copadoApp.ns+'GitCommitMain?userStoryId=';
                     const mdataParam = '&MetadataPreselectionId=';
@@ -252,7 +253,7 @@
                         dw.u.upsertAttach(sid,'preselectionAtt',copadoApp.attStringfied,false,'');
                         var attRecord = dw.u.getAttach(sid,'preselectionAtt');
                         var attId = attRecord[0].Id;
-                        window.location.replace(endUrl+usid+mdataParam+attId+variantParam);
+                        copadoApp.navigateTo(endUrl+usid+mdataParam+attId+variantParam);
                     }
                     unlockScreen();
                 },
@@ -281,6 +282,15 @@
                             showUsModal();
                         }
                     }else alert(copadoLabels.execfirst);
+                },
+
+                navigateTo: function(pageName){
+                    var redirectUrl = encodeURI(pageName);
+                    if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+                        sforce.one.navigateToURL(redirectUrl,false);
+                    } else {
+                        window.open(redirectUrl,'_self');
+                    }
                 },
 
                 /**
@@ -407,8 +417,6 @@
                         pagesize: 50,
                         sortable: true,
                         columnsresize: true,
-                        autorowheight: true,
-                        autoheight: true,
                         altrows: true,
                         localization: localizationobj,
                         columns: [
@@ -442,8 +450,8 @@
                     try{
                         lockScreen();
                         console.time('Retrieve');
-                        var herokuServer = '{!settings.herokuServer}';
-                        var uri = herokuServer+'/json/v1/snapshotDiff/'+copadoApp.data.Id+'{!settings.urlParameters}&isPartialDiff='+_config.data.isPartialDiff;
+                        var herokuServer = '{!JSENCODE(settings.herokuServer)}';
+                        var uri = herokuServer+'/json/v1/snapshotDiff/'+copadoApp.data.Id+'{!JSENCODE(settings.urlParameters)}&isPartialDiff='+_config.data.isPartialDiff;
                         console.log(herokuServer+' calling... '+uri);
                         utilsV2.onSuccessCB = function(res) {
                             var obj = $copado.parseJSON(res);
