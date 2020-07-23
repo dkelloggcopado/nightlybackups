@@ -206,6 +206,10 @@
     </fields>
     <validationRules>
         <errorMessage><!-- You can only change org credentials you own. --></errorMessage>
+        <name>Admin_only_can_create_stage_org_cred</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can only change org credentials you own. --></errorMessage>
         <name>Admin_or_Owner_Changes_Only</name>
     </validationRules>
     <webLinks>

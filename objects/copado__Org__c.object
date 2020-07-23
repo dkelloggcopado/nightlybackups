@@ -888,6 +888,12 @@ IMAGE(&apos;/resource/1516617568000/&apos;+IF($Setup.copado__Settings__c.copado_
     </searchLayouts>
     <sharingModel>Private</sharingModel>
     <validationRules>
+        <fullName>Admin_only_can_create_stage_org_cred</fullName>
+        <active>true</active>
+        <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp; copado__Environment__r.Name = &apos;Stage&apos;</errorConditionFormula>
+        <errorMessage>You can only change org credentials you own.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Admin_or_Owner_Changes_Only</fullName>
         <active>true</active>
         <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp; $User.Id &lt;&gt; OwnerId</errorConditionFormula>
