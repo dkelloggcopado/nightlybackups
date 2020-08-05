@@ -150,7 +150,7 @@
             <translation><!-- Scheduled --></translation>
         </picklistValues>
     </fields>
-    <gender><!-- Masculine --></gender>
+    
     <nameFieldLabel><!-- Deployment Name --></nameFieldLabel>
     <startsWith><!-- Consonant --></startsWith>
     <webLinks>
