@@ -49,6 +49,11 @@
         <name>copado__Work_Manager_Relations</name>
     </fieldSets>
     <fields>
+        <label><!-- Bundle User Story --></label>
+        <name>Bundle_User_Story__c</name>
+        <relationshipLabel><!-- Bundled User Stories --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Change Approved --></label>
         <name>Change_Approved__c</name>
     </fields>
@@ -67,6 +72,10 @@
     <fields>
         <label><!-- External Id --></label>
         <name>External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Bundle --></label>
+        <name>Is_Bundle__c</name>
     </fields>
     <fields>
         <label><!-- JIRA key --></label>
@@ -893,6 +902,10 @@
         <errorMessage><!-- Test scratch orgs cannot be used for developments --></errorMessage>
         <name>copado__Test_scratch_orgs_cannot_be_used_for_dev</name>
     </validationRules>
+    <webLinks>
+        <label><!-- User_Story_Bundle --></label>
+        <name>User_Story_Bundle</name>
+    </webLinks>
     <webLinks>
         <label><!-- Add_Apex_Tests --></label>
         <name>copado__Add_Apex_Tests</name>
