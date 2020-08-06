@@ -7877,7 +7877,7 @@ ISNULL(copado__Last_Validation_Deployment__c),
 ISNULL(copado__Last_Validation_Deployment_Status__c),
 ISBLANK(copado__Last_Validation_Deployment__c),
 ISBLANK(copado__Last_Validation_Deployment_Status__c),
-NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed Successfully&quot;))
+NOT(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Validated&quot;))
 )
 )</errorConditionFormula>
         <errorMessage>Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate.</errorMessage>

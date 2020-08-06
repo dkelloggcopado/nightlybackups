@@ -58,6 +58,26 @@
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Title_with_Jira_Key</fullName>
+        <field>copado__User_Story_Title__c</field>
+        <formula>copado__User_Story_Title__c + &apos; &apos; + JIRA_key__c</formula>
+        <name>Update Title with Jira Key</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>Add Jira Key</fullName>
+        <actions>
+            <name>Update_Title_with_Jira_Key</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>Adds Jira Key to user story title</description>
+        <formula>NOT( ISNULL(JIRA_key__c) )</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
     <rules>
         <fullName>Fill In Datetime Completed Field</fullName>
         <actions>
