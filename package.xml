@@ -21,6 +21,7 @@
         <members>ConnectedApp</members>
         <members>Content</members>
         <members>Contract</members>
+        <members>ConversationalIntelligence</members>
         <members>Currency</members>
         <members>CustomerDataPlatform</members>
         <members>Deployment</members>
@@ -78,10 +79,12 @@
         <members>Schema</members>
         <members>Search</members>
         <members>Security</members>
+        <members>ServiceCloudVoice</members>
         <members>Sharing</members>
         <members>Site</members>
         <members>SocialCustomerService</members>
         <members>SocialProfile</members>
+        <members>SourceTracking</members>
         <members>Survey</members>
         <members>SystemNotification</members>
         <members>Territory2</members>
@@ -95,5 +98,5 @@
         <members>WorkDotCom</members>
         <name>Settings</name>
     </types>
-    <version>48.0</version>
+    <version>49.0</version>
 </Package>
