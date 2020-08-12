@@ -45,6 +45,7 @@
     </finalRejectionActions>
     <finalRejectionRecordLock>false</finalRejectionRecordLock>
     <label>User Story Approval</label>
+    <processOrder>1</processOrder>
     <recordEditability>AdminOrCurrentApprover</recordEditability>
     <showApprovalHistory>true</showApprovalHistory>
 </ApprovalProcess>

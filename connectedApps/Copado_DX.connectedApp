@@ -7,10 +7,16 @@
         <certificate>MIIC5jCCAc4CCQCxV/fzPkxu7jANBgkqhkiG9w0BAQsFADA0MQswCQYDVQQGEwJVUzEPMA0GA1UECgwGQ29wYWRvMRQwEgYDVQQDDAt3d3cuY29wYS5kbzAgFw0xOTEyMTYxMzIxMjBaGA8yMTI5MDYyMjEzMjEyMFowNDELMAkGA1UEBhMCVVMxDzANBgNVBAoMBkNvcGFkbzEUMBIGA1UEAwwLd3d3LmNvcGEuZG8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDU3Gexu+5xTRkYTmzs+03/23puSWKeo89F4P9ygVuQhvwmRGBzf2SwWAVNQWHYuBFTJ8C5Th/xOw/LpoDVBCm8NvcoWPs74rNdakTamIa00cLXAEkBCkBMw0Xo+pEDlf2BB6i5iB3U5g2AVnj+9iR54DFOjOdKKE4rAWGdU5Kzvsd9N2ADXBBNBhhH3oLvha3u8m50nzWGXu0n0cKLzecHiaOSGBm34O09Cfk/7+VFqDs/KttybJ9o2oc95nxmDIKZfnSiqVR6SLBZEV5uC7Y10SlLxxiWMyIgeG1NDhCLMJLuc9rDMr33rTrj9V6SmNdUgVgAQI6Bhu2XMvQSJ6wTAgMBAAEwDQYJKoZIhvcNAQELBQADggEBACbDFyaSldY9atgPT72jJXJAJW6+ERyAG9hKuVe3DB0C4pHhcQ/3ayUSFBQ3jhjG82rj3NE6hpacaEk+UXqYtS5B5QunBaCyuiqQB3Ip97If/WCx23C+B2PJwJqkPBcpSOqgpFGioXtTADlgH6E9G0GiPrr/+/04SJHekcgZ//mjqZyE0AycE66O5FxFNEtE7HpVsv9/My8TORxn9YQR+WpKI7/+OhoG/Wr5rLXirterACWsPIO3xEaawCJmCoKCSrpr7/zpx/Ez7XCqbzuAoauSY1EZQKKmDIBjWhWiH5CYNhrZU0JuumskYDgv2omok/9iTm05xLYXn5zmUkHYQag=</certificate>
         <consumerKey>b47d9ed14e344baba49468897f5612c5e118a61a633f4ec28e632e92fca6dff8</consumerKey>
         <isAdminApproved>true</isAdminApproved>
+        <isConsumerSecretOptional>false</isConsumerSecretOptional>
+        <isIntrospectAllTokens>false</isIntrospectAllTokens>
         <scopes>Api</scopes>
         <scopes>Web</scopes>
         <scopes>RefreshToken</scopes>
     </oauthConfig>
+    <oauthPolicy>
+        <ipRelaxation>BYPASS</ipRelaxation>
+        <refreshTokenPolicy>infinite</refreshTokenPolicy>
+    </oauthPolicy>
     <profileName>System Admin</profileName>
     <profileName>System Administrator</profileName>
 </ConnectedApp>
