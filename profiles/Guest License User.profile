@@ -3039,6 +3039,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Back_promotion_test__c.Test__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Callout_Log__c.Project__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -9352,6 +9357,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>AuthorizationFormText-Authorization Form Text Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Back_promotion_test__c-Back promotion test Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Callout_Log__c-Callout Log Layout</layout>
