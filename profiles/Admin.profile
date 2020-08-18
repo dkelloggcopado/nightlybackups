@@ -3051,6 +3051,10 @@
         <apexClass>copadovsm__WorkItemEventLogsDTO</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>userstorycommittriggerhelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <custom>false</custom>
     <fieldPermissions>
         <editable>false</editable>

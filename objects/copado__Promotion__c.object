@@ -870,6 +870,7 @@
         <columns>copado__Project__c</columns>
         <columns>copado__Release__c</columns>
         <columns>copado__Back_Promotion__c</columns>
+        <columns>copado__Status__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
