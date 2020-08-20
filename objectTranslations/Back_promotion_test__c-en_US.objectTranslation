@@ -9,6 +9,10 @@
         <value>back promotion tests</value>
     </caseValues>
     <fields>
+        <label><!-- Another test --></label>
+        <name>Another_test__c</name>
+    </fields>
+    <fields>
         <label><!-- Test --></label>
         <name>Test__c</name>
     </fields>
