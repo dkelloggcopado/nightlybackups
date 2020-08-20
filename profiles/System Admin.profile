@@ -3034,6 +3034,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Back_promotion_test__c.Another_test__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Back_promotion_test__c.Test__c</field>
         <readable>true</readable>
     </fieldPermissions>
