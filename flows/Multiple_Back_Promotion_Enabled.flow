@@ -2,6 +2,34 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <interviewLabel>Multiple Back Promotion Enabled {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Multiple Back Promotion Enabled</label>
+    <loops>
+        <name>Go_through_back_promotions_and_add_promoted_user_story_to_new_collection</name>
+        <label>Go through back promotions and add promoted user story to new collection</label>
+        <locationX>747</locationX>
+        <locationY>63</locationY>
+        <collectionReference>backpromotions</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>final_items_to_delete</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Delete</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Go_through_promoted_user_stories</name>
+        <label>Go through promoted user stories</label>
+        <locationX>586</locationX>
+        <locationY>66</locationY>
+        <collectionReference>promoteduserstories</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_back_promoted_for_promoted_user_stories</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Go_through_back_promotions_and_add_promoted_user_story_to_new_collection</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -16,21 +44,57 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordDeletes>
-        <name>delete_promoted_user_story_records</name>
-        <label>delete promoted user story records</label>
-        <locationX>787</locationX>
-        <locationY>67</locationY>
-        <inputReference>promoteduserstories</inputReference>
+        <name>Delete</name>
+        <label>Delete</label>
+        <locationX>952</locationX>
+        <locationY>64</locationY>
+        <filters>
+            <field>copado__Promotion__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>final_items_to_delete</elementReference>
+            </value>
+        </filters>
+        <object>copado__Promoted_User_Story__c</object>
     </recordDeletes>
     <recordLookups>
-        <name>backpromotion</name>
-        <label>backpromotion</label>
-        <locationX>433</locationX>
-        <locationY>67</locationY>
+        <name>final_items_to_delete</name>
+        <label>final items to delete</label>
+        <locationX>761</locationX>
+        <locationY>274</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>promoted_user_stories</targetReference>
+            <targetReference>Go_through_back_promotions_and_add_promoted_user_story_to_new_collection</targetReference>
         </connector>
+        <filters>
+            <field>copado__Promotion__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Go_through_back_promotions_and_add_promoted_user_story_to_new_collection.Id</elementReference>
+            </value>
+        </filters>
+        <object>copado__Promoted_User_Story__c</object>
+        <outputReference>promoteduserstorieswithbackpromotions</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>copado__Promotion__c</queriedFields>
+        <queriedFields>copado__User_Story__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_back_promoted_for_promoted_user_stories</name>
+        <label>Get back promoted for promoted user stories</label>
+        <locationX>586</locationX>
+        <locationY>266</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Go_through_promoted_user_stories</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Go_through_promoted_user_stories.copado__Promotion__c</elementReference>
+            </value>
+        </filters>
         <filters>
             <field>copado__Back_Promotion__c</field>
             <operator>EqualTo</operator>
@@ -38,31 +102,24 @@
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>copado__Promotion__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputReference>backpromotions</outputReference>
+        <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
-        <name>promoted_user_stories</name>
-        <label>promoted user stories</label>
-        <locationX>624</locationX>
-        <locationY>67</locationY>
+        <name>promotionstiedtouserstory</name>
+        <label>promotionstiedtouserstory</label>
+        <locationX>435</locationX>
+        <locationY>65</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>delete_promoted_user_story_records</targetReference>
+            <targetReference>Go_through_promoted_user_stories</targetReference>
         </connector>
-        <filters>
-            <field>copado__Promotion__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>promoted_user_stories</elementReference>
-            </value>
-        </filters>
         <filters>
             <field>copado__User_Story__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Flow.CurrentRecord</elementReference>
+                <elementReference>UserStory.Id</elementReference>
             </value>
         </filters>
         <object>copado__Promoted_User_Story__c</object>
@@ -75,24 +132,32 @@
         <locationX>26</locationX>
         <locationY>49</locationY>
         <connector>
-            <targetReference>backpromotion</targetReference>
+            <targetReference>promotionstiedtouserstory</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>backpromotions</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
         <objectType>copado__Promotion__c</objectType>
     </variables>
     <variables>
         <name>promoteduserstories</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>copado__Promoted_User_Story__c</objectType>
+    </variables>
+    <variables>
+        <name>promoteduserstorieswithbackpromotions</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
         <objectType>copado__Promoted_User_Story__c</objectType>
     </variables>
     <variables>
