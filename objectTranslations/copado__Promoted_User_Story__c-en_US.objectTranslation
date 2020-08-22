@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fields>
+        <label><!-- Is back promotion --></label>
+        <name>Is_back_promotion__c</name>
+    </fields>
+    <fields>
+        <label><!-- Promotion status --></label>
+        <name>Promotion_status__c</name>
+    </fields>
+    <fields>
         <label><!-- Promotion --></label>
         <name>copado__Promotion__c</name>
         <relationshipLabel><!-- Promoted User Stories --></relationshipLabel>
