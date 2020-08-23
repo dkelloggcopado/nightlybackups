@@ -420,7 +420,7 @@
                                     </thead>
                                     <tbody>
                                     <apex:repeat value="{!desResponse.fields}" var="obl">
-                                        <apex:outputPanel layout="none" rendered="{!AND(obl.referenceTo == null,NOT(CONTAINS(NotValidFields,obl.name)),obl.type != 'address',obl.type != 'location')}">
+                                        <apex:outputPanel layout="none" rendered="{!AND(obl.referenceTo == null,NOT(CONTAINS(InvalidFieldsForTemplate,obl.name)),obl.type != 'address',obl.type != 'location')}">
                                             <tr>
                                                 <td>
                                                     <apex:inputCheckbox styleClass="slds-checkbox row-select"
@@ -535,7 +535,7 @@
                                     </thead>
                                     <tbody>
                                     <apex:repeat value="{!desResponse.fields}" var="pofl">
-                                        <apex:outputPanel layout="none" rendered="{!AND(pofl.referenceTo != null,NOT(CONTAINS(NotValidFields,pofl.name)))}">
+                                        <apex:outputPanel layout="none" rendered="{!AND(pofl.referenceTo != null,NOT(CONTAINS(InvalidFieldsForTemplate,pofl.name)))}">
                                             <apex:repeat value="{!pofl.referenceTo}" var="refTo">
                                                 <apex:outputPanel layout="none" rendered="{!NOT(CONTAINS(NotValidParent,refTo))}">
                                                     <tr>

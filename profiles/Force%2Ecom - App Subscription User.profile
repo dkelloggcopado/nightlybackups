@@ -1676,6 +1676,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>copado__RegisterCopado</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>copado__ReleaseDetailService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -2361,6 +2365,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>copado__TestQuickCreateUserStoriesController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>copado__TestRegisterCopado</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>

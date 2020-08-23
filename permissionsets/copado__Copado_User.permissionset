@@ -653,6 +653,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>copado__NewBuildTaskEmailController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>copado__NewDeploymentEmailController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -834,6 +838,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>copado__RefreshOrgMetadataCache</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>copado__RegisterCopado</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

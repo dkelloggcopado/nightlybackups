@@ -600,7 +600,7 @@ var targetDomain = '';
             sourceDomain +
             '&targetDomain=' +
             targetDomain;
-        element.html('<a href="#" onClick="window.open(\'' + resultPageUrl + '\');">View Results</a>');
+        element.html('<a href="javascript:void()" onClick="window.open(\'' + resultPageUrl + '\');">View Results</a>');
         return element[0].outerHTML;
     };
 

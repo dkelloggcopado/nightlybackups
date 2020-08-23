@@ -479,7 +479,7 @@ var copadoApp = {
                 sourceDomain +
                 '&targetDomain=' +
                 targetDomain;
-            element.html('<a href="#" onClick="window.open(\'' + resultPageUrl + '\');">' + copadoLabels.VIEW_RESULTS + '</a>');
+            element.html('<a href="javascript:void()" onClick="window.open(\'' + resultPageUrl + '\');">' + copadoLabels.VIEW_RESULTS + '</a>');
             return element[0].outerHTML;
         };
 
