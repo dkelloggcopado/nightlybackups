@@ -6195,6 +6195,10 @@
         <tab>copado__User_Story__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <tabSettings>
+        <tab>copado__Work_Manager</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <userPermissions>
         <enabled>true</enabled>
         <name>ActivitiesAccess</name>

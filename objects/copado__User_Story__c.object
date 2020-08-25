@@ -4912,6 +4912,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>SCA_Violation_Priority__c</fullName>
+        <externalId>false</externalId>
+        <label>SCA Violation Priority</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>SCA_Violations__c</fullName>
         <description>This field is updated by a process that pastes the most recent SCA results.</description>
         <externalId>false</externalId>

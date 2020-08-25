@@ -108,6 +108,10 @@
         <name>SCA_Score__c</name>
     </fields>
     <fields>
+        <label><!-- SCA Violation Priority --></label>
+        <name>SCA_Violation_Priority__c</name>
+    </fields>
+    <fields>
         <label><!-- SCA Violations --></label>
         <name>SCA_Violations__c</name>
     </fields>
