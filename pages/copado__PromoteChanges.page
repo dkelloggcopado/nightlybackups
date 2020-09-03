@@ -298,14 +298,6 @@
             </style>
         </apex:outputPanel>
         <script type="text/javascript">
-            $copado(document).ready(function(){
-                if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
-                    // No override in LEX
-                } else {
-                    overridePageMessages();
-                }
-            });
-
             function overridePageMessages(){
                 textureEffect = 'slds-theme--alert-texture';
 
@@ -320,7 +312,60 @@
                 $copado('.warningM3').removeClass('warningM3');
             }
 
+            function prepareSTSGraph() {
+                var copadoTcSRT = $copado("#test-circleSRT");
+                var copadoTcDRT = $copado("#test-circleDRT");
+                var copadoTcSUST = $copado("#test-circleSUST");
+                var copadoTcDUST = $copado("#test-circleDUST");
+                copadoTcSRT.circliful({
+                    text: "{!JSENCODE($Label.copado__source_regression_tests)}",
+                    animationStep: 5,
+                    foregroundBorderWidth: 5,
+                    backgroundBorderWidth: 15,
+                    percent: {!IF(str.countAllSourceRegression>0, str.countFinishedSourceRegression*100/str.countAllSourceRegression, 0)}
+                });
+
+                copadoTcSRT.find(".circle-info-half").attr('data-text', '{!IF(str.countAllSourceRegression>0, (TEXT(str.countFinishedSourceRegression)+"/"+TEXT(str.countAllSourceRegression)), "0/0")}');
+                copadoTcSRT.find(".circle-info-half").css('z-index', '-1');
+
+                copadoTcDRT.circliful({
+                    text: "{!JSENCODE($Label.copado__destination_regression_tests)}",
+                    animationStep: 5,
+                    foregroundBorderWidth: 5,
+                    backgroundBorderWidth: 15,
+                    percent: {!IF(str.countAllDestinationRegression>0, str.countFinishedDestinationRegression*100/str.countAllDestinationRegression, 0)}
+                });
+
+                copadoTcDRT.find(".circle-info-half").attr('data-text', '{!IF(str.countAllDestinationRegression>0, (TEXT(str.countFinishedDestinationRegression)+"/"+TEXT(str.countAllDestinationRegression)), "0/0")}');
+                copadoTcDRT.find(".circle-info-half").css('z-index', '-1');
+
+                copadoTcSUST.circliful({
+                    text: "{!JSENCODE($Label.copado__source_user_story_tests)}",
+                    animationStep: 5,
+                    foregroundBorderWidth: 5,
+                    backgroundBorderWidth: 15,
+                    percent: {!IF(str.countAllSourceUserStory>0, str.countFinishedSourceUserStory*100/str.countAllSourceUserStory, 0)}
+                });
+                copadoTcSUST.find(".circle-info-half").attr('data-text', '{!IF(str.countAllSourceUserStory>0, (TEXT(str.countFinishedSourceUserStory)+"/"+TEXT(str.countAllSourceUserStory)), "0/0")}');
+                copadoTcSUST.find(".circle-info-half").css('z-index', '-1');
+
+                copadoTcDUST.circliful({
+                    text: "{!JSENCODE($Label.copado__destination_user_story_tests)}",
+                    animationStep: 5,
+                    foregroundBorderWidth: 5,
+                    backgroundBorderWidth: 15,
+                    percent: {!IF(str.countAllDestinationUserStory>0, str.countFinishedDestinationUserStory*100/str.countAllDestinationUserStory, 0)}
+                });
+                copadoTcDUST.find(".circle-info-half").attr('data-text', '{!IF(str.countAllDestinationUserStory>0, (TEXT(str.countFinishedDestinationUserStory)+"/"+TEXT(str.countAllDestinationUserStory)), "0/0")}');
+                copadoTcDUST.find(".circle-info-half").css('z-index', '-1');
+            }
+
             $copado(document).ready(function(){
+                if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+                    // No override in LEX
+                } else {
+                    overridePageMessages();
+                }
                 $copado('#pbTablePromotedStories').dataTable(
                     {
                          "paging": false,
@@ -461,19 +506,19 @@
                     </apex:outputPanel>
                     <div class="slds-tabs_default">
                         <ul class="slds-tabs_default__nav" role="tablist">
-                            <li class="slds-tabs_default__item slds-is-active" onclick="resetDom4pus();setLockScreenMessage(copadoLabels.loading);lockScreen();" style="cursor:pointer;" title="Details" role="presentation">
+                            <li class="slds-tabs_default__item slds-is-active" onclick="setLockScreenMessage(copadoLabels.loading);lockScreen();resetDom4pus();" style="cursor:pointer;" title="Details" role="presentation">
                                 <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item">{!$Label.DETAILS}</a>
                             </li>
-                            <li class="slds-tabs_default__item" onclick="resetDom4us();setLockScreenMessage(copadoLabels.loading);lockScreen();" style="cursor:pointer;" title="Manage available, selected User Stories" role="presentation">
+                            <li class="slds-tabs_default__item" onclick="setLockScreenMessage(copadoLabels.loading);lockScreen();resetDom4us();" style="cursor:pointer;" title="Manage available, selected User Stories" role="presentation">
                                 <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="tab-default-2__item">{!$Label.ManageUserStories}</a>
                             </li>
-                            <li id="promotionuserstorymetadata" onclick="resetDom4all();setLockScreenMessage(copadoLabels.loading);lockScreen();" style="cursor:pointer;" class="slds-tabs_default__item" title="Promotion User Story Metadata" role="presentation">
+                            <li id="promotionuserstorymetadata" onclick="setLockScreenMessage(copadoLabels.loading);lockScreen();resetForMetadataTab();" style="cursor:pointer;" class="slds-tabs_default__item" title="Promotion User Story Metadata" role="presentation">
                                 <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-3" id="tab-default-3__item">{!$Label.PM}</a>
                             </li>
-                            <li id="staticcodeanalysissummary" class="slds-tabs_default__item" onclick="resetDom4all();" style="cursor:pointer;" title="Static Code Analysis Summary" role="presentation">
+                            <li id="staticcodeanalysissummary" class="slds-tabs_default__item" onclick="setLockScreenMessage(copadoLabels.loading);lockScreen();resetDomForSCA();" style="cursor:pointer;" title="Static Code Analysis Summary" role="presentation">
                                 <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-4" id="tab-default-4__item">{!$Label.STATIC_CODE_ANALYSIS_SUMMARY}</a>
                             </li>
-                            <li id="seleniumtest" class="slds-tabs_default__item" onclick="resetDom4all();setLockScreenMessage(copadoLabels.loading);lockScreen();" style="cursor:pointer;" title="Selenium Test Results Summart & Promotion Selenium Tests" role="presentation">
+                            <li id="seleniumtest" class="slds-tabs_default__item" onclick="setLockScreenMessage(copadoLabels.loading);lockScreen();stsProcess();" style="cursor:pointer;" title="Selenium Test Results Summart & Promotion Selenium Tests" role="presentation">
                                 <a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-5" id="tab-default-5__item">{!$Label.SeleniumTest}</a>
                             </li>
                         </ul>
@@ -511,7 +556,7 @@
                                                     </button>
                                                     <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Deployment Details</h2>
                                                 </header>
-                                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                                <apex:outputPanel styleClass="slds-modal__content slds-p-around_medium" layout="block" id="modal-content-id-1">
                                                     <apex:pageMessage id="depMassBack" severity="WARNING" strength="2" summary="{!HTMLENCODE(notPromotedUs)}" rendered="{!LEN(notPromotedUs) > 0}"></apex:pageMessage>
                                                     <script>
                                                         if($copado('[id$="depMassBack"] .message').length == 1){
@@ -598,7 +643,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </apex:outputPanel>
                                                 <footer class="slds-modal__footer">
                                                     <button class="slds-button slds-button_neutral" onclick="closeModal(); return false;">
                                                         Cancel
@@ -640,18 +685,10 @@
                                     </div>
 
                                     <script type="text/javascript">
-                                        var initialVals = (function(){
-                                            return{
-                                                dn:$copado('#deploymentName'),
-                                                ito:$copado('#validationOnly'),
-                                                tl:$copado('[id$="testLevel"]')
-                                            }
-                                        })();
-
                                         function submitModal(){
-                                            var deploymentName = initialVals.dn.val();
-                                            var isTestOnly = initialVals.ito.is(':checked');
-                                            var testLevel = initialVals.tl.val();
+                                            var deploymentName = $copado('#deploymentName').val();
+                                            var isTestOnly = $copado('#validationOnly').is(':checked');
+                                            var testLevel = $copado('[id$="testLevel"]').val();
                                             console.log(deploymentName, isTestOnly, testLevel);
                                             closeModal();
                                             copadoApp.createDeployment(deploymentName, isTestOnly, testLevel);
@@ -670,7 +707,7 @@
                                                             </button>
                                                             <apex:commandButton reRender="USform" id="btnCreateDeployment"
                                                                                 value="{!$Label.copado__create_deployment}"
-                                                                                onclick="openModal();clearSearch(); return false;"
+                                                                                onclick="setLockScreenMessage(copadoLabels.loading);lockScreen();openDeploymentCreationModal();return false;"
                                                                                 styleClass="slds-button slds-button--brand"
                                                                                 disabled="{!!enableCreateDeploymentButton}" />
 
@@ -687,7 +724,7 @@
                                                         </apex:pageBlockButtons>
                                                         <apex:actionFunction name="doRemove" reRender="USform"
                                                                              action="{!removeSelectedUserStories}" status="tblStatus1"
-                                                                             oncomplete="reRenderSeleniumTestGroups();" rerender="pbRight,pbLeft,warningPanel" />
+                                                                             oncomplete="initTuso();" rerender="pbRight,pbLeft,warningPanel" />
 
                                                         <table id="pbTablePromotedStoriesOutput" style="overflow:scroll">
                                                             <thead>
@@ -749,7 +786,7 @@
                                     <apex:form id="USform">
                                         <div id="wrapper" class="slds-scope">
                                             <div id="left" style="width:100%; margin-left:0px;">
-                                                <apex:actionFunction action="{!addStoriesToPromotion}" status="tblStatus" name="addStories" rerender="pbRight,pbLeft,pageMessages" onComplete="reRenderSeleniumTestGroups(); enableAddSelectedButton();" />
+                                                <apex:actionFunction action="{!addStoriesToPromotion}" status="tblStatus" name="addStories" rerender="pbRight,pbLeft,pageMessages" onComplete="enableAddSelectedButton();initTus();" />
                                                 <apex:pageBlock id="pbLeft" title="{!$Label.copado__user_stories_not_included_in_promotion}">
                                                     <apex:pageBlockButtons id="pbButtons2" location="top">
                                                         <input type="button" id="btnGetUserStories" value="{!$Label.ADD_SELECTED_USER_STORIES}"
@@ -804,11 +841,15 @@
                                             </div>
 
                                         </div>
+                                        <apex:actionFunction name="scaProcess" action="{!calculateSCAScores}" reRender="scaSummary,pmessage,pageMessages" onComplete="unlockScreen();" />
+                                        <apex:actionFunction name="stsProcess" action="{!enableSeleniumTab}" reRender="whole-selenium-panel,pmessage,pageMessages" onComplete="initStg();prepareSTSGraph();unlockScreen();" />
                                         <apex:actionFunction name="filluserStories" action="{!listUserStories}" reRender="pbLeft,pmessage,pageMessages" onComplete="initTus();" />
                                         <apex:actionFunction name="fillPromotedUserStories" action="{!getPromotedUserStories}" reRender="pbLeft,pbRight,warningPanel,pmessage,pageMessages" onComplete="checkWarning();initTuso();" />
                                         <apex:actionFunction name="resetDom4pus" action="{!resetDom}" onComplete="fillPromotedUserStories();" />
                                         <apex:actionFunction name="resetDom4us" action="{!resetDom}" reRender="pbLeft,pbRight,pmessage,pageMessages" onComplete="filluserStories();" />
-                                        <apex:actionFunction name="resetDom4all" action="{!resetDom}" reRender="pbLeft,pbRight,userStoryMetadata,stg,pmessage,pageMessages" onComplete="initUsmt();paginationObj.currentPage = 1;paginationObj.globalNextPrev = undefined;adjustBtns();checkNextPrev();initStg();" />
+                                        <apex:actionFunction name="resetForMetadataTab" action="{!enableMetadataTab}" reRender="usMetadataPanel,pmessage,pageMessages" onComplete="initUsmt();paginationObj.currentPage = 1;paginationObj.globalNextPrev = undefined;adjustBtns();checkNextPrev();" />
+                                        <apex:actionFunction name="resetDomForSCA" action="{!resetDom}" onComplete="scaProcess();" />
+                                        <apex:actionFunction name="openDeploymentCreationModal" action="{!checkBackPromotions}" onComplete="openModal();clearSearch();unlockScreen();" reRender="modal-content-id-1,pmessage,pageMessages" />
                                     </apex:form>
                                 </apex:outputPanel>
                             </div>
@@ -828,45 +869,48 @@
 
                                 <apex:outputPanel id="usMetadataPanel" layout="block" styleClass="copado-lightning-container">
                                     <c:CopadoHelp sectionText="{!$Label.copado__outdated_component_help_text}" />
-                                    <apex:pageBlock id="userStoryMetadata" title="{!$Label.copado__promotion_user_story_metadata}">
+                                    <apex:outputPanel layout="none" rendered="{!enableUserStoryMetadatas}">
+                                        <apex:pageBlock id="userStoryMetadata" title="{!$Label.copado__promotion_user_story_metadata}">
+                                            
+                                                <apex:pageBlockButtons location="top">
+                                                    <apex:commandButton onclick="lockScreen();" value="{!$Label.copado__create_user_story}" action="{!createNewUs}" onComplete="unlockScreen();" reRender="pmessage,pageMessages" />
+                                                </apex:pageBlockButtons>
 
-                                        <apex:pageBlockButtons location="top">
-                                            <apex:commandButton onclick="lockScreen();" value="{!$Label.copado__create_user_story}" action="{!createNewUs}" onComplete="unlockScreen();" reRender="pmessage,pageMessages" />
-                                        </apex:pageBlockButtons>
-
-                                        <table id="userStoryMetadatasTable" style="overflow:scroll">
-                                            <thead>
-                                            <tr>
-                                                <th>{!$ObjectType.User_Story_Metadata__c.fields.Metadata_API_Name__c.Label}</th>
-                                                <th>{!$ObjectType.User_Story_Metadata__c.fields.User_Story__c.Label}</th>
-                                                <th>{!$ObjectType.User_Story_Metadata__c.fields.Status__c.Label}</th>
-                                                <th>{!$ObjectType.User_Story_Metadata__c.fields.Status_Icon__c.Label}</th>
-                                                <th>{!$ObjectType.User_Story_Metadata__c.fields.Last_Commit_Date__c.Label}</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody style="overflow:scroll" id="usMtBody">
-                                            <apex:repeat value="{!userStoryMetadatas}" var="metadata">
-                                                <tr>
-                                                    <td>
-                                                        <apex:outputLink value="/{!metadata.Id}">{!metadata.copado__Metadata_API_Name__c}</apex:outputLink>
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputLink value="/{!metadata.copado__User_Story__c}">{!metadata.User_Story__r.Name}</apex:outputLink>
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputText value="{!metadata.copado__Status__c}" />
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputField value="{!metadata.copado__Status_Icon__c}" />
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputText value="{!metadata.copado__Last_Commit_Date__c}" />
-                                                    </td>
-                                                </tr>
-                                            </apex:repeat>
-                                            </tbody>
-                                        </table>
-                                    </apex:pageBlock>
+                                                <table id="userStoryMetadatasTable" style="overflow:scroll">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>{!$ObjectType.User_Story_Metadata__c.fields.Metadata_API_Name__c.Label}</th>
+                                                        <th>{!$ObjectType.User_Story_Metadata__c.fields.User_Story__c.Label}</th>
+                                                        <th>{!$ObjectType.User_Story_Metadata__c.fields.Status__c.Label}</th>
+                                                        <th>{!$ObjectType.User_Story_Metadata__c.fields.Status_Icon__c.Label}</th>
+                                                        <th>{!$ObjectType.User_Story_Metadata__c.fields.Last_Commit_Date__c.Label}</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style="overflow:scroll" id="usMtBody">
+                                                    <apex:repeat value="{!userStoryMetadatas}" var="metadata">
+                                                        <tr>
+                                                            <td>
+                                                                <apex:outputLink value="/{!metadata.Id}">{!metadata.copado__Metadata_API_Name__c}</apex:outputLink>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputLink value="/{!metadata.copado__User_Story__c}">{!metadata.User_Story__r.Name}</apex:outputLink>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!metadata.copado__Status__c}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputField value="{!metadata.copado__Status_Icon__c}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!metadata.copado__Last_Commit_Date__c}" />
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            
+                                        </apex:pageBlock>
+                                    </apex:outputPanel>
                                 </apex:outputPanel>
                             </apex:form>
                         </div>
@@ -924,216 +968,168 @@
                             </apex:outputPanel>
                         </div>
                         <div id="tab-default-5" class="slds-tabs_default__content slds-hide" role="tabpanel" aria-labelledby="tab-default-5__item">
-                            <apex:outputPanel id="summaryPanel" styleClass="slds-scope copado-lightning-container" layout="block">
-                                <apex:pageBlock id="strs" rendered="{!isCSTEnabled}">
-                                    <script type="text/javascript">
-                                        $copado( document ).ready(function() {
-                                            var copadoTcSRT = $copado("#test-circleSRT");
-                                            var copadoTcDRT = $copado("#test-circleDRT");
-                                            var copadoTcSUST = $copado("#test-circleSUST");
-                                            var copadoTcDUST = $copado("#test-circleDUST");
-                                            copadoTcSRT.circliful({
-                                                text: "{!JSENCODE($Label.copado__source_regression_tests)}",
-                                                animationStep: 5,
-                                                foregroundBorderWidth: 5,
-                                                backgroundBorderWidth: 15,
-                                                percent: {!IF(str.countAllSourceRegression>0, str.countFinishedSourceRegression*100/str.countAllSourceRegression, 0)}
-                                            });
-
-                                            copadoTcSRT.find(".circle-info-half").attr('data-text', '{!IF(str.countAllSourceRegression>0, (TEXT(str.countFinishedSourceRegression)+"/"+TEXT(str.countAllSourceRegression)), "0/0")}');
-                                            copadoTcSRT.find(".circle-info-half").css('z-index', '-1');
-
-                                            copadoTcDRT.circliful({
-                                                text: "{!JSENCODE($Label.copado__destination_regression_tests)}",
-                                                animationStep: 5,
-                                                foregroundBorderWidth: 5,
-                                                backgroundBorderWidth: 15,
-                                                percent: {!IF(str.countAllDestinationRegression>0, str.countFinishedDestinationRegression*100/str.countAllDestinationRegression, 0)}
-                                            });
-
-                                            copadoTcDRT.find(".circle-info-half").attr('data-text', '{!IF(str.countAllDestinationRegression>0, (TEXT(str.countFinishedDestinationRegression)+"/"+TEXT(str.countAllDestinationRegression)), "0/0")}');
-                                            copadoTcDRT.find(".circle-info-half").css('z-index', '-1');
-
-                                            copadoTcSUST.circliful({
-                                                text: "{!JSENCODE($Label.copado__source_user_story_tests)}",
-                                                animationStep: 5,
-                                                foregroundBorderWidth: 5,
-                                                backgroundBorderWidth: 15,
-                                                percent: {!IF(str.countAllSourceUserStory>0, str.countFinishedSourceUserStory*100/str.countAllSourceUserStory, 0)}
-                                            });
-                                            copadoTcSUST.find(".circle-info-half").attr('data-text', '{!IF(str.countAllSourceUserStory>0, (TEXT(str.countFinishedSourceUserStory)+"/"+TEXT(str.countAllSourceUserStory)), "0/0")}');
-                                            copadoTcSUST.find(".circle-info-half").css('z-index', '-1');
-
-                                            copadoTcDUST.circliful({
-                                                text: "{!JSENCODE($Label.copado__destination_user_story_tests)}",
-                                                animationStep: 5,
-                                                foregroundBorderWidth: 5,
-                                                backgroundBorderWidth: 15,
-                                                percent: {!IF(str.countAllDestinationUserStory>0, str.countFinishedDestinationUserStory*100/str.countAllDestinationUserStory, 0)}
-                                            });
-                                            copadoTcDUST.find(".circle-info-half").attr('data-text', '{!IF(str.countAllDestinationUserStory>0, (TEXT(str.countFinishedDestinationUserStory)+"/"+TEXT(str.countAllDestinationUserStory)), "0/0")}');
-                                            copadoTcDUST.find(".circle-info-half").css('z-index', '-1');
-
-                                        });
-                                    </script>
-
-                                    <apex:pageBlockSection id="sTestResults" columns="1" collapsible="false" title="{!$Label.copado__selenium_test_results_summary}">
-                                        <script type="text/javascript">
-                                            (function() {
-                                                // Code to preserve the open/close state of this section: cookie co.PR.CSTR to uniquely identify this page
-                                                var jsCookies = {
-                                                    get: function(c_name) {
-                                                        if (document.cookie.length > 0) {
-                                                            var c_start = document.cookie.indexOf(c_name + "=");
-                                                            if (c_start != -1) {
-                                                                c_start = c_start + c_name.length + 1;
-                                                                var c_end = document.cookie.indexOf(";", c_start);
-                                                                if (c_end == -1) {
-                                                                    c_end = document.cookie.length;
+                            <apex:outputPanel id="whole-selenium-panel" layout="block">
+                                <apex:outputPanel layout="none" rendered="{!enableSTS}">
+                                    <apex:outputPanel id="summaryPanel" styleClass="slds-scope copado-lightning-container" layout="block">
+                                        <apex:pageBlock id="strs" rendered="{!isCSTEnabled}">
+                                            <apex:pageBlockSection id="sTestResults" columns="1" collapsible="false" title="{!$Label.copado__selenium_test_results_summary}">
+                                                <script type="text/javascript">
+                                                    (function() {
+                                                        // Code to preserve the open/close state of this section: cookie co.PR.CSTR to uniquely identify this page
+                                                        var jsCookies = {
+                                                            get: function(c_name) {
+                                                                if (document.cookie.length > 0) {
+                                                                    var c_start = document.cookie.indexOf(c_name + "=");
+                                                                    if (c_start != -1) {
+                                                                        c_start = c_start + c_name.length + 1;
+                                                                        var c_end = document.cookie.indexOf(";", c_start);
+                                                                        if (c_end == -1) {
+                                                                            c_end = document.cookie.length;
+                                                                        }
+                                                                        return unescape(document.cookie.substring(c_start, c_end));
+                                                                    }
                                                                 }
-                                                                return unescape(document.cookie.substring(c_start, c_end));
+                                                                return "";
+                                                            },
+                                                            set: function(c_name, value, expiredays) {
+                                                                var exdate = new Date();
+                                                                exdate.setDate(exdate.getDate() + expiredays);
+                                                                document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : "; expires=" + exdate.toUTCString());
+                                                            }
+                                                        };
+                                                        var elt = '{!$Component.sTestResults}';
+                                                        if(elt=document.getElementById(elt)) {
+                                                            var section = elt.querySelector('div.pbSubsection');
+                                                            if(  (elt=elt.querySelector('img.hideListButton')) ) {
+                                                                elt.style.float = 'left';
+                                                                elt.addEventListener('click', function() {
+                                                                    jsCookies.set('co.PR.CSTR', section.style.display!=='none'?'':'1');
+                                                                });
+                                                                var sectionIsClosed = jsCookies.get('co.PR.CSTR');
+                                                                if(sectionIsClosed) {
+                                                                    twistSection(elt); // sf function to close the section.
+                                                                }
                                                             }
                                                         }
-                                                        return "";
-                                                    },
-                                                    set: function(c_name, value, expiredays) {
-                                                        var exdate = new Date();
-                                                        exdate.setDate(exdate.getDate() + expiredays);
-                                                        document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : "; expires=" + exdate.toUTCString());
-                                                    }
-                                                };
-                                                var elt = '{!$Component.sTestResults}';
-                                                if(elt=document.getElementById(elt)) {
-                                                    var section = elt.querySelector('div.pbSubsection');
-                                                    if(  (elt=elt.querySelector('img.hideListButton')) ) {
-                                                        elt.style.float = 'left';
-                                                        elt.addEventListener('click', function() {
-                                                            jsCookies.set('co.PR.CSTR', section.style.display!=='none'?'':'1');
-                                                        });
-                                                        var sectionIsClosed = jsCookies.get('co.PR.CSTR');
-                                                        if(sectionIsClosed) {
-                                                            twistSection(elt); // sf function to close the section.
-                                                        }
-                                                    }
-                                                }
-                                            })();
-                                        </script>
-                                        <div class="slds-grid slds-grid_pull-padded">
-                                            <div class="slds-col slds-size_1-of-4 slds-medium-size_2-of-8 slds-large-size_3-of-12">
-                                                <div style="text-align: center; height: 160px">
-                                                    <div class="slds-text-title_caps">{!JSENCODE($Label.SOURCE_REGRESSION_TESTS)}</div>
-                                                    <div id="test-circleSRT" data-startdegree="0" data-type="full" data-dimension="150"
-                                                         data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
-                                                         data-text="{!IF(str.countAllSourceRegression>0, TEXT(str.countFinishedSourceRegression)+"/"+TEXT(str.countAllSourceRegression), "0/0")}"
-                                                         data-percent="{!IF(str.countAllSourceRegression>0, str.countFinishedSourceRegression*100/str.countAllSourceRegression, 0)}"
-                                                         data-fgcolor="{!if(str.countErrorsSourceRegression>0, '#d68184', '#60C170')}"
-                                                         data-bgcolor="#eee" data-fill="#fff" style="margin:auto;">
+                                                    })();
+                                                </script>
+                                                <div class="slds-grid slds-grid_pull-padded">
+                                                    <div class="slds-col slds-size_1-of-4 slds-medium-size_2-of-8 slds-large-size_3-of-12">
+                                                        <div style="text-align: center; height: 160px">
+                                                            <div class="slds-text-title_caps">{!JSENCODE($Label.SOURCE_REGRESSION_TESTS)}</div>
+                                                            <div id="test-circleSRT" data-startdegree="0" data-type="full" data-dimension="150"
+                                                                data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
+                                                                data-text="{!IF(str.countAllSourceRegression>0, TEXT(str.countFinishedSourceRegression)+"/"+TEXT(str.countAllSourceRegression), "0/0")}"
+                                                                data-percent="{!IF(str.countAllSourceRegression>0, str.countFinishedSourceRegression*100/str.countAllSourceRegression, 0)}"
+                                                                data-fgcolor="{!if(str.countErrorsSourceRegression>0, '#d68184', '#60C170')}"
+                                                                data-bgcolor="#eee" data-fill="#fff" style="margin:auto;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+                                                        <div style="text-align: center;">
+                                                            <div class="slds-text-title_caps">{!JSENCODE($Label.SOURCE_USER_STORY_TESTS)}</div>
+                                                            <div id="test-circleSUST" data-startdegree="0" data-type="full" data-dimension="150"
+                                                                data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
+                                                                data-text="{!IF(str.countAllSourceUserStory>0, TEXT(str.countFinishedSourceUserStory)+"/"+TEXT(str.countAllSourceUserStory), "0/0")}"
+                                                                data-percent="{!IF(str.countAllSourceUserStory>0, str.countFinishedSourceUserStory*100/str.countAllSourceUserStory, 0)}"
+                                                                data-fgcolor="{!if(str.countErrorsSourceUserStory>0, '#d68184', '#60C170')}"
+                                                                data-bgcolor="#eee" data-fill="#fff" style="margin:auto;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+                                                        <div style="text-align: center;">
+                                                            <div class="slds-text-title_caps">{!JSENCODE($Label.DESTINATION_REGRESSION_TESTS)}</div>
+                                                            <div id="test-circleDRT" data-startdegree="0" data-type="full" data-dimension="150"
+                                                                data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
+                                                                data-text="{!IF(str.countAllDestinationRegression>0, TEXT(str.countFinishedDestinationRegression)+"/"+TEXT(str.countAllDestinationRegression), "0/0")}"
+                                                                data-percent="{!IF(str.countAllDestinationRegression>0, str.countFinishedDestinationRegression*100/str.countAllDestinationRegression, 0)}"
+                                                                data-fgcolor="{!if(str.countErrorsDestinationRegression>0, '#d68184', '#60C170')}"
+                                                                data-bgcolor="#eee" data-fill="#fff" style="margin:auto;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-4 slds-large-size_1-of-4">
+                                                        <div style="text-align: center;">
+                                                            <div class="slds-text-title_caps">{!JSENCODE($Label.DESTINATION_USER_STORY_TESTS)}</div>
+                                                            <div id="test-circleDUST" data-startdegree="0" data-type="full" data-dimension="150"
+                                                                data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
+                                                                data-text="{!IF(str.countAllDestinationUserStory>0, TEXT(str.countFinishedDestinationUserStory)+"/"+TEXT(str.countAllDestinationUserStory), "0/0")}"
+                                                                data-percent="{!IF(str.countAllDestinationUserStory>0, str.countFinishedDestinationUserStory*100/str.countAllDestinationUserStory, 0)}"
+                                                                data-fgcolor="{!if(str.countErrorsDestinationUserStory>0, '#d68184', '#60C170')}"
+                                                                data-bgcolor="#eee" data-fill="#fff" style="margin:auto;">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-4 slds-large-size_1-of-4">
-                                                <div style="text-align: center;">
-                                                    <div class="slds-text-title_caps">{!JSENCODE($Label.SOURCE_USER_STORY_TESTS)}</div>
-                                                    <div id="test-circleSUST" data-startdegree="0" data-type="full" data-dimension="150"
-                                                         data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
-                                                         data-text="{!IF(str.countAllSourceUserStory>0, TEXT(str.countFinishedSourceUserStory)+"/"+TEXT(str.countAllSourceUserStory), "0/0")}"
-                                                         data-percent="{!IF(str.countAllSourceUserStory>0, str.countFinishedSourceUserStory*100/str.countAllSourceUserStory, 0)}"
-                                                         data-fgcolor="{!if(str.countErrorsSourceUserStory>0, '#d68184', '#60C170')}"
-                                                         data-bgcolor="#eee" data-fill="#fff" style="margin:auto;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-4 slds-large-size_1-of-4">
-                                                <div style="text-align: center;">
-                                                    <div class="slds-text-title_caps">{!JSENCODE($Label.DESTINATION_REGRESSION_TESTS)}</div>
-                                                    <div id="test-circleDRT" data-startdegree="0" data-type="full" data-dimension="150"
-                                                         data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
-                                                         data-text="{!IF(str.countAllDestinationRegression>0, TEXT(str.countFinishedDestinationRegression)+"/"+TEXT(str.countAllDestinationRegression), "0/0")}"
-                                                         data-percent="{!IF(str.countAllDestinationRegression>0, str.countFinishedDestinationRegression*100/str.countAllDestinationRegression, 0)}"
-                                                         data-fgcolor="{!if(str.countErrorsDestinationRegression>0, '#d68184', '#60C170')}"
-                                                         data-bgcolor="#eee" data-fill="#fff" style="margin:auto;"></div>
-                                                </div>
-                                            </div>
-                                            <div class="slds-col slds-size_1-of-4 slds-medium-size_1-of-4 slds-large-size_1-of-4">
-                                                <div style="text-align: center;">
-                                                    <div class="slds-text-title_caps">{!JSENCODE($Label.DESTINATION_USER_STORY_TESTS)}</div>
-                                                    <div id="test-circleDUST" data-startdegree="0" data-type="full" data-dimension="150"
-                                                         data-info="platforms" data-width="20" data-fontsize="18" data-animationstep="0"
-                                                         data-text="{!IF(str.countAllDestinationUserStory>0, TEXT(str.countFinishedDestinationUserStory)+"/"+TEXT(str.countAllDestinationUserStory), "0/0")}"
-                                                         data-percent="{!IF(str.countAllDestinationUserStory>0, str.countFinishedDestinationUserStory*100/str.countAllDestinationUserStory, 0)}"
-                                                         data-fgcolor="{!if(str.countErrorsDestinationUserStory>0, '#d68184', '#60C170')}"
-                                                         data-bgcolor="#eee" data-fill="#fff" style="margin:auto;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </apex:pageBlockSection>
-                                </apex:pageBlock>
-                            </apex:outputPanel>
-                            <apex:outputPanel id="seleniumPanel" layout="block" styleClass="copado-lightning-container">
-                                <apex:form id="STGform">
-                                    <apex:actionPoller action="{!refreshSeleniumTestGroups}" enabled="{!IsSeleniumRunning}"
-                                                       reRender="STGform,summaryPanel" interval="5" />
-                                    <apex:actionFunction name="reRenderSeleniumTestGroups" action="{!runCalculate}" reRender="summaryPanel" onComplete="initTus();initTuso();" />
+                                            </apex:pageBlockSection>
+                                        </apex:pageBlock>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="seleniumPanel" layout="block" styleClass="copado-lightning-container">
+                                        <apex:form id="STGform">
+                                            <apex:actionPoller action="{!refreshSeleniumTestGroups}" enabled="{!IsSeleniumRunning}"
+                                                            reRender="whole-selenium-panel" interval="5" oncomplete="prepareSTSGraph();" />
 
-                                    <apex:pageBlock id="stg" title="{!$Label.copado__promotion_selenium_tests}">
-                                        <apex:pageBlockButtons location="top">
-                                            <apex:commandButton value="{!$Label.copado__promotion_run_source_tests_regression}"
-                                                                action="{!runTestsSourceRegression}"
-                                                                styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
-                                            <apex:commandButton value="{!$Label.copado__promotion_run_source_tests_user_story}"
-                                                                action="{!runTestsSourceUserStory}"
-                                                                styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
-                                            <apex:commandButton value="{!$Label.copado__promotion_run_destination_tests_regression}"
-                                                                action="{!runTestsDestinationRegression}"
-                                                                styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
-                                            <apex:commandButton value="{!$Label.copado__promotion_run_destination_tests_user_story}"
-                                                                action="{!runTestsDestinationUserStory}"
-                                                                styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
-                                        </apex:pageBlockButtons>
+                                            <apex:pageBlock id="stg" title="{!$Label.copado__promotion_selenium_tests}">
+                                                <apex:pageBlockButtons location="top">
+                                                    <apex:commandButton value="{!$Label.copado__promotion_run_source_tests_regression}"
+                                                                        action="{!runTestsSourceRegression}"
+                                                                        styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
+                                                    <apex:commandButton value="{!$Label.copado__promotion_run_source_tests_user_story}"
+                                                                        action="{!runTestsSourceUserStory}"
+                                                                        styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
+                                                    <apex:commandButton value="{!$Label.copado__promotion_run_destination_tests_regression}"
+                                                                        action="{!runTestsDestinationRegression}"
+                                                                        styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
+                                                    <apex:commandButton value="{!$Label.copado__promotion_run_destination_tests_user_story}"
+                                                                        action="{!runTestsDestinationUserStory}"
+                                                                        styleClass="{!IF($User.UIThemeDisplayed=='Theme3','','slds-button slds-button--neutral')}" />
+                                                </apex:pageBlockButtons>
 
-                                        <table id="seleniumTestGroupTable" style="overflow:scroll">
-                                            <thead>
-                                            <tr>
-                                                <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.Name.Label}</th>
-                                                <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Type__c.Label}</th>
-                                                <th>{!$Label.copado__location}</th>
-                                                <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Environment__c.Label}</th>
-                                                <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Date__c.Label}</th>
-                                                <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status__c.Label}</th>
-                                                <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Icon__c.Label}</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody style="overflow:scroll">
-                                            <apex:repeat value="{!seleniumTestGroups}" var="st">
-                                                <tr>
-                                                    <td>
-                                                        <apex:outputLink value="{!URLFOR($Action.copado__Selenium_Test_Group__c.View, st.testGroup.Id)}">{!st.testGroup.Name}</apex:outputLink>
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputText value="{!st.testGroup.copado__Type__c}" />
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputText value="{!st.location}" />
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputLink value="/{!st.testGroup.copado__Environment__c}">{!st.testGroup.Environment__r.Name}</apex:outputLink>
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputText value="{!st.testGroup.copado__Status_Date__c}" />
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputText value="{!st.testGroup.copado__Status__c}" />
-                                                    </td>
-                                                    <td>
-                                                        <apex:outputField value="{!st.testGroup.copado__Status_Icon__c}" />
-                                                    </td>
-                                                </tr>
-                                            </apex:repeat>
-                                            </tbody>
-                                        </table>
-                                    </apex:pageBlock>
-                                </apex:form>
+                                                <table id="seleniumTestGroupTable" style="overflow:scroll">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.Name.Label}</th>
+                                                        <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Type__c.Label}</th>
+                                                        <th>{!$Label.copado__location}</th>
+                                                        <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Environment__c.Label}</th>
+                                                        <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Date__c.Label}</th>
+                                                        <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status__c.Label}</th>
+                                                        <th>{!$ObjectType.copado__Selenium_Test_Group__c.fields.copado__Status_Icon__c.Label}</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style="overflow:scroll">
+                                                    <apex:repeat value="{!seleniumTestGroups}" var="st">
+                                                        <tr>
+                                                            <td>
+                                                                <apex:outputLink value="{!URLFOR($Action.copado__Selenium_Test_Group__c.View, st.testGroup.Id)}">{!st.testGroup.Name}</apex:outputLink>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!st.testGroup.copado__Type__c}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!st.location}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputLink value="/{!st.testGroup.copado__Environment__c}">{!st.testGroup.Environment__r.Name}</apex:outputLink>
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!st.testGroup.copado__Status_Date__c}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputText value="{!st.testGroup.copado__Status__c}" />
+                                                            </td>
+                                                            <td>
+                                                                <apex:outputField value="{!st.testGroup.copado__Status_Icon__c}" />
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </apex:pageBlock>
+                                        </apex:form>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
                             </apex:outputPanel>
                         </div>
                     </div>

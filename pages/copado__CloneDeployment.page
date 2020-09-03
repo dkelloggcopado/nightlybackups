@@ -7,7 +7,7 @@
         <apex:form id="theForm" styleClass="copado-lightning-container">
             <apex:pageMessages />
             <apex:sectionHeader title="{!$ObjectType.copado__Deployment__c.Label}" subtitle="{!dep.Name}" />
-            <apex:pageBlock id="pb_cloneDeployment"  mode="edit" helpUrl="https://docs.copa.do/" helpTitle="{!$Label.copado__help_for_this_page}">
+            <apex:pageBlock id="pb_cloneDeployment"  mode="edit" helpUrl="https://docs.copado.com/" helpTitle="{!$Label.copado__help_for_this_page}">
                 <apex:pageblockButtons location="bottom">
                     <apex:commandButton value="{!$Label.site.cancel}" action="{!cancel}" />
                     <apex:commandButton value="{!$Label.copado__next}" styleClass="btnImportant" action="{!doClone}" />

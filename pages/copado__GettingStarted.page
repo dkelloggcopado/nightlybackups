@@ -99,7 +99,7 @@
                                                     </div>
                                                 </header>
                                                 <div class="slds-no-flex">
-                                                    <a href="https://docs.copa.do/"
+                                                    <a href="https://docs.copado.com/"
                                                        target="_blank" class="slds-card__header-link slds-truncate">
                                                         <button class="slds-button slds-button_neutral" type="button">{!$Label.LEARN} </button>
                                                     </a>
@@ -128,7 +128,7 @@
                                                     </div>
                                                 </header>
                                                 <div class="slds-no-flex">
-                                                    <a href="https://www.copa.do/support"
+                                                    <a href="https://www.copado.com/support"
                                                        target="_blank" class="slds-card__header-link slds-truncate">
                                                         <button class="slds-button slds-button_neutral" type="button">{!$Label.HELP_GET}</button>
                                                     </a>
@@ -156,7 +156,7 @@
                                                     </div>
                                                 </header>
                                                 <div class="slds-no-flex">
-                                                    <a href="https://www.copa.do/blog"
+                                                    <a href="https://www.copado.com/blog"
                                                        target="_blank" class="slds-card__header-link slds-truncate">
                                                         <button class="slds-button slds-button_neutral" type="button">{!$Label.VISIT}</button>
                                                     </a>
@@ -173,7 +173,7 @@
                             <!-- TAB: ORGS -->
                             <div id="tab-scoped-2" class="slds-tabs--scoped__content slds-hide" role="tabpanel"
                                  aria-labelledby="tab-scoped-2__item">
-                                <c:CopadoHelp sectionText="{!$Label.copado__org_credential_help}" sectionLink="https://docs.copa.do/org-credentials/how-to-create-an-org-credential"/>
+                                <c:CopadoHelp sectionText="{!$Label.copado__org_credential_help}" sectionLink="https://docs.copado.com/org-credentials/how-to-create-an-org-credential"/>
                                 <apex:outputPanel layout="block" id="orgcredentialForm">
                                     <article class="slds-card">
                                         <header class="slds-card__header slds-grid">
@@ -354,7 +354,7 @@
                             <!-- TAB: ACCOUNT SUMMARY -->
                             <div id="tab-scoped-3" class="slds-tabs--scoped__content slds-hide" role="tabpanel"
                                  aria-labelledby="tab-scoped-3__item">
-                                <c:CopadoHelp sectionText="{!$Label.copado__account_summary_help}" sectionLink="https://docs.copa.do/copado-core/copado-license-manager"/>
+                                <c:CopadoHelp sectionText="{!$Label.copado__account_summary_help}" sectionLink="https://docs.copado.com/copado-core/copado-license-manager"/>
                                 <article class="slds-card">
                                     <apex:outputPanel layout="block" id="licenseManagerCard">
                                         <header class="slds-card__header slds-grid">
@@ -454,7 +454,7 @@
                             <!-- TAB: GIT -->
                             <div id="tab-scoped-4" class="slds-tabs--scoped__content slds-hide" role="tabpanel"
                                  aria-labelledby="tab-scoped-4__item">
-                                <c:CopadoHelp sectionText="{!$Label.copado__git_repository_help}" sectionLink="https://docs.copa.do/git-repository/git-repository-overview"/>
+                                <c:CopadoHelp sectionText="{!$Label.copado__git_repository_help}" sectionLink="https://docs.copado.com/git-repository/git-repository-overview"/>
                                 <apex:outputPanel layout="block" id="gitRepoForm">
                                     <article class="slds-card">
                                         <header class="slds-card__header slds-grid">
@@ -656,7 +656,7 @@
                             <!-- TAB: DEPLOYMENT FLOWS -->
                             <div id="tab-scoped-5" class="slds-tabs--scoped__content slds-hide" role="tabpanel"
                                  aria-labelledby="tab-scoped-5__item">
-                                <c:CopadoHelp sectionText="{!$Label.copado__deployment_flow_help}" sectionLink="https://docs.copa.do/branch-management-application/branch-management-application-overview"/>
+                                <c:CopadoHelp sectionText="{!$Label.copado__deployment_flow_help}" sectionLink="https://docs.copado.com/branch-management-application/branch-management-application-overview"/>
                                 <apex:outputPanel layout="block" id="deploymentFlowForm">
                                     <article class="slds-card">
                                         <header class="slds-card__header slds-grid">
@@ -674,10 +674,9 @@
                                             </div>
                                             <div class="slds-no-flex">
                                                 <apex:outputPanel layout="none" rendered="{!AND(selectedDeploymentFlow != 'none',selectedDeploymentFlow != '')}">
-                                                    <apex:outputLink value="{!URLFOR($Page.copado__BranchManagement,null,[id=selectedDeploymentFlow])}"
-                                                                     target="_blank"
-                                                                     styleClass="slds-button slds-button--neutral slds-col--bump-left"> {!$Label.copado__manage_branches}
-                                                    </apex:outputLink>
+                                                    <apex:outputPanel layout="none" rendered="{!AND(selectedDeploymentFlow != 'none',selectedDeploymentFlow != '')}">
+                                                        <apex:commandLink action="{!manageReleases}" onClick="lockScreen();" onComplete="unlockScreen();" styleClass="slds-button slds-button--neutral slds-col--bump-left">{!$Label.copado__manage_branches}</apex:commandLink>
+                                                    </apex:outputPanel>  
                                                 </apex:outputPanel>
                                                 <apex:outputPanel layout="none"
                                                                   rendered="{!!enableDeploymentFlowForm}">

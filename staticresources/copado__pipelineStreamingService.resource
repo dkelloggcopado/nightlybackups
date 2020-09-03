@@ -1,14 +1,17 @@
 var ccdStream = ccdStream || {};
 
-((pipelineStreamingService) => {
-    var pipelineStreamingService = pipelineStreamingService || {};
+((service) => {
+    service.config = service.config || {};
 
-    pipelineStreamingService.ns = '';
-    pipelineStreamingService.timeout = 0;
-    pipelineStreamingService.duration = 0;
-    pipelineStreamingService.sobjectAccessError = '';
-    pipelineStreamingService.pushTopicName = 'CopadoEnvironments';
-    pipelineStreamingService.streamCallback = {};
+    ((config) => {
+        config.ns = '';
+        config.timeout = 0;
+        config.duration = 0;
+        config.sobjectAccessError = '';
+        config.pushTopicName = 'CopadoEnvironments';
+        config.streamCallback = {};
+    })(service.config);
+
     var subscriptionRef;
     var hasPushTopic = false;
     var alreadyInitialized = false;
@@ -28,33 +31,32 @@ var ccdStream = ccdStream || {};
 
     var _errorOnAccessingSobject = (e, sobjectType) => {
         console.error(e, e.faultstring);
-        var msg = pipelineStreamingService.sobjectAccessError + (e.faultstring || e);
+        var msg = service.config.sobjectAccessError + (e.faultstring || e);
         msg = msg.replace('{SOBJECT}', sobjectType);
         return alert(msg);
     };
 
     var _getPushTopics = () => {
-        var me = pipelineStreamingService;
+        var pushTopicName = service.config.pushTopicName;
         try {
             var result = sforce.connection.query('SELECT Id, Name, Query, ApiVersion, IsActive, NotifyForFields, NotifyForOperations, '
                                                + 'Description, NotifyForOperationCreate, NotifyForOperationUpdate, NotifyForOperationDelete, '
-                                               + 'NotifyForOperationUndelete FROM PushTopic WHERE Name = \'' + me.pushTopicName + '\'');
+                                               + 'NotifyForOperationUndelete FROM PushTopic WHERE Name = \'' + pushTopicName + '\'');
         } catch(e) {
             return _errorOnAccessingSobject(e,'PushTopic');
         }
         var records = result.getArray('records');
         if(records.length > 0) {
             for(var i = 0; i < records.length; i++) {
-                if(records[i].Name == me.pushTopicName) {
-                    console.info('Push topic for ' + me.pushTopicName + ' already exists.');
-                    me.hasPushTopic = true;
+                if(records[i].Name == pushTopicName) {
+                    console.info('Push topic for ' + pushTopicName + ' already exists.');
+                    hasPushTopic = true;
                 }
             }
         }
     };
 
      var _createPushTopic = (name, query) => {
-         var me = pipelineStreamingService;
          var pt = new sforce.SObject('PushTopic');
          pt.Name = name;
          pt.Query = query;
@@ -70,15 +72,16 @@ var ccdStream = ccdStream || {};
          } catch(e) {
              return _errorOnAccessingSobject(e, 'PushTopic');
          }
+         var pushTopicName = service.config.pushTopicName;
          if(result[0].getBoolean('success')) {
-             console.info(me.pushTopicName + ' PushTopic not found and a new one is created');
+             console.info(pushTopicName + ' PushTopic not found and a new one is created');
          } else {
-             console.error('Problem creating ' + me.pushTopicName + ' PushTopic: ', result[0]);
+             console.error('Problem creating ' + pushTopicName + ' PushTopic: ', result[0]);
              return _errorOnAccessingSobject(result[0], 'PushTopic');
          }
      };
 
-     pipelineStreamingService.initStreaming = () => {
+     service.initStreaming = () => {
          var query = 'SELECT Id, Name FROM PushTopic limit 10';
          var result = sforce.connection.query(query, {
              onSuccess: function(res) {
@@ -91,53 +94,55 @@ var ccdStream = ccdStream || {};
      };
 
      var _init = () => {
-        var me = pipelineStreamingService;
-        if(me.alreadyInitialized) {
+        if(alreadyInitialized) {
             return;
         }
-        me.alreadyInitialized = true;
+        alreadyInitialized = true;
         try {
-            var query = 'Select Id, Name, ' + me.ns + 'Latest_Deployment__c, ' + me.ns + 'Latest_Deployment_Status__c FROM ' + me.ns + 'Environment__c';
+            var query = 'Select Id, Name, ' + service.config.ns + 'Latest_Deployment__c, ' + service.config.ns + 'Latest_Deployment_Status__c FROM ' + service.config.ns + 'Environment__c';
             _getPushTopics();
-            if(!me.hasPushTopic) {
-                _createPushTopic(me.pushTopicName, query);
+            if(!hasPushTopic) {
+                _createPushTopic(service.config.pushTopicName, query);
             }
         } catch(e) {
             console.error(e);
-            return _errorOnAccessingSobject(e, me.ns + 'Environment__c');
+            return _errorOnAccessingSobject(e, service.config.ns + 'Environment__c');
         }
         var status = $copado.cometd.getStatus();
         if(status !== cometd_statuses.CONNECTED) {
             var asyncConnect = new Promise(function(resolve, reject) {
                 _connectToStreaming();
             });
+        } else {
+            _subscribeToStreaming();
         }
      };
 
      var _connectToStreaming = () => {
-         if(retryTimes == 0) {
-             return;
+         var status = $copado.cometd.getStatus();
+         if(status == cometd_statuses.DISCONNECTED || status == cometd_statuses.UNCONNECTED) {
+             if(retryTimes == 0) {
+                 return;
+             }
+             retryTimes--;
+             console.info('[' + service.config.pushTopicName + '] connecting to streaming... retry attempts left: ' + retryTimes);
          }
-         retryTimes--;
-         console.info('[' + pipelineStreamingService.pushTopicName + '] connecting to streaming... retry attempts left: ' + retryTimes);
          setTimeout(function() {
-             var status = $copado.cometd.getStatus();
-             console.log('[' + pipelineStreamingService.pushTopicName + '] status: ' + status);
+             status = $copado.cometd.getStatus();
+             console.log('[' + service.config.pushTopicName + '] status: ' + status);
              switch(status) {
                  case cometd_statuses.CONNECTED:
-                    subscriptionRef = $copado.cometd.subscribe('/topic/' + pipelineStreamingService.pushTopicName, function(message) {
-                        _readStream(message);
-                    });
-                    if(pipelineStreamingService.duration) {
-                        _startTimer();
-                    }
+                    _subscribeToStreaming();
                     break;
                  case cometd_statuses.HANDSHAKING:
                  case cometd_statuses.HANDSHAKEN:
                  case cometd_statuses.CONNECTING:
                  case cometd_statuses.REHANDSHAKING:
+                    _connectToStreaming();
+                    break;
                  case cometd_statuses.DISCONNECTED:
-                    pipelineStreamingService.c = $copado.cometd.init({
+                 case cometd_statuses.UNCONNECTED:
+                    service.c = $copado.cometd.init({
                           url: window.location.protocol + '//' + window.location.hostname + '/cometd/37.0/',
                           requestHeaders: { Authorization: 'OAuth ' + __sfdcSessionId }
                      });
@@ -149,70 +154,82 @@ var ccdStream = ccdStream || {};
          }, 1000);
      };
 
+     var _subscribeToStreaming = () => {
+         subscriptionRef = $copado.cometd.subscribe('/topic/' + service.config.pushTopicName, function(message) {
+             _readStream(message);
+         });
+         if(service.config.duration) {
+             _startTimer();
+         }
+     };
+
      var _startTimer = () => {
          setTimeout(function() {
             timeoutInterval = setInterval(_runCountdown(), 1000);
          }, 10000);
          document.addEventListener('click', function() {
-            pipelineStreamingService.timeout = pipelineStreamingService.duration;
+            service.config.timeout = service.config.duration;
          });
      };
 
      var _runCountdown = () => {
-          if(pipelineStreamingService.timeout == 0) {
+          if(service.config.timeout == 0) {
               if(subscriptionRef) {
                   $copado.cometd.unsubscribe(subscriptionRef);
-                  console.info('Subscription to ' + pipelineStreamingService.pushTopicName + ' ended.');
+                  console.info('Subscription to ' + service.config.pushTopicName + ' ended.');
               }
               clearInterval(timeoutInterval);
               return;
           }
           setTimeout(function() {
-              pipelineStreamingService.timeout -= 1000;
+              service.config.timeout -= 1000;
               _runCountdown();
           }, 1000);
      };
 
-     pipelineStreamingService.disconnect = () => {
+     service.disconnect = () => {
           $copado.cometd.disconnect();
      };
 
      var _readStream = (message) => {
-         var me = pipelineStreamingService;
          console.info('Push message: ', message);
-         var statusMap = pipelineStreamingService.statusMap;
-         if(message.channel == '/topic/' + pipelineStreamingService.pushTopicName) {
-             var newStatus = message.data.sobject[me.ns + 'Latest_Deployment_Status__c'];
-             var idString = '#deploymentStatus_' + message.data.sobject.Id;
-             var idStringNoStatus = '#noDeploymentStatus_' + message.data.sobject.Id;
+         var statusMap = service.statusMap;
+         if(message.channel == '/topic/' + service.config.pushTopicName) {
+             var thisRecord = message.data.sobject;
+             var newStatus = thisRecord[service.config.ns + 'Latest_Deployment_Status__c'];
+             var idString = '#deploymentStatus_' + thisRecord.Id;
+             var idStringNoStatus = '#noDeploymentStatus_' + thisRecord.Id;
              var noDeploymentStatus = $copado(idStringNoStatus);
-             if(noDeploymentStatus.length > 0) {
-                var container = $copado(idStringNoStatus).parent();
-                $copado(idStringNoStatus).remove();
-                container.append('<img id="' + idString + '" src="" />');
-             }
              var environmentStatus = $copado(idString);
-             var elementType = environmentStatus.prop('nodeName');
-             if(elementType === 'DIV' && newStatus !== 'In progress') {
-                 _replaceSpinner(idString);
-             } else if (elementType === 'IMG' && newStatus === 'In progress') {
-                 _replaceImg(idString);
-                 return;
+             var container = $copado(idString).parent();
+             if(noDeploymentStatus.length > 0) {
+                environmentStatus = $copado(idStringNoStatus);
+                container = $copado(idStringNoStatus).parent();
+                $copado(idStringNoStatus).remove();
+                container.append('<img id="' + idString.replace('#','') + '" src="" />');
              }
-             var statusElem = $copado(idString);
-             if(statusElem && statusMap !== undefined && statusMap !== null && (newStatus in statusMap)) {
-                 $copado(statusElem).attr('src', statusMap[newStatus]);
+             if(environmentStatus) {
+                 var elementType = environmentStatus.prop('nodeName');
+                 if(elementType === 'DIV' && newStatus !== 'In progress') {
+                     _replaceSpinner(idString, container);
+                 } else if (elementType === 'IMG' && newStatus === 'In progress') {
+                     _replaceImg(idString, container);
+                     return;
+                 }
+                 var statusElem = $copado(idString);
+                 if(statusElem && statusMap && (newStatus in statusMap)) {
+                    $copado(statusElem).attr('src', statusMap[newStatus]);
+                 }
              }
          }
      };
-     var _replaceSpinner = (elemId) => {
-        var container = $copado(elemId).parent();
+
+     var _replaceSpinner = (elemId, container) => {
         $copado(elemId).remove();
         container.append('<img id="' + elemId.replace('#','') + '" src="" />')
      };
 
-     var _replaceImg = (elemId) => {
-         var container = $copado(elemId).parent();
+     var _replaceImg = (elemId, container) => {
          $copado(elemId).remove();
          var spinner = '<div id="' + elemId.replace('#','') + '" class="spinner">'
                        + '<div role="status" class="slds-spinner slds-spinner_xx-small slds-spinner_brand">'
@@ -221,5 +238,5 @@ var ccdStream = ccdStream || {};
                        + '<div class="slds-spinner__dot-b"></div>'
                        + '</div></div>'
          container.append(spinner);
-      }
+     }
 })(ccdStream);

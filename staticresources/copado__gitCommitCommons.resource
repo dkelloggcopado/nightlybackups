@@ -5,6 +5,7 @@ function setWithoutRebinding(list, newList) {
         Array.prototype.push.apply(list, newList.splice(0,10000));
 }
 var gitCommitCommons = {};
+var operationTypeAttachmentName;
 (function(app){
         app.selectDx;
         app.init = function(conf, force) {
@@ -91,19 +92,19 @@ var gitCommitCommons = {};
         }
         app.previous;
         app.changeOperation = function(gitOperationType){
-            console.log('gitOperationType===> ',gitOperationType);
             app.conf.data.type = gitOperationType;
             app.conf.data.operationLabel = gitOperationType;
 
             if(app.selectDx == true) app.resetGrid();
-
             if(!app.conf.gitOperationCall || !app.grid) return;
 
             var operationDetails = JSON.parse(app.conf.gitOperationCall)[gitOperationType];
             !operationDetails.showGrid && app.grid.eltMain.hide();
             !operationDetails.showAdvancedSection && app.conf.elts.advanceButton.hide();
             app.operationDetails = operationDetails;
-            app.conf.attachmentName = app.operationDetails.attachmentName || 'MetaData';
+            // to load grid we should always use "MetaData" attachment from Org Credential
+            operationTypeAttachmentName = app.operationDetails.attachmentName || 'MetaData';
+            app.conf.attachmentName = 'MetaData';
 
             var currentMode = app.conf.gridMode;
             var gridMode = operationDetails.editGrid ? 'gitCommitEditable' : 'gitCommit';
@@ -118,7 +119,6 @@ var gitCommitCommons = {};
             }
             app.previous = operationDetails.gridMetadataTypes;
             operationDetails.showUserStorySelections && app.getRecommitSelection();
-
             if(app.conf.scalableGrid == "true"){
                 app.grid.loadMetaDataTypes(undefined,undefined,(operationDetails.gridMetadataTypes && operationDetails.gridMetadataTypes.length > 0) ? operationDetails.gridMetadataTypes.split(',') : undefined);
             }
@@ -166,7 +166,7 @@ var gitCommitCommons = {};
             sel = sel || coGridHelper.getSelectedObj();
 
             // Attachment Name
-            var attachmentName = app.conf.attachmentName || 'MetaData';
+            var attachmentName = operationTypeAttachmentName || 'MetaData';
             app.conf.data.orgCommitId && coGridHelper.saveSelected(app.conf.data.orgCommitId , attachmentName, null, true, function(){
                 app.redirectToOperation(app.conf.data.orgCommitId);
             },sel);
@@ -247,6 +247,11 @@ var gitCommitCommons = {};
                 unlockScreen();
                 return;
             }
+            
+            app.grid.selectedMetadata.forEach(function(selectedItem) {
+                selectedItem.n = selectedItem.n.trim();
+            });
+            
             app.conf.jsonData.selectedMetadata = app.grid.selectedMetadata;
             app.variant.startCommit(function(message,orgId,snapshotId,operationName){
                 deleteUSMetadata();

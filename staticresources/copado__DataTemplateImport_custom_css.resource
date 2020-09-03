@@ -325,6 +325,7 @@ body {
 }
 
 .co-dti-container .confirm-images,
+.co-dti-container .warning-images,
 .co-dti-container .cross-images {
     display: none;
 }
@@ -364,9 +365,18 @@ body {
     margin-bottom: 20px;
 }
 
+#modalUploadTemplate .modal-content .file-uploader {
+    width: 25rem;
+    margin: 1rem auto;
+}
+
+#modalUploadTemplate .modal-content .file-uploader .upload-icon-title {
+    margin-left: 10px;
+}
+
 #modalUploadTemplate .slds-card__body .templates-list {
     margin-bottom: 20px;
-    height: 160px;
+    max-height: 160px;
     overflow-x: hidden;
     overflow-y: scroll;
 }

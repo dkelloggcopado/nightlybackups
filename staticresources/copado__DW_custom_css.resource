@@ -16,7 +16,7 @@
     display: none;
 }
 
-.stage panelSlide {
+body .stage.panelSlide {
     background-color: white;
 }
 

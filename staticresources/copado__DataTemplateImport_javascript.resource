@@ -6,7 +6,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
     'use strict';
     var tablesList = ['dataTemplateTable'];
     var tableIdPaginationObject = {};
-    var placeHolder;
+    var placeHolder = null;
     var realDataTemplateIdMap = [];
     app.isValidated = false;
     app.totalValidatedTemplate = 0;
@@ -48,12 +48,6 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
             spriteType: 'utility-sprite'
         },
         {
-            svgButtonsClass: 'attachmentDocumentIcon',
-            styleClass: 'slds-button__icon slds-icon_large',
-            name: 'attachment',
-            spriteType: 'doctype-sprite'
-        },
-        {
             svgButtonsClass: 'approvalActionIcon',
             styleClass: 'slds-button__icon slds-icon slds-icon_x-small',
             name: 'approval',
@@ -64,6 +58,12 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
             styleClass: 'slds-button__icon slds-icon slds-icon_x-small',
             name: 'close',
             spriteType: 'action-sprite'
+        },
+        {
+            svgButtonsClass: 'uploadIcon',
+            styleClass: 'slds-button__icon slds-icon_x-small',
+            name: 'upload',
+            spriteType: 'utility-sprite'
         }
     ];
 
@@ -182,11 +182,6 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
     };
 
 
-    app.openFileLoader = () => {
-        $copado('#fileUploadInput').trigger("click");
-    };
-
-
     app.changeEventFileUploader = () => {
         document.getElementById('fileUploadInput').addEventListener('change', app.bindFileReader);
     };
@@ -208,6 +203,54 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
             }
         }, 100);
     };
+
+    app.dropFile = () => {
+        $copado('#jsonSelector').on(
+            'dragover',
+            (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        );
+        $copado('#jsonSelector').on(
+            'dragenter',
+            (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                $copado('.slds-file-selector__dropzone').addClass('slds-has-drag-over');
+            }
+        );
+        $copado('#jsonSelector').on(
+            'dragleave',
+            (event) => {
+                $copado('.slds-file-selector__dropzone').removeClass('slds-has-drag-over');
+            }
+        );
+        $copado('#jsonSelector').on(
+            'drop',
+            (event) => {
+                if (event.originalEvent.dataTransfer) {
+                    if (event.originalEvent.dataTransfer.files.length) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        fileReader.readAsText(event.originalEvent.dataTransfer.files[0]);
+                        setTimeout(() => {
+                            if (fileReader.result) {
+                                parseImportedFiles(fileReader.result);
+                            }
+                        }, 100);
+                    }
+                }
+            }
+        );
+    };
+
+
+    app.sendErrorMessageToActionFunction = (error) => {
+        var errorMessage = error.message ? error.message : (error.faultstring ? error.faultstring : 'Unknown Error');
+        showError(errorMessage);
+        console.error(error);
+    }
 
 
     // it is used to retrieve inserted attachment to update relations in the body
@@ -268,7 +311,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
                 cbOnEnd && cbOnEnd();
             },
             onFailure: (error) => {
-                showError(error);
+                app.sendErrorMessageToActionFunction(error);
             }
         });
     };
@@ -321,7 +364,6 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
         var childRelationshipsResult = describeResult.childRelationships;
         var globalDescribe = JSON.parse(resultData.globalDescribe);
         var globalDescribeSobjects = globalDescribe.sobjects;
-        console.log('globalDescribeSobjects: ', globalDescribeSobjects);
         var updatedDescribeFieldsResult = {};
         var updatedChildRelationshipResult = {};
         var currentField = {};
@@ -339,12 +381,24 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
 
             var isSelected = currentField ? true : false;
             var tempUseAsExternalId = currentField && currentField.useAsExternalId ? currentField.useAsExternalId : false;
-            var tempFieldContentUpdate = currentField && currentField.fieldContentUpdate ? currentField.fieldContentUpdate : placeHolder;
-            var tempReplaceValue = currentField && currentField.replaceValue ? currentField.replaceValue : placeHolder;
+            var tempFieldContentUpdate = currentField && currentField.fieldContentUpdate ? currentField.fieldContentUpdate : '';
+            var tempReplaceValue = currentField && currentField.replaceValue ? currentField.replaceValue : '';
             var tempReplaceValueNumber = currentField && currentField.replaceValueNumber ? currentField.replaceValueNumber : placeHolder;
             var tempReplaceValueDate = currentField && currentField.replaceValueDate ? currentField.replaceValueDate : placeHolder;
             var tempReplaceValueDatetime = currentField && currentField.replaceValueDatetime ? currentField.replaceValueDatetime : placeHolder;
             var tempContentValueUpdateValues = currentField && currentField.contentValueUpdateValues ? currentField.contentValueUpdateValues : placeHolder;
+            var tempParentObjectApiNameMap = {};
+
+            // to populate 'parentObjectApiNameMap' parameter, we will check if the field has reference to any other object
+            var currentSObject = {};
+            if (object.referenceTo) {
+                object.referenceTo.forEach((objectName) => {
+                    currentSObject = globalDescribeSobjects.find((element) => {
+                        return element.name === objectName;
+                    });
+                    tempParentObjectApiNameMap[currentSObject.name] = currentSObject.label;
+                });
+            }
 
             var copadoFields = {
                 isSelected: isSelected,
@@ -352,21 +406,22 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
                 externalId: object.externalId,
                 label: object.label,
                 name: object.name,
+                fieldType: object.type,
                 contentValueUpdateValues: tempContentValueUpdateValues,
                 fieldContentUpdate: tempFieldContentUpdate,
                 replaceValue: tempReplaceValue,
                 replaceValueNumber: tempReplaceValueNumber,
                 replaceValueDate: tempReplaceValueDate,
                 replaceValueDatetime: tempReplaceValueDatetime,
-                parentObjectApiNameMap: placeHolder,
-                deploymentTemplateNameMap: {},
+                parentObjectApiNameMap: tempParentObjectApiNameMap,
+                deploymentTemplateNameMap: placeHolder,
                 deploymentTemplate: 'Select Template'
             };
 
             updatedDescribeFieldsResult[object.name] = copadoFields;
 
             var newDescribeResultField = {
-                autonumber: object.autonumber,
+                autonumber: object.autonumber, 
                 calculated: object.calculated,
                 custom: object.custom,
                 externalId: object.externalId,
@@ -495,7 +550,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
     var createDataTemplateAttachmentBody = (attachmentBodyData) => {
         var mainDataTemplate = {
             templateSourceOrg: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Template_Source_Org__c'],
-            templateName: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Name'],
+            templateName: attachmentBodyData.templateDetails['Name'],
             templateMatchRecordTypes: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Match_Record_Type__c'],
             templateMainObject: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Main_Object__c'],
             templateMatchOwners: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Match_Owners__c'],
@@ -506,7 +561,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
             templateQueryLimit: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Max_Record_Limit__c'],
             templateBatchSize: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Batch_Size__c'],
             templateFilterLogic: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Filter_Logic__c'],
-            templateAttachmentOptions: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Attachment_Options__c'],
+            templateAttachmentOption: attachmentBodyData.templateDetails[attachmentBodyData.namespace + 'Attachment_Options__c'],
         };
 
         var resultData = {
@@ -598,7 +653,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
         dataTemplate[creationData.namespace + 'Match_Record_Type__c'] = creationData.importedObj.dataTemplate.templateMatchRecordTypes;
         dataTemplate[creationData.namespace + 'Continue_on_Error__c'] = creationData.importedObj.dataTemplate.templateContinueOnError;
         dataTemplate[creationData.namespace + 'Active__c'] = activeTemplate;
-        dataTemplate[creationData.namespace + 'Name'] = creationData.importedObj.dataTemplate.templateName;
+        dataTemplate['Name'] = creationData.importedObj.dataTemplate.templateName;
 
         try {
             var result = sforce.connection.create([dataTemplate]);
@@ -623,7 +678,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
                 createAttachments(attachmentData, cbOnEnd);
             }
         } catch (error) {
-            showError(error.message);
+            app.sendErrorMessageToActionFunction(error);
         }
     };
 
@@ -632,7 +687,30 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
     // on validation step, it will end at this function
     var objectCallout = (dataObject, cbOnEnd) => {
         var cleanUrl = dataObject.endpoint.replace('copado_objName', dataObject.name);
+        var duplicateNameDetected = false;
+
         try {
+            sforce.connection.query('SELECT Id,Name FROM ' + dataObject.namespace + 'Data_Template__c WHERE ' + dataObject.namespace + 'Main_Object__c=\'' + dataObject.name + '\'', {
+                onSuccess: (response) => {
+                    if (response.records) {
+                        if(response.records.length){
+                            response.records.forEach((existingTemplateRecords) => {
+                                if(existingTemplateRecords.Name == dataObject.values.dataTemplate.templateName) {
+                                    duplicateNameDetected = true;
+                                }
+                            });
+                        } else {
+                            if(response.records.Name == dataObject.values.dataTemplate.templateName) {
+                                duplicateNameDetected = true;
+                            }
+                        }
+                    }
+                },
+                onFailure: (error) => {
+                    app.sendErrorMessageToActionFunction(error);
+                }
+            });
+
             sforce.connection.remoteFunction({
                 url: cleanUrl,
                 requestHeaders: {
@@ -665,19 +743,25 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
                             };
                             return createDataTemplate(creationData, cbOnEnd);
                         } else {
-                            var imageId = dataObject.values.dataTemplate.templateName.replace(/[^a-zA-Z0-9]/g, '') + '_confirm';
-                            $copado(`#${imageId}`).removeClass('confirm-images');
-                            app.totalValidatedTemplate++;
+                            if(duplicateNameDetected) {
+                                var imageId = dataObject.values.dataTemplate.templateName.replace(/[^a-zA-Z0-9]/g, '') + '_warning';
+                                $copado(`#${imageId}`).removeClass('warning-images');
+                                app.totalNotValidatedTemplate++;
+                            } else {
+                                var imageId = dataObject.values.dataTemplate.templateName.replace(/[^a-zA-Z0-9]/g, '') + '_confirm';
+                                $copado(`#${imageId}`).removeClass('confirm-images');
+                                app.totalValidatedTemplate++;
+                            }
                             cbOnEnd && cbOnEnd();
                         }
                     }
                 },
                 onFailure: (error) => {
-                    showError(error);
+                    app.sendErrorMessageToActionFunction(error);
                 }
             });
         } catch (error) {
-            showError(error.message);
+            app.sendErrorMessageToActionFunction(error);
         }
 
     };
@@ -693,6 +777,8 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
         var dataTemplate = {};
         var deferredArray = [];
         var importedTemplateCount = fileReaderResult.length;
+        app.totalValidatedTemplate = 0;
+        app.totalNotValidatedTemplate = 0;
 
         fileReaderResult.forEach((importedTemplate, indexCounter) => {
             var deferred = new $copado.Deferred();
@@ -744,11 +830,11 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
                     cbOnEnd && cbOnEnd();
                 },
                 onFailure: (error) => {
-                    showError(error);
+                    app.sendErrorMessageToActionFunction(error);
                 }
             });
         } catch (error) {
-            showError(error.message);
+            app.sendErrorMessageToActionFunction(error);
         }
     };
 
@@ -797,11 +883,11 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
                             }
                         },
                         onFailure: (error) => {
-                            showError(error);
+                            app.sendErrorMessageToActionFunction(error);
                         }
                     });
                 } catch (error) {
-                    showError(error.message);
+                    app.sendErrorMessageToActionFunction(error);
                 }
             } else {
                 dataObject['globalDescribe'] = existingGlobalDescribeResult;
@@ -816,7 +902,7 @@ var globalSldsResourcePath = globalSldsResourcePath ? globalSldsResourcePath : u
         app.applyRenderSVG();
         app.startDataTables();
         app.openModals('UploadTemplate');
-        app.openFileLoader();
+        app.dropFile();
         app.changeEventFileUploader();
     });
 

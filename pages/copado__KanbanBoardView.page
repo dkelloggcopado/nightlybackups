@@ -41,7 +41,6 @@
                 cursor: move;
             }
             .slds-col {
-                height: 800px;
                 overflow-y: auto;
                 border-left: 1px solid whitesmoke;
             }
@@ -171,11 +170,10 @@
                     <div class="slds-tabs--path" role="application">
                         <ul class="slds-tabs--path__nav" role="tablist">
                             <apex:repeat value="{!columnOrderMap}" var="ord">
-                            <!--<apex:repeat value="{!picklistValuesMap}" var="status">-->
                                 <apex:outputPanel layout="none" rendered="{!columnFilterMap[columnOrderMap[ord]].isSelected}">
                                     <li class="slds-tabs--path__item slds-is-incomplete breadcrump {!columnOrderMap[ord]}" role="presentation">
                                         <a class="slds-tabs--path__link" tabindex="-1" role="tab" href="javascript:void(0);">
-                                            <span class="slds-tabs--path__title slds-text-heading--medium">{!columnOrderMap[ord]}  ( {!numberOfItemMap[columnOrderMap[ord]]} )</span>
+                                            <span class="slds-tabs--path__title slds-text-heading--medium">{!picklistValuesMap[columnOrderMap[ord]]}  ( {!numberOfItemMap[columnOrderMap[ord]]} )</span>
                                         </a>
                                     </li>
                                 </apex:outputPanel>
@@ -195,10 +193,10 @@
                                     <apex:repeat value="{!newSummarizeByOperatorMap}" var="sumOperator">
                                         <apex:repeat value="{!newSummarizeByOperatorMap[sumOperator]}" var="opr">
                                             <apex:repeat value="{!summarizeInformationMap[columnOrderMap[ord]]}" var="summarize">
-                                                <apex:outputPanel layout="none" rendered="{!opr == summarize}">
+                                                <apex:outputPanel layout="none" rendered="{!(opr + sumOperator) == summarize}">
                                                     <center>
                                                         <p class="slds-truncate">
-                                                            <b>{!summarize}&nbsp;{!$ObjectType[sObjectName].fields[sumOperator].Label}:&nbsp;</b>
+                                                            <b>{!opr}&nbsp;{!$ObjectType[sObjectName].fields[sumOperator].Label}:&nbsp;</b>
                                                             <span style="color:blue">{!summarizeInformationMap[columnOrderMap[ord]][summarize]}</span>
                                                         </p>
                                                     </center>
@@ -326,7 +324,7 @@
                                     &nbsp;&nbsp;
                                     <apex:inputText styleClass="slds-input" value="{!columnFilterMap[cfl].orderNumber}" style="width: 15%;"/>
                                     &nbsp;&nbsp;
-                                    {!cfl}
+                                    {!picklistValuesMap[cfl]}
                                 </div>
                             </div>
                         </div>

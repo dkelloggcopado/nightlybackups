@@ -252,7 +252,7 @@
                         dw.u.upsertAttach(sid,'preselectionAtt',copadoApp.attStringfied,false,'');
                         var attRecord = dw.u.getAttach(sid,'preselectionAtt');
                         var attId = attRecord[0].Id;
-                        window.location.replace(endUrl+usid+mdataParam+attId+variantParam);
+                        copadoApp.navigateTo(endUrl+usid+mdataParam+attId+variantParam);
                     }
                     unlockScreen();
                 },
@@ -281,6 +281,15 @@
                             showUsModal();
                         }
                     }else alert(copadoLabels.execfirst);
+                },
+                
+                navigateTo: function(pageName){
+                    var redirectUrl = encodeURI(pageName);
+                    if( (typeof sforce != 'undefined') && sforce && (!!sforce.one) ) {
+                        sforce.one.navigateToURL(redirectUrl,false);
+                    } else {
+                        window.open(redirectUrl,'_self');
+                    }
                 },
 
                 /**
@@ -407,8 +416,6 @@
                         pagesize: 50,
                         sortable: true,
                         columnsresize: true,
-                        autorowheight: true,
-                        autoheight: true,
                         altrows: true,
                         localization: localizationobj,
                         columns: [

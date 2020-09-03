@@ -225,7 +225,7 @@
                 </apex:pageBlockSection>
             </apex:pageBlock>
 
-            <apex:pageBlock id="pb_newGitCommit"  mode="edit" helpUrl="https://docs.copa.do/git-snapshot/git-snapshot-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="Select Metadata">
+            <apex:pageBlock id="pb_newGitCommit"  mode="edit" helpUrl="https://docs.copado.com/git-snapshot/git-snapshot-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="Select Metadata">
 
                 <!-- COMMIT CHANGES && CANCEL BUTTON -->
                 <apex:pageblockButtons location="top">
@@ -539,7 +539,7 @@
                                                 </div>
                                                 <div class="slds-form-element__help">
                                                     {!$Label.BASE_BRANCH_HELP}&nbsp;
-                                                    <apex:outputLink value="https://docs.copa.do/user-story/git-operations-overview" target="_blank">{!$Label.copado__more_information_here}</apex:outputLink>.
+                                                    <apex:outputLink value="https://docs.copado.com/user-story/git-operations-overview" target="_blank">{!$Label.copado__more_information_here}</apex:outputLink>.
                                                 </div>
                                             </div>
                                         </apex:outputPanel>

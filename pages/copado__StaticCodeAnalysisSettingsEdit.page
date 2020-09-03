@@ -76,7 +76,7 @@
         </apex:outputPanel>
         <apex:outputPanel id="orgPanel" layout="block" styleClass="copado-lightning-container copado-lightning-radius">
             <apex:form id="theForm" styleClass="copado-lightning-container" style="padding-top:12px;" html-novalidate="true">
-                <apex:pageBlock id="pb_editSCA"  mode="edit" helpUrl="https://docs.copa.do/static-code-analysis/static-code-analysis-overview" helpTitle="{!$Label.copado__help_for_this_page}" rendered="true" title="{!$Label.copado__details}">
+                <apex:pageBlock id="pb_editSCA"  mode="edit" helpUrl="https://docs.copado.com/static-code-analysis/static-code-analysis-overview" helpTitle="{!$Label.copado__help_for_this_page}" rendered="true" title="{!$Label.copado__details}">
                     <apex:pageblockButtons >
                         <apex:commandButton value="{!$Label.site.save}" action="{!saveWithCustomSetting}" />
                         <apex:commandButton value="{!$Label.site.cancel}" action="{!cancel}" />

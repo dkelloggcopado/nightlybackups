@@ -93,9 +93,14 @@ metadataReplace.findReplace.validate = function(){
 metadataReplace.template.findReplaceRow = function(rowNumber, keyPair){
     var n = keyPair?keyPair[0]:'';
     var v = keyPair?keyPair[1]:'';
-    var btn = '<button id="del-findReplace-'+rowNumber+'" onclick="metadataReplace.findReplace.deleteRow('+rowNumber+'); return false;" class="btn copado-lightning">Delete</button';
-    var nameField =   '<input type="text" class="js-findReplace" id="findReplace-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" style="width:40%;min-width:300px;" placeholder="Find"/>';
-    var valueField = '<input type="text" class="js-findReplace" id="findReplace-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" style="width:40%;min-width:300px;" placeholder="Replace with"/>';
-    var wrapper = '<div id="findReplaceWrapper-'+rowNumber+'" style="clear:both;">'+nameField+valueField+btn+'</div>';
+    //replaces quotes and double quotes with their HTML decimal codes to prevent hmtl break on html append
+    n = n.replace(/"/g,'&#34;').replace(/'/g,"&#39");
+    v = v.replace(/"/g,'&#34;').replace(/'/g,"&#39");
+    var btn = `<button id="del-findReplace-${rowNumber}" onclick="metadataReplace.findReplace.deleteRow(${rowNumber}); return false;" class="btn copado-lightning">Delete</button`;
+    var nameField =   `<input type="text" class="js-findReplace" id="findReplace-${rowNumber}-name" data-type="name" data-al="${rowNumber}" value="${n}" style="width:40%;min-width:300px;" placeholder="Find"/>`;
+    var valueField = `<input type="text" class="js-findReplace" id="findReplace-${rowNumber}-value" data-type="value" data-al="${rowNumber}" value="${v}" style="width:40%;min-width:300px;" placeholder="Replace with"/>`;
+    var wrapper = `<div id="findReplaceWrapper-${rowNumber}" style="clear:both;">${nameField}${valueField}${btn}</div>`;
     return wrapper;
 };
+
+

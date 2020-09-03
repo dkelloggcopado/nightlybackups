@@ -6,9 +6,14 @@
     <apex:includeScript value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.css')}" />
     <apex:stylesheet value="{!$Resource.copado__DataTemplateImport_custom_css}" />
+    <c:GAnalytics />
 
     <script>
         var globalSldsResourcePath = '{!URLFOR($Asset.SLDS)}';
+        ga('send', 'pageview', {
+            'page': '/DataTemplateImport',
+            'title': 'Data Template Import'
+        });
     </script>
 
     <apex:form >
@@ -126,91 +131,101 @@
                     </header>
                     <apex:outputPanel layout="block" styleClass="slds-modal__content slds-p-around_medium modal-content" id="uploadTemplateContent">
 
-                        <article class="slds-card">
-                            <div class="slds-card__header slds-grid">
-                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
-                                    <div class="slds-media__figure">
-                                        <input type="file" accept=".json" class="slds-file-selector__input slds-assistive-text" id="fileUploadInput" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
-                                        <label class="slds-file-selector__body" for="fileUploadInput" id="file-selector-secondary-label">
-                                            <span class="slds-file-selector__button slds-button attachmentDocumentIcon"></span>
+                        <apex:outputPanel layout="none" rendered="{!templateInformationList.size = 0}">
+                            <div class="slds-form-element file-uploader">
+                                <span class="slds-form-element__label" id="file-selector-primary-label"></span>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-file-selector slds-file-selector_images" id="jsonSelector">
+                                        <div class="slds-file-selector__dropzone">
+                                            <input type="file" class="slds-file-selector__input slds-assistive-text" accept=".json" id="fileUploadInput" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />
+                                            <label class="slds-file-selector__body" for="fileUploadInput" id="file-selector-secondary-label">
+                                                <span class="slds-file-selector__button slds-button slds-button_neutral uploadIcon"><span class="upload-icon-title">Upload Template</span></span> <!-- TODO custom label is missing -->
+                                                <span class="slds-file-selector__text slds-medium-show">or Drop Template</span> <!-- TODO custom label is missing -->
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="none" rendered="{!templateInformationList.size > 0}">
+                            <article class="slds-card">
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                        <div class="slds-media__body">
+                                            <div class="slds-grid">
+                                                <div class="slds-col slds-size_12-of-12">
+                                                    <h2 class="slds-truncate slds-text-heading_small">1 {!$Label.Template}</h2>
+                                                    <p class="slds-m-top_small">{!TextMessage}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-no-flex icon">
+                                            <span class="slds-icon_container slds-icon_container--circle {!IF(templateInformationList.size > 0,'slds-icon-action-approval approvalActionIcon',IF(PageMessageSize > 0, 'slds-icon-action-close errorActionIcon', ''))}"></span>
+                                        </div>
+                                    </header>
+                                </div>
+
+                                <div class="slds-card__body">
+                                    <div class="templates-list">
+                                        <apex:repeat value="{!templateInformationList}" var="temp">
+                                            <div class="slds-grid slds-gutters templates-list-row">
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    {!temp.values.dataTemplate.templateName}
+                                                </div>
+                                                <div class="slds-col slds-size_5-of-12">
+                                                    {!temp.values.relationList.size} {!$Label.Related_Data_Templates}
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-12 result-icons">
+                                                    <img id="{!temp.values.dataTemplate.encodedTemplateName}_confirm" title="{!temp.values.dataTemplate.templateMainObject} {!$Label.Object_Is_Found}" class="confirm-images" src="{!URLFOR($Resource.DTS_images, 'check.png')}"/>
+                                                    <img id="{!temp.values.dataTemplate.encodedTemplateName}_cross" title="{!temp.values.dataTemplate.templateMainObject} {!$Label.Object_Is_Not_Found}" class="cross-images" src="{!URLFOR($Resource.DTS_images, 'cross.png')}"/>
+                                                    <img id="{!temp.values.dataTemplate.encodedTemplateName}_warning" title="{!temp.values.dataTemplate.templateName} {!$Label.Duplicate_Template_Name_Import}" class="warning-images" src="{!URLFOR($Resource.DTS_images, 'warning.png')}"/>
+                                                </div>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="schemaOrg">
+                                            {!$ObjectType.copado__Data_Template__c.fields.copado__Template_Source_Org__c.Label}
+                                            <apex:image value="{!URLFOR($Resource.copado__DTS_images,'asterisk.png')}" />
                                         </label>
-                                    </div>
-                                    <div class="slds-media__body">
-                                        <div class="slds-grid">
-                                            <div class="slds-col slds-size_12-of-12">
-                                                <h2 class="slds-truncate slds-text-heading_small">1 {!$Label.Template}</h2>
-                                                <p class="slds-m-top_small">{!TextMessage}</p>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-combobox_container">
+                                                <apex:inputField value="{!template.copado__Template_Source_Org__c}" id="schemaOrg" styleClass="slds-input lookup-adjustment" >
+                                                    <apex:actionSupport event="onchange" onSubmit="dti.isValidated = false;dti.totalValidatedTemplate = 0;dti.totalNotValidatedTemplate = 0;" reRender="uploadTemplateFooter" />
+                                                </apex:inputField>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="slds-no-flex icon">
-                                        <span class="slds-icon_container slds-icon_container--circle {!IF(templateInformationList.size > 0,'slds-icon-action-approval approvalActionIcon',IF(PageMessageSize > 0, 'slds-icon-action-close errorActionIcon', ''))}"></span>
-                                    </div>
-                                </header>
-                            </div>
-                            <div class="slds-card__body">
 
-
-                            <apex:outputPanel layout="none" rendered="{!templateInformationList.size > 0}">
-                                <div class="templates-list">
-                                    <apex:repeat value="{!templateInformationList}" var="temp">
-                                        <div class="slds-grid slds-gutters templates-list-row">
-                                            <div class="slds-col slds-size_6-of-12">
-                                                {!temp.values.dataTemplate.templateName}
-                                            </div>
-                                            <div class="slds-col slds-size_5-of-12">
-                                                {!temp.values.relationList.size} {!$Label.Related_Data_Templates}
-                                            </div>
-                                            <div class="slds-col slds-size_1-of-12 result-icons">
-                                                <img id="{!temp.values.dataTemplate.encodedTemplateName}_confirm" title="{!temp.values.dataTemplate.templateMainObject} {!$Label.Object_Is_Found}" class="confirm-images" src="{!URLFOR($Resource.DTS_images, 'check.png')}"/>
-                                                <img id="{!temp.values.dataTemplate.encodedTemplateName}_cross" title="{!temp.values.dataTemplate.templateMainObject} {!$Label.Object_Is_Not_Found}" class="cross-images" src="{!URLFOR($Resource.DTS_images, 'cross.png')}"/>
-                                            </div>
-                                        </div>
-                                    </apex:repeat>
-                                </div>
-                                <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="schemaOrg">
-                                        {!$ObjectType.copado__Data_Template__c.fields.copado__Template_Source_Org__c.Label}
-                                        <apex:image value="{!URLFOR($Resource.copado__DTS_images,'asterisk.png')}" />
-                                    </label>
-                                    <div class="slds-form-element__control">
-                                        <div class="slds-combobox_container">
-                                            <apex:inputField value="{!template.copado__Template_Source_Org__c}" id="schemaOrg" styleClass="slds-input lookup-adjustment" >
-                                                <apex:actionSupport event="onchange" onSubmit="dti.isValidated = false;dti.totalValidatedTemplate = 0;dti.totalNotValidatedTemplate = 0;" reRender="uploadTemplateFooter" />
-                                            </apex:inputField>
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="activeTemplate">
+                                            {!$ObjectType.copado__Data_Template__c.fields.copado__Active__c.Label}
+                                        </label>
+                                        <div class="slds-form-element__control">
+                                            <span class="slds-checkbox slds-checkbox_standalone">
+                                                <apex:inputField value="{!template.copado__Active__c}" id="activeTemplate">
+                                                    <apex:actionSupport event="onchange" reRender="uploadTemplateFooter" />
+                                                </apex:inputField>
+                                                <span class="slds-checkbox_faux"></span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="slds-form-element">
-                                    <label class="slds-form-element__label" for="activeTemplate">
-                                        {!$ObjectType.copado__Data_Template__c.fields.copado__Active__c.Label}
-                                    </label>
-                                    <div class="slds-form-element__control">
-                                        <span class="slds-checkbox slds-checkbox_standalone">
-                                            <apex:inputField value="{!template.copado__Active__c}" id="activeTemplate">
-                                                <apex:actionSupport event="onchange" reRender="uploadTemplateFooter" />
-                                            </apex:inputField>
-                                            <span class="slds-checkbox_faux"></span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </apex:outputPanel>
-
-                            </div>
-                            <footer class="slds-card__footer"></footer>
-                        </article>
-
+                                <footer class="slds-card__footer"></footer>
+                            </article>
+                        </apex:outputPanel>
                     </apex:outputPanel>
                     <footer class="slds-modal__footer">
                         <apex:outputPanel layout="block" styleClass="buttons modal-button" id="uploadTemplateFooter">
-                            <button  id="doneButton" type="button" class="slds-button slds-button_brand hide-buttons" onclick="lockScreen();dti.orgCallout('{!OrgCalloutData}');">
-                                {!$Label.Confirm_Import}
-                            </button>
-                            <button id="validateButton" type="button" class="slds-button slds-button_brand" onclick="lockScreen();checkValidationCondition();">
-                                {!$Label.Validate}
-                            </button>
+                            <apex:outputPanel layout="none" rendered="{!templateInformationList.size > 0}">
+                                <button  id="doneButton" type="button" class="slds-button slds-button_brand hide-buttons" onclick="lockScreen();dti.orgCallout('{!OrgCalloutData}');">
+                                    {!$Label.Confirm_Import}
+                                </button>
+                                <button id="validateButton" type="button" class="slds-button slds-button_brand" onclick="lockScreen();checkValidationCondition();">
+                                    {!$Label.Validate}
+                                </button>
+                            </apex:outputPanel>
 
                             <apex:actionFunction name="checkValidationCondition" action="{!checkValidationCondition}" onComplete="dti.orgCallout('{!OrgCalloutData}');dti.applyRenderSVG();" reRender="uploadTemplateHeader,uploadTemplateContent,errorPanel" />
                         </apex:outputPanel>
@@ -224,7 +239,7 @@
             <apex:actionFunction name="listImportedTemplates" action="{!listImportedTemplates}" onComplete="dti.closeModals('UploadTemplate');dti.applyRenderSVG();dti.startDataTables();unlockScreen();" reRender="importedTemplatesPanel,uploadTemplateHeader,uploadTemplateContent,errorPanel">
                 <apex:param value="" name="templateIds" />
             </apex:actionFunction>
-            <apex:actionFunction name="parseImportedFiles" action="{!parseImportedFile}" onComplete="dti.applyRenderSVG();unlockScreen();" reRender="uploadTemplateHeader,uploadTemplateContent,errorPanel">
+            <apex:actionFunction name="parseImportedFiles" action="{!parseImportedFile}" onComplete="dti.applyRenderSVG();unlockScreen();" reRender="uploadTemplateHeader,uploadTemplateContent,uploadTemplateFooter,errorPanel">
                 <apex:param value="" name="jsonValue" />
             </apex:actionFunction>
             <apex:actionFunction name="showError" action="{!populateErrorMessages}" onComplete="dti.applyRenderSVG();unlockScreen();" reRender="uploadTemplateHeader,uploadTemplateContent,errorPanel">
