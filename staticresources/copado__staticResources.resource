@@ -114,7 +114,8 @@ app.startGrid = function (data) {
         $copado('#staticGridWrapper').html($grid);
         //save local source
         app.datasource = source;
-        
+
+        var types = [app.FILTER_TYPE]; 
         $grid.jqxGrid({
             width: '100%',
             height: '250px',
@@ -134,7 +135,7 @@ app.startGrid = function (data) {
             columns: [
               {text: copadoLabels.selected, columntype: 'checkbox', filtertype: 'bool', datafield: 's', width: 60 },
               {text: copadoLabels.name, filtertype: 'textbox', filtercondition: 'contains', editable:false, datafield: 'n'},
-              {text: copadoLabels.type, datafield: 't', filtertype: 'checkedlist',editable:false ,  columntype: 'textbox', width: 120 },
+              {text: copadoLabels.type, filterItems: types, datafield: 't', filtertype: 'checkedlist',editable:false ,  columntype: 'textbox', width: 120 },
               {text: copadoLabels.LastModifiedById, filtertype: 'textbox', editable:false, datafield: 'b', width: 120},
               {text: copadoLabels.LastModifiedDate, filtertype: 'textbox', editable:false, datafield: 'd', width: 120},
               {text: copadoLabels.CREATEDBY, filtertype: 'textbox', editable:false, datafield: 'cb', width: 220},

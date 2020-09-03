@@ -257,7 +257,7 @@
         <masterLabel>Quick Run</masterLabel>
         <openType>sidebar</openType>
         <protected>false</protected>
-        <url>/apex/{!IF($Setup.copado__Settings__c.copado__Namespace__c=&apos;none&apos;,&apos;&apos;,if(isblank($Setup.copado__Settings__c.copado__Namespace__c),&apos;copado__&apos;,$Setup.copado__Settings__c.copado__Namespace__c))}SeleniumTestQuickRun?caseId={!copado__Selenium_Test_Case__c.Id}</url>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}SeleniumTestQuickRun?caseId={!copado__Selenium_Test_Case__c.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>copado__Rollback_to_Previous_Version</fullName>

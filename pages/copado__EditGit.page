@@ -56,7 +56,7 @@
 
         <apex:outputPanel layout="block" styleClass="copado-lightning-container copado-lightning-radius">
             <apex:form id="theForm" styleClass="copado-lightning-container" style="padding-top:12px;" html-novalidate="true">
-                <apex:pageBlock id="pb_editGit" mode="edit" helpUrl="https://docs.copa.do/git-repository/git-repository-overview" helpTitle="{!$Label.copado__help_for_this_page}" rendered="{!AND(showOptions,!showError)}" title="{!$Label.copado__details}">
+                <apex:pageBlock id="pb_editGit" mode="edit" helpUrl="https://docs.copado.com/git-repository/git-repository-overview" helpTitle="{!$Label.copado__help_for_this_page}" rendered="{!AND(showOptions,!showError)}" title="{!$Label.copado__details}">
                     <apex:pageblockButtons >
                         <apex:commandButton value="{!$Label.site.save}" styleClass="btnImportant" action="{!save}" />
                         <apex:commandButton value="{!$Label.site.cancel}" action="{!cancel}" />

@@ -21,12 +21,12 @@
             </apex:pageBlockSection>
 
             <apex:pageBlockSection id="metadatapanel" title="Previously committed metadata selections">
-                <apex:outputPanel layout="none" rendered="{!allMetadata.size<1000}">
+                <apex:outputPanel layout="none" rendered="{!AND(allMetadata != null, allMetadata.size<1000)}">
                     <apex:dataList value="{!allMetadata}" var="m">
                         <apex:outputText value="{!m.t}.{!m.n}"/>
                     </apex:dataList>
                 </apex:outputPanel>
-                <apex:outputPanel layout="none" rendered="{!allMetadata.size>=1000}">
+                <apex:outputPanel layout="none" rendered="{!AND(allMetadata != null, allMetadata.size>=1000)}">
                     {!$Label.copado__collection_size_exceeded}
                 </apex:outputPanel>
             </apex:pageBlockSection>

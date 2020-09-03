@@ -35,7 +35,7 @@
 
             if(!wasJobStarted) {
                 var newUrl = new window.URL(window.location.href);
-                isCommitChanges = newUrl.href.indexOf('commitChanges')>=0;
+                isCommitChanges = newUrl.href.indexOf('co_commitChanges')>=0;
                 newUrl.hash = '&jobStarted';
                 window.history.replaceState('copado', document.title, newUrl);
             }

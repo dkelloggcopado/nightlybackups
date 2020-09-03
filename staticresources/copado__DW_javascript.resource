@@ -7,6 +7,8 @@ var selectedSourceType = selectedSourceType ? selectedSourceType : undefined;
 var dId = dId ? dId : undefined;
 var stepId = stepId ? stepId : undefined;
 var namespace = namespace ? namespace : undefined;
+var sourceDomain = '';
+var targetDomain = '';
 
 ((app) => {
     'use strict';
@@ -74,7 +76,7 @@ var namespace = namespace ? namespace : undefined;
         if (currentStepValue) {
             var stepNumber = currentStepValue;
             var offset = 30;
-            var position = $copado($copado('.slds-progress__list>li')[stepNumber]).position().left;
+            //var position = $copado($copado('.slds-progress__list>li')[stepNumber]).position().left;
             var leftPosition = ($copado($copado('.slds-progress__list>li')[stepNumber]).position().left - offset) + 'px';
 
             $copado(`#step-${currentStepValue}-tooltip`).css({
@@ -141,11 +143,19 @@ var namespace = namespace ? namespace : undefined;
 
             // show all rows
             $copado(`#${tableId}_length`).find('select').val(-1).trigger('change');
-            rows = $copado(`#${tableId}`).find('tr');
+            rows = $copado(`#${tableId}`).find('tbody').find('tr');
 
             // click event
             rows.click((event) => {
                 checkDataTableRow(event.currentTarget, tableId, rows, currentPage);
+            });
+
+            // remove disabled from button if deployment is cloned, we are checking any checkbox in the datatable with checked to remove disable class from a button and break the process
+            rows.each((index, row) => {   
+                if ($copado(row).find('td:first').find('input[type="checkbox"]')[0].checked === true && $copado('.disabled-Buttons').length > 0) {
+                    $copado('.disabled-Buttons').removeClass('disabled');
+                    return false;
+                }
             });
 
             // return the pagination to first situation
@@ -344,12 +354,15 @@ var namespace = namespace ? namespace : undefined;
                 if (res.records) {
                     res = Base64.decode(res.records.Body);
                     res = $copado.parseJSON(res);
+                    var records = res.results ? res.results : res;
+                    sourceDomain = res.sourceDomain ? res.sourceDomain : '';
+                    targetDomain = res.targetDomain ? res.targetDomain : '';
 
                     var dataTemplateSummary = false;
-                    if (res[0] && res[0].m && (res[0].m.templateId || res[0].m.exception)) {
-                        if (!res[0].m.exception) {
+                    if (records[0] && records[0].m && (records[0].m.templateId || records[0].m.exception)) {
+                        if (!records[0].m.exception) {
                             var newResultArray = [];
-                            res.forEach(function(element) {
+                            records.forEach(function(element) {
                                 var newResult = {
                                     'deployedRecords': element.m.deployedRecords,
                                     'failedRecords': element.m.failedRecords,
@@ -364,9 +377,9 @@ var namespace = namespace ? namespace : undefined;
                             dataTemplateSummary = true;
                         } else {
                             var newResult = [{
-                                'l': res[0].l,
-                                'm': res[0].m.exception,
-                                't': res[0].t
+                                'l': records[0].l,
+                                'm': records[0].m.exception,
+                                't': records[0].t
                             }];
                             app.errorGridsource.localdata = newResult;
                         }
@@ -397,7 +410,7 @@ var namespace = namespace ? namespace : undefined;
                         autorowheight: true,
                         autoheight: true,
                         altrows: true,
-                        columns: dataTemplateSummary ? app.getDataTemplateSummaryColumns() : app.getErrorColumns()
+                        columns: dataTemplateSummary ? app.getDataTemplateSummaryColumns(sourceDomain, targetDomain) : app.getErrorColumns()
                     });
 
                     $copado('#tab-default-2__item').data('open', true);
@@ -496,7 +509,7 @@ var namespace = namespace ? namespace : undefined;
         var templateId = $copado('.jqx-grid').jqxGrid('getCell', row, 'templateId').value;
         var templateName = $copado('.jqx-grid').jqxGrid('getCell', row, 'templateName').value;
         var element = $copado(defaultHtml);
-        var resultPageUrl = '/apex/' + namespace + 'DataTemplateObjectResult?templateId=' + templateId + '&templateName=' + templateName + '&deploymentId=' + dId + '&stepId=' + stepId;
+        var resultPageUrl = '/apex/' + namespace + 'DataTemplateObjectResult?templateId=' + templateId + '&templateName=' + templateName + '&deploymentId=' + dId + '&stepId=' + stepId  + '&sourceDomain=' + sourceDomain + '&targetDomain=' + targetDomain;
         element.html('<a href="#" onClick="window.open(\'' + resultPageUrl + '\');">View Results</a>');
         return element[0].outerHTML;
     };

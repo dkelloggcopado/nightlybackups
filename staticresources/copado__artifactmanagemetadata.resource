@@ -26,78 +26,90 @@ copadoApp.init = function(conf, force, isScalable, type){
         }else if(this.conf.gridMode==='metadataselector' && window.rock !== undefined) {
             url = rock.config.metadata_url;
         }
-        dw.u.getCachedRemote({
-           url: url,
-           name: this.filterByType || conf.attachmentName,
-           parentId: conf.data.orgId,
-           force: forceRefresh,
-           synchronous: false,
-           success: function(allMetaData, cachedDate){
-            var relArtIds = _config.data.relArtifIds;
-            var total=[];
-            if(relArtIds){
-                try {
-                    for (var i=0; i<relArtIds.length; i++) {
-                        var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Name='" + _config.artifactAttName + "' and parentId = '" + relArtIds[i] + "' order by LastModifiedDate DESC limit 1";
-                        var result = sforce.connection.query(q);
-                        var records = result.getArray("records");
-                        if(records.length === 0) continue;
-                        //decode the attach body
-                        var res = Base64.decode(records[0].Body);
-                        //parse json
-                        var selectedMetadata =  $copado.parseJSON(res);
-                        total = total.concat(selectedMetadata); // add current metadata scope into all retrieved metadata scope
-                    }
-                    if(total.length>0){
-                        for( var i = 0; i < total.length; i++){
-                            for( var j = 0; j< allMetaData.length; j++){
-                                allMetaData[j].rd = false;
-                                if ( (total[i].t === allMetaData[j].t) && (total[i].n === allMetaData[j].n) ){
-                                    allMetaData.splice(j, 1);
-                                }
 
+        
+
+        dw.u.getCachedRemote({
+            url: url,
+            name: this.filterByType || conf.attachmentName,
+            parentId: conf.data.orgId,
+            force: forceRefresh,
+            synchronous: false,
+            success: function(allMetaData, cachedDate){
+                var relArtIds = _config.data.relArtifIds;
+                var total = [];
+                var types = [];
+                if(relArtIds){
+                    try {
+                        for (var i=0; i<relArtIds.length; i++) {
+                            var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Name='" + _config.artifactAttName + "' and parentId = '" + relArtIds[i] + "' order by LastModifiedDate DESC limit 1";
+                            var result = sforce.connection.query(q);
+                            var records = result.getArray("records");
+                            if(records.length === 0) continue;
+                            //decode the attach body
+                            var res = Base64.decode(records[0].Body);
+                            //parse json
+                            var selectedMetadata =  $copado.parseJSON(res);
+                            total = total.concat(selectedMetadata); // add current metadata scope into all retrieved metadata scope
+                        }
+                        if(total.length>0){
+                            for( var i = 0; i < total.length; i++){
+                                for( var j = 0; j< allMetaData.length; j++){
+                                    if(!types.includes(allMetaData[j].t)){
+                                        types.push(allMetaData[j].t);
+                                    }
+                                    allMetaData[j].rd = false;
+                                    if ( (total[i].t === allMetaData[j].t) && (total[i].n === allMetaData[j].n) ){
+                                        allMetaData.splice(j, 1);
+                                    }
+
+                                }
+                            }
+                        } else {
+                            for( var j = 0; j< allMetaData.length; j++){
+                                if(!types.includes(allMetaData[j].t)){
+                                    types.push(allMetaData[j].t);
+                                }
+                                allMetaData[j].rd = false;
                             }
                         }
-                    } else {
-                        for( var j = 0; j< allMetaData.length; j++){
-                            allMetaData[j].rd = false;
-                        }
+
+                    } catch (e) {
+                        total = [];
+                        console.warn('Exception on load metadata from JSON:', e);
                     }
-                } catch (e) {
-                    total = [];
-                    console.warn('Exception on load metadata from JSON:', e);
+
+                }
+                console.log('allMetaData0',allMetaData[0]);
+                that._setGridData(allMetaData);
+                that.render();
+                console.log('types==> ',types);
+                that.eltGrid.jqxGrid('setcolumnproperty', 't', 'filteritems',types.sort());
+                that.allMetaData_cachedDate  = cachedDate;
+                that._createCacheDeleteButton();
+
+                // refresh the grid/filter, so the column type has filter values
+                if(!this.isTypeFilterable)
+                    that.eltGrid.jqxGrid('updatebounddata');
+
+                if(metadataGrid2.conf.gridMode === 'metadataselector' && metadataGrid2.conf.dxGridType === 'dxartifact') {
+                    metadataGrid2.eltGrid.on('cellvaluechanged', function (event) {
+                        var t = metadataGrid2.eltGrid.jqxGrid('getrowdata', event.args.rowindex);
+                        if (event.args.datafield=='rd' && t.rd === true) {
+                            metadataGrid2.eltGrid.jqxGrid('setcellvalue', event.args.rowindex, "rd", true);
+                            metadataGrid2.dependencyRetrieveArray.push(t);
+                        } else if(event.args.datafield=='rd' && t.rd === false){
+                            metadataGrid2.eltGrid.jqxGrid('setcellvalue', event.args.rowindex, "rd", false);
+                            var index = metadataGrid2.dependencyRetrieveArray.indexOf(t);
+                            if (index > -1) {
+                            metadataGrid2.dependencyRetrieveArray.splice(index, 1);
+                            }
+                        }
+                    });
                 }
 
-            }
-            console.log('allMetaData0',allMetaData[0]);
-            that._setGridData(allMetaData);
-            that.render();
-
-            that.allMetaData_cachedDate  = cachedDate;
-            that._createCacheDeleteButton();
-
-            // refresh the grid/filter, so the column type has filter values
-            if(!this.isTypeFilterable)
-                that.eltGrid.jqxGrid('updatebounddata');
-
-            if(metadataGrid2.conf.gridMode === 'metadataselector' && metadataGrid2.conf.dxGridType === 'dxartifact') {
-                metadataGrid2.eltGrid.on('cellvaluechanged', function (event) {
-                    var t = metadataGrid2.eltGrid.jqxGrid('getrowdata', event.args.rowindex);
-                    if (event.args.datafield=='rd' && t.rd === true) {
-                        metadataGrid2.eltGrid.jqxGrid('setcellvalue', event.args.rowindex, "rd", true);
-                        metadataGrid2.dependencyRetrieveArray.push(t);
-                    } else if(event.args.datafield=='rd' && t.rd === false){
-                        metadataGrid2.eltGrid.jqxGrid('setcellvalue', event.args.rowindex, "rd", false);
-                        var index = metadataGrid2.dependencyRetrieveArray.indexOf(t);
-                        if (index > -1) {
-                          metadataGrid2.dependencyRetrieveArray.splice(index, 1);
-                        }
-                    }
-                });
-            }
-
-            if(callbackFinished)
-                callbackFinished();
+                if(callbackFinished)
+                    callbackFinished();
            },
            error: function(r){
                console.error('MetadataGrid2.Error: ',r);
@@ -156,7 +168,7 @@ copadoApp.init = function(conf, force, isScalable, type){
             {
                 text: copadoLabels.LastModifiedDate,
                 filtertype: 'range',
-                cellsformat: 'yyyy/MM/dd',
+                cellsformat: 'yyyy-MM-dd',
                 editable: false,
                 datafield: 'd',
                 width: '10%'
@@ -172,7 +184,7 @@ copadoApp.init = function(conf, force, isScalable, type){
             {
                 text: copadoLabels.CREATEDDATE,
                 filtertype: 'range',
-                cellsformat: 'yyyy/MM/dd',
+                cellsformat: 'yyyy-MM-dd',
                 editable: false,
                 datafield: 'cd',
                 width: '10%'

@@ -6,16 +6,23 @@
     <apex:includeScript value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.css')}" />
     <apex:stylesheet value="{!$Resource.copado__DW_custom_css}" />
+    <c:GAnalytics />
 
     <script>
         var globalSldsResourcePath = '{!URLFOR($Asset.SLDS)}';
         var currentStepValue = '{!currentStepValue}';
-        var selectedSourceType = '{!selectedSourceType}';
+        var selectedSourceType = '{!JSENCODE(selectedSourceType)}';
         var deploymentId = '{!deployment.Id}';
         $copado(document).ready(() => {
             if(selectedSourceType.length > 0){
                 $copado(`[for="${selectedSourceType}"]>span`).click();
             }
+        });
+
+        var deploymentType = '{!JSENCODE(deploymentInterface.StepGeneralHeader)}';
+        ga('send', 'pageview', {
+            'page': '/DeploymentWizardSource',
+            'title': deploymentType
         });
     </script>
 
@@ -186,7 +193,7 @@
                         <apex:commandButton styleClass="slds-button slds-button_outline-brand btn-back" onClick="lockScreen();" value="{!$Label.copado__back}" action="{!goToDeploymentTab}" onComplete="dw.buttonOnComplete();unlockScreen();" reRender="errorPanel" />
                         <apex:commandButton styleClass="slds-button slds-button_outline-brand btn-save" onClick="lockScreen();" value="{!$Label.copado__save_and_close}" action="{!configureSource}" onComplete="validateOrgSaveAndClose();" />
                         <apex:outputPanel layout="none" rendered="{!selectedSourceType != ''}">
-                            <input type="button" class="slds-button slds-button_brand btn-confirm disabled" onClick="lockScreen();configureSource('nextStep',dw.selection);" value="{!IF(selectedSourceType == 'org',$Label.Confirm_Source,$Label.Confirm_Git_Commit)}" />
+                            <input type="button" class="slds-button slds-button_brand btn-confirm disabled disabled-Buttons" onClick="lockScreen();configureSource('nextStep',dw.selection);" value="{!IF(selectedSourceType == 'org',$Label.Confirm_Source,$Label.Confirm_Git_Commit)}" />
                         </apex:outputPanel>
                     </apex:outputPanel>
 
