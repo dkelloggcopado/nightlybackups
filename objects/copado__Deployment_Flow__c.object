@@ -409,9 +409,7 @@
         <description>Link to open the Pipeline Manager to promote and back promote User Stories.</description>
         <externalId>false</externalId>
         <formula>HYPERLINK(&apos;/apex/&apos;&amp;
-IF($Setup.copado__Settings__c.copado__Namespace__c=&apos;none&apos;,&apos;&apos;,
-  IF(isblank($Setup.copado__Settings__c.copado__Namespace__c),&apos;copado__&apos;,$Setup.copado__Settings__c.copado__Namespace__c)
-)&amp;IF( ISPICKVAL(copado__Calculate_Based_on__c, &apos;User Story&apos;), IF( copado__Active__c,&apos;PipelineManager?mode=manager&amp;id=&apos;&amp;Id, &apos;PipelineManager?mode=diagram&amp;id=&apos;&amp;Id), &apos;BranchManagement?id=&apos;&amp;Id), &apos;Pipeline Manager&apos;, IF($User.UIThemeDisplayed != &quot;Theme4d&quot;,&apos;_blank&apos;,&apos;_self&apos;))</formula>
+            IF($Setup.copado__Settings__c.copado__Namespace__c!=&apos;none&apos;,&apos;copado__&apos;, &apos;&apos;)&amp;IF( ISPICKVAL(copado__Calculate_Based_on__c, &apos;User Story&apos;), IF( copado__Active__c,&apos;PipelineManager?mode=manager&amp;id=&apos;&amp;Id, &apos;PipelineManager?mode=diagram&amp;id=&apos;&amp;Id), &apos;BranchManagement?id=&apos;&amp;Id), &apos;Pipeline Manager&apos;, IF($User.UIThemeDisplayed != &quot;Theme4d&quot;,&apos;_blank&apos;,&apos;_self&apos;))</formula>
         <inlineHelpText>Link to open the Pipeline Manager to promote and back promote User Stories.</inlineHelpText>
         <label>Manage Releases</label>
         <required>false</required>
@@ -539,7 +537,7 @@ This value will prefill the order by field on related Promotion record creation 
         <masterLabel>Manage Releases</masterLabel>
         <openType>noSidebar</openType>
         <protected>false</protected>
-        <url>/apex/{!IF($Setup.copado__Settings__c.copado__Namespace__c = &apos;none&apos;,&apos;&apos;,$Setup.copado__Settings__c.copado__Namespace__c)}{!IF(ISPICKVAL(copado__Deployment_Flow__c.copado__Calculate_Based_on__c, &apos;User Story&apos;), &apos;PipelineManager&apos;,&apos;BranchManagement&apos;)}?Id={!copado__Deployment_Flow__c.Id}&amp;mode={!IF(copado__Deployment_Flow__c.copado__Active__c, &apos;manager&apos;, &apos;diagram&apos;)}</url>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}{!IF(ISPICKVAL(copado__Deployment_Flow__c.copado__Calculate_Based_on__c, &apos;User Story&apos;), &apos;PipelineManager&apos;,&apos;BranchManagement&apos;)}?Id={!copado__Deployment_Flow__c.Id}&amp;mode={!IF(copado__Deployment_Flow__c.copado__Active__c, &apos;manager&apos;, &apos;diagram&apos;)}</url>
     </webLinks>
     <webLinks>
         <fullName>copado__Manage_Environment_Variables</fullName>
@@ -561,7 +559,7 @@ This value will prefill the order by field on related Promotion record creation 
         <masterLabel>Manage Regression Tests</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>/apex/{!if($Setup.copado__Settings__c.copado__Namespace__c =&apos;none&apos;,&apos;&apos;,&apos;copado__&apos;)}ManageSeleniumTesting?regression=true&amp;flowId={!copado__Deployment_Flow__c.Id}</url>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}ManageSeleniumTesting?regression=true&amp;flowId={!copado__Deployment_Flow__c.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>copado__Select_Main_Branch</fullName>

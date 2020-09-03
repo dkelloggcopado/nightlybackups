@@ -380,6 +380,16 @@
             .dt-rowReorder-float .slds-button {
                 display: none;
             }
+            .input-lookup a {
+                width: 20px !important;
+                border: unset !important;
+                margin: 0 .75rem !important;
+                background-color: transparent !important;
+                padding: 0 !important;
+            }
+            .input-lookup a:focus {
+                box-shadow: unset !important;
+            }
         </style>
     </head>
     <body style="{!IF($User.UIThemeDisplayed == 'Theme4d','margin: 12px;background-image: url(/_slds/images/themes/oneSalesforce/banner-brand-default.png?cache=210.2),linear-gradient(to top,rgba(32, 92, 159, 0), rgb(32, 92, 159));','')}">
@@ -755,31 +765,56 @@
                                 <div class="slds-form-element">
                                     <label class="slds-form-element__label">{!$Label.copado__sprintwall_header_type}</label>
                                     <div class="slds-form-element__control">
-                                        <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Name" SObject="{!us}" requiredView="false" Field="RecordTypeId"/>
+                                    	<div class="slds-form-element">
+                                            <label class="slds-form-element__label"></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!us.RecordTypeId}" styleclass="slds-input" />
+                                            </div>
+                                        </div>    
                                     </div>
                                 </div>
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label">{!$Label.copado__sprintwall_header_title}</label>
+                                    <label class="slds-form-element__label">{!$Label.SprintWall_Header_Title}</label>
                                     <div class="slds-form-element__control">
-                                        <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Name" SObject="{!us}" requiredView="false" Field="User_Story_Title__c"/>
+                                    	<div class="slds-form-element">
+                                            <label class="slds-form-element__label"></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!us.copado__User_Story_Title__c}" styleclass="slds-input" />
+                                            </div>
+                                        </div>    
                                     </div>
                                 </div>
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label">{!$Label.copado__sprintwall_header_status}</label>
+                                    <label class="slds-form-element__label">{!$Label.SprintWall_Header_Status}</label>
                                     <div class="slds-form-element__control">
-                                        <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Name" SObject="{!us}" requiredView="false" Field="Status__c"/>
+                                    	<div class="slds-form-element">
+                                            <label class="slds-form-element__label"></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!us.copado__Status__c}" styleclass="slds-input" />
+                                            </div>
+                                        </div>    
                                     </div>
                                 </div>
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label">{!$Label.copado__sprintwall_header_assignee}</label>
+                                    <label class="slds-form-element__label">{!$Label.SprintWall_Header_Assignee}</label>
                                     <div class="slds-form-element__control">
-                                        <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Name" SObject="{!us}" requiredView="false" Field="Developer__c"/>
+                                    	<div class="slds-form-element">
+                                            <label class="slds-form-element__label"></label>
+                                            <div class="slds-form-element__control input-lookup">
+                                                <apex:inputField value="{!us.copado__Developer__c}" styleclass="slds-input" />
+                                            </div>
+                                        </div>    
                                     </div>
                                 </div>
                                 <div class="slds-form-element">
-                                    <label class="slds-form-element__label">{!$Label.copado__sprintwall_header_points}</label>
+                                    <label class="slds-form-element__label">{!$Label.SprintWall_Header_Points}</label>
                                     <div class="slds-form-element__control">
-                                        <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Name" SObject="{!us}" requiredView="false" Field="Story_Points_SFDC__c"/>
+                                    	<div class="slds-form-element">
+                                            <label class="slds-form-element__label"></label>
+                                            <div class="slds-form-element__control">
+                                                <apex:inputField value="{!us.copado__Story_Points_SFDC__c}" styleclass="slds-input" />
+                                            </div>
+                                        </div>   
                                     </div>
                                 </div>
                                 <apex:repeat value="{!$ObjectType.copado__User_Story__c.FieldSets.copado__Sprint_Wall_Columns}" var="field">
@@ -787,7 +822,12 @@
                                         <label class="slds-form-element__label">{!field.label}</label>
                                         <div class="slds-form-element__control">
                                             <apex:outputPanel layout="none" rendered="{!NOT(CONTAINS(field.fieldPath,'.'))}">
-                                                <c:LightningReadyInputFields showClassic="false"  showLabel="false" identity="Name" SObject="{!us}" requiredView="false" Field="{!field.fieldPath}"/>
+                                            	<div class="slds-form-element">
+                                                    <label class="slds-form-element__label"></label>
+                                                    <div class="slds-form-element__control input-lookup">
+                                                        <apex:inputField value="{!us[field.fieldPath]}" styleclass="{!IF(field.type == 'boolean','slds-inputcheckbox',IF(field.type == 'textarea','slds-textarea','slds-input'))}" />
+                                                    </div>
+                                                </div>   
                                             </apex:outputPanel>
                                         </div>
                                     </div>

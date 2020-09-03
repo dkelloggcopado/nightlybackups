@@ -63,8 +63,10 @@ dw.qb.startQueryBuilder = function(data, parsed) {
 
             });
         }
-
-        $copado('#attachmentOptions').val(parsed.iao);
+		//its defined at first, not after refresh metadata since parsed inherited from the page but component
+        if(parsed) {
+            $copado("#attachmentOptions").val(parsed.iao);
+        }
         //start get fields
         dw.qb.ui.getFields = $copado('#getFields');
         dw.qb.ui.testQuery = $copado('#testQuery');
@@ -423,17 +425,25 @@ dw.qb.testQuery = function(e){
         }
     });
 
-    var matchOwnerFieldVal = dw.qb.ui.matchOwner.prop('checked');
-    //check query has recordTypeId
-    if (matchOwnerFieldVal && !(matchOwnerFieldVal && queryFields.indexOf('OwnerId') !== -1)) {
-        showMessage('ERROR', labels.config.MATCH_OWNER_WARNING);
+    var idCount = queryFields.match(/\b(id)\b/gim);
+    var attachmentOptionsValue = dw.qb.ui.attachmentOptions.val();
+    var matchOwnerFieldVal = dw.qb.ui.matchOwner.prop("checked");
+    var recordTypeFieldVal = dw.qb.ui.matchRecordType.prop("checked");
+
+    if (!idCount && (matchOwnerFieldVal || recordTypeFieldVal || (attachmentOptionsValue && attachmentOptionsValue != "none"))) {
+        showMessage("ERROR", labels.config.SOQL_HASNOT_ID_ERROR);
         return false;
     }
 
-    var recordTypeFieldVal = dw.qb.ui.matchRecordType.prop('checked');
+    //check query has recordTypeId
+    if (matchOwnerFieldVal && !(matchOwnerFieldVal && queryFields.indexOf("OwnerId") !== -1)) {
+        showMessage("ERROR", labels.config.MATCH_OWNER_WARNING);
+        return false;
+    }
+
     //check query has ownerId
-    if (recordTypeFieldVal && !(recordTypeFieldVal && queryFields.indexOf('RecordTypeId') !== -1)) {
-        showMessage('ERROR', labels.config.MATCH_RECORD_TYPE_WARNING);
+    if (recordTypeFieldVal && !(recordTypeFieldVal && queryFields.indexOf("RecordTypeId") !== -1)) {
+        showMessage("ERROR", labels.config.MATCH_RECORD_TYPE_WARNING);
         return false;
     }
 

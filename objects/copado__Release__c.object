@@ -354,7 +354,7 @@
         <masterLabel>Mass add to Release</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>/apex/{!if($Setup.copado__Settings__c.copado__Namespace__c =&apos;none&apos;,&apos;&apos;,&apos;copado__&apos;)}MassAddToRelease?id={!copado__Release__c.Id}</url>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}MassAddToRelease?id={!copado__Release__c.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>copado__Select_Base_Branch</fullName>

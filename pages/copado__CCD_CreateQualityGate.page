@@ -102,28 +102,28 @@
                             <apex:inputField value="{!thisQualityGate.copado__Metadata_Group__c}"/>
                         </apex:outputPanel>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == 'Selenium Test'}">
+                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == SELENIUM_TEST}">
                         <apex:outputLabel value="{!$ObjectType.copado__Quality_Gate__c.Fields.copado__Selenium_Test_Group__c.Label}"/>
                         <apex:outputPanel layout="block">
                             <div class="requiredBlock"/>
                             <apex:inputField value="{!thisQualityGate.copado__Selenium_Test_Group__c}"/>
                         </apex:outputPanel>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem rendered="{!OR(thisQualityGate.copado__Type__c == 'Pull Request',thisQualityGate.copado__Type__c == 'Manual Test',thisQualityGate.copado__Type__c == 'Manual Approval')}">
+                    <apex:pageBlockSectionItem rendered="{!isManualType}">
                         <apex:outputLabel value="{!$ObjectType.copado__Quality_Gate__c.Fields.copado__Manual_Task_Owner__c.Label}"/>
                         <apex:outputPanel layout="block">
                             <div class="requiredBlock"/>
                             <apex:inputField value="{!thisQualityGate.copado__Manual_Task_Owner__c}"/>
                         </apex:outputPanel>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == 'Compliance Check'}">
+                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == COMPLIANCE}">
                         <apex:outputLabel value="{!$ObjectType.copado__Quality_Gate__c.Fields.copado__Compliance_Rule_Group__c.Label}"/>
                         <apex:outputPanel layout="block">
                             <div class="requiredBlock"/>
                             <apex:inputField value="{!thisQualityGate.copado__Compliance_Rule_Group__c}"/>
                         </apex:outputPanel>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem rendered="{!OR(thisQualityGate.copado__Type__c == 'Apex Test with Validation',thisQualityGate.copado__Type__c == null)}">
+                    <apex:pageBlockSectionItem rendered="{!OR(thisQualityGate.copado__Type__c == APEX_TEST,thisQualityGate.copado__Type__c == null)}">
                         <apex:outputLabel value="{!$ObjectType.copado__Quality_Gate__c.Fields.copado__Test_Level__c.Label}"/>
                         <apex:outputPanel layout="block">
                             <div class="requiredBlock"/>
@@ -132,11 +132,13 @@
                             </apex:selectList>
                         </apex:outputPanel>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == 'Static Code Analysis'}">
+                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == STATIC_ANALYSIS}">
                         <apex:outputLabel value="{!$ObjectType.copado__Quality_Gate__c.Fields.copado__Static_Code_Analysis_Settings__c.Label}"/>
                         <apex:inputField value="{!thisQualityGate.copado__Static_Code_Analysis_Settings__c}"/>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == 'Static Code Analysis'}">
+                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == STATIC_ANALYSIS}">
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!thisQualityGate.copado__Type__c == STATIC_ANALYSIS}">
                         <apex:outputLabel value="{!$ObjectType.copado__Quality_Gate__c.Fields.copado__Score_Threshold__c.Label}"/>
                         <apex:inputField value="{!thisQualityGate.copado__Score_Threshold__c}"/>
                     </apex:pageBlockSectionItem>
@@ -147,7 +149,8 @@
                     </apex:pageBlockSectionItem>
                 </apex:pageBlockSection>
 
-                <div class="slds-form-element">
+                <div class="slds-form-element slds-align_absolute-center">
+                    <apex:commandButton value="{!$Label.copado__cancel}" action="{!cancel}" styleClass="slds-button slds-button_neutral" />
                     <input type="button"  value="{!$Label.Save}" class="btn slds-button slds-button_brand"
                                         onClick="saveTask();"/>
                     <apex:actionFunction name="saveAct" action="{!save}" onComplete="unlockScreen();" reRender="messages">

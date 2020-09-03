@@ -100,7 +100,7 @@
                     <apex:param name="branch" value="" />
                 </apex:actionFunction>
 
-                <apex:pageBlock id="pb_createGit" mode="detail" helpUrl="https://docs.copa.do/git-repository/git-repository-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="{!$Label.copado__details}">
+                <apex:pageBlock id="pb_createGit" mode="detail" helpUrl="https://docs.copado.com/git-repository/git-repository-overview" helpTitle="{!$Label.copado__help_for_this_page}" title="{!$Label.copado__details}">
                     <apex:pageblockButtons >
                         <apex:commandButton value="{!$Label.site.edit}" action="{!edit}" />
                         <apex:commandButton value="{!$Label.copado__delete}" action="{!deleteGitRepository}" />

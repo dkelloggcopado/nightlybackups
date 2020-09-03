@@ -770,12 +770,12 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <fullName>copado__Flag_Status__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <formula>CASE( copado__Status__c, &quot;Completed Successfully&quot;, &quot;/resource/&quot; +  IF($Setup.copado__Settings__c.copado__Namespace__c != &quot;none&quot;, $Setup.copado__Settings__c.copado__Namespace__c, &quot;&quot;) 
+        <formula>CASE( copado__Status__c, &quot;Completed Successfully&quot;, &quot;/resource/&quot; + IF($Setup.copado__Settings__c.copado__Namespace__c!=&apos;none&apos;,&apos;copado__&apos;, &apos;&apos;)
  + &quot;SetupDashboardIcons/PipelineSvgIcons/pipeline-check.png&quot;, 
 &quot;In progress&quot;, &quot;/img/loading.gif&quot;, 
-&quot;Completed with Errors&quot;, &quot;/resource/&quot; +  IF($Setup.copado__Settings__c.copado__Namespace__c != &quot;none&quot;, $Setup.copado__Settings__c.copado__Namespace__c, &quot;&quot;)
+&quot;Completed with Errors&quot;, &quot;/resource/&quot; +  IF($Setup.copado__Settings__c.copado__Namespace__c!=&apos;none&apos;,&apos;copado__&apos;, &apos;&apos;)
  + &quot;SetupDashboardIcons/PipelineSvgIcons/pipeline-cross.png&quot;, 
-&quot;/resource/&quot; +  IF($Setup.copado__Settings__c.copado__Namespace__c != &quot;none&quot;, $Setup.copado__Settings__c.copado__Namespace__c, &quot;&quot;)
+&quot;/resource/&quot; +  IF($Setup.copado__Settings__c.copado__Namespace__c!=&apos;none&apos;,&apos;copado__&apos;, &apos;&apos;)
  + &quot;SetupDashboardIcons/PipelineSvgIcons/pipeline-paused.png&quot;)</formula>
         <label>Flag Status</label>
         <required>false</required>
@@ -1030,6 +1030,6 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <masterLabel>Deploy</masterLabel>
         <openType>noSidebar</openType>
         <protected>false</protected>
-        <url>/apex/{!$Setup.copado__Settings__c.copado__Namespace__c}deploymentWizard?id={!copado__Deployment__c.Id}&amp;gotoStep=deploynow</url>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}deploymentWizard?id={!copado__Deployment__c.Id}&amp;gotoStep=deploynow</url>
     </webLinks>
 </CustomObject>

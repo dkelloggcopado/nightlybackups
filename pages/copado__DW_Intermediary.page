@@ -5,6 +5,7 @@
     <c:IncludeStaticsResourceComponent addJQuery="true" addUIjs="true" />
     <apex:includeScript value="{!$Resource.copado__DW_javascript}" />
     <apex:stylesheet value="{!$Resource.copado__DW_custom_css}" />
+    <c:GAnalytics />
 
     <script>
         var globalSldsResourcePath = 'wescustom{!URLFOR($Asset.SLDS)}';
@@ -12,6 +13,10 @@
             lockScreen();
             window.history.replaceState("","",window.location.href)
             checkForLastStep();
+        });
+        ga('send', 'pageview', {
+            'page': '/DeploymentWizardIntermediary',
+            'title': 'Deployment Wizard Intermediary'
         });
     </script>
 
@@ -55,8 +60,14 @@
                                     <label class="slds-form-element__label" for="performanceType">{!$Label.copado__select_deployment_type}</label>
                                     <div class="visual-options">
                                         <apex:repeat value="{!deploymentTypeList}" var="dType">
-                                            <div class="slds-visual-picker slds-visual-picker_medium">
-                                                <input type="radio" id="{!dType.deploymentType}" value="{!dType.deploymentType}" name="performanceType" onclick="dw.changeValue(this,'{!$Component.RadioButtonValue}');" />
+                                            <!-- The title is hard coded because it will be patched and we will remove it when we enable big metadata functionality for dsw. -->
+                                            <div class="slds-visual-picker slds-visual-picker_medium" title="{!IF(AND(bigMetadataEnabled, dType.deploymentTypeLabel == $Label.copado__metadata_deployment),'This option is not available when the Type Filtered Metadata grid is enabled for the Org. Select the Advanced Multi-Step option to deploy metadata.','')}">
+                                                <apex:outputPanel layout="none" rendered="{!AND(bigMetadataEnabled, dType.deploymentTypeLabel == $Label.copado__metadata_deployment)}">
+                                                    <input type="radio" value="{!dType.deploymentType}" name="performanceType" disabled="disabled"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="none" rendered="{!OR(!bigMetadataEnabled, AND(bigMetadataEnabled, dType.deploymentTypeLabel != $Label.copado__metadata_deployment))}">
+                                                    <input type="radio" id="{!dType.deploymentType}" value="{!dType.deploymentType}" name="performanceType" onclick="dw.changeValue(this,'{!$Component.RadioButtonValue}');"/>
+                                                </apex:outputPanel>
                                                 <label for="{!dType.deploymentType}">
                                                     <span class="slds-visual-picker__figure slds-visual-picker__icon">
                                                         <span class="slds-is-selected">

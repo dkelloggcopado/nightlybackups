@@ -150,6 +150,24 @@ var statusManager = statusManager || {
         unlockScreen();
     },
 
+    /** UCU
+     * when "isFinished":true,
+     *      "status":"done",
+     *      "isSuccess":false
+     * it is either unexpected error or there is a merge conflict for the current promotion.
+     * So, added conflict check logic to prevent showing unexpected error pop-up when unnecessery
+     */
+    checkConflict: function(){
+        try{
+            var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Name LIKE 'US-%' and parentId = '" + statusManager.parentId + "' order by LastModifiedDate DESC limit 1",
+            result = sforce.connection.query(q);
+
+            return result.getArray("records");
+        } catch(ex){
+            console.log("An error has occurred " + ex);
+        }
+    },
+
     /**
      * basic callback
      * @return {[type]} [description]
@@ -159,18 +177,21 @@ var statusManager = statusManager || {
         var me = statusManager;
 
         if (msg && msg.isSuccess == false) {
-            var errorMsgs = (msg.messages && msg.messages.length > 0) ? msg.messages.join('\n') : (msg.type == 'MetadataRetriever' ?  copadoLabels.IF_MODIFY_METADATA_ENABLED : copadoLabels.UNEXPECTED_ERROR);
-            console.log('me.showAlert==> ',me.showAlert);
-            //to Prevent multiple error pop-ups when an error occurs in a callout
-            if(me.showAlert == true){
-                alert(errorMsgs);
+            var conflictAtt = me.checkConflict();
+            if(conflictAtt && conflictAtt.length == 1) {
                 me.showAlert = false;
             }
-            statusManager.stopStatusChecker();
-            console.error('Error Messages: ', errorMsgs);
+            var errorMsgs = (msg.messages && msg.messages.length > 0) ? msg.messages.join('\n') : (msg.type == 'MetadataRetriever' ?  copadoLabels.IF_MODIFY_METADATA_ENABLED : copadoLabels.UNEXPECTED_ERROR);
+            //to Prevent multiple error pop-ups when an error occurs in a callout
+            if(me.showAlert == true) {
+                alert(errorMsgs);
+                me.showAlert = false;
+                console.error('Error Messages: ', errorMsgs);
+            }
+            me.stopStatusChecker();
         }
 
-        statusManager.setStatusComplete();
+        me.setStatusComplete();
 
         //invoke callback
         msg && console.log('invoke callback', msg.type, me.callbackMap, me.successFunction, me.successFunction2);
