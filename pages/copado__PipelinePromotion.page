@@ -508,7 +508,10 @@
                                                             <apex:repeat value="{!$ObjectType.copado__User_Story__c.FieldSets.copado__Mass_Back_Promote}" var="fld">
                                                                 <td class="headcol slds-is-resizable" style="text-align: left;overflow-wrap: break-word;padding-top:20px">
                                                                     <div class="slds-truncate" title="{!us.userStory[fld]}">
-                                                                        <c:LightningReadyOutputFields SObject="{!us.userStory}" Field="{!fld.fieldPath}" showLabel="false" isViewLink="{!fld=='Name'}" dividerBottom="false" customClass="usFields" htmlTarget="_blank" />
+                                                                        <apex:outputLink value="{!URLFOR($Action.copado__User_Story__c.View,us.userStory.Id)}" rendered="{!fld.fieldPath == 'Name'}" target="_blank">
+                                                                            {!us.userStory.Name}
+                                                                        </apex:outputLink>
+                                                                        <apex:outputField value="{!us.userStory[fld.fieldPath]}" rendered="{!fld.fieldPath != 'Name'}"/>
                                                                     </div>
                                                                 </td>
                                                             </apex:repeat>

@@ -7,9 +7,14 @@
     <apex:includeScript value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.js')}" />
     <apex:stylesheet value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.min.css')}" />
     <apex:stylesheet value="{!$Resource.copado__DataTemplateSetup_custom_css}" />
+    <c:GAnalytics />
 
     <script>
         var globalSldsResourcePath = '{!URLFOR($Asset.SLDS)}';
+        ga('send', 'pageview', {
+            'page': '/DataTemplateSetup',
+            'title': 'Data Template Setup'
+        });
     </script>
 
     <apex:form >
@@ -143,7 +148,7 @@
                             <div class="slds-media__body {!GeneralMessageSeverity}-message-body">
                                 <p>
                                     {!$Label.copado__add_general_template_warnings}
-                                    <apex:commandLink value="{!$Label.copado__please_click} {!$Label.copado__here} {!$Label.copado__add_list_of_warnings}"
+                                    <apex:commandLink value=" {!$Label.copado__please_click} {!$Label.copado__here} {!$Label.copado__add_list_of_warnings}"
                                                       onclick="lockScreen();dts.openModals('GeneralWarning');"
                                                       onComplete="unlockScreen();" reRender="noneedrender"
                                                       styleClass="{!GeneralMessageSeverity}-link"/>
@@ -256,7 +261,7 @@
                                                     <apex:actionFunction name="renderTabsAfterObjectSelection"
                                                                          action="{!populateSelectedObjectFields}"
                                                                          onComplete="dts.handleActiveCheckbox();dts.onCompleteFunctionToreRender();"
-                                                                         reRender="objectFieldsTab,parentObjectFieldsTab,childrenObjectFieldsTab,mainObjectFiltersTab,errorPanel,activeCheckboxBlock,matchOwnerBlock,attachmentOptionsBlock,matchRecordTypeBlock,mainObjectTooltip,sourceOrgPanel,sampleContainer,generalWarningContainer,newTemplateContainer" />
+                                                                         reRender="objectFieldsTab,parentObjectFieldsTab,childrenObjectFieldsTab,mainObjectFiltersTab,errorPanel,activeCheckboxBlock,matchOwnerBlock,attachmentOptionsBlock,matchRecordTypeBlock,mainObjectTooltip,sourceOrgPanel,sampleContainer,generalWarningContainer,newTemplateContainer,matchOwnerCheckbox,recordTypeCheckbox" />
                                                 </apex:outputPanel>
                                                 <apex:outputPanel layout="none" rendered="{!OR(!enableADD,OR(AND(template.Id != null,template.copado__Main_Object__c != null,$ObjectType.copado__Data_Template__c.fields.copado__Main_Object__c.Accessible,!$ObjectType.copado__Data_Template__c.fields.copado__Main_Object__c.Createable,!$ObjectType.copado__Data_Template__c.fields.copado__Main_Object__c.Updateable),AND(template.Id != null,template.copado__Main_Object__c != null,$ObjectType.copado__Data_Template__c.fields.copado__Main_Object__c.Accessible,$ObjectType.copado__Data_Template__c.fields.copado__Main_Object__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Main_Object__c.Updateable)))}">
                                                     <apex:outputField id="mainObjOutput" value="{!template.copado__Main_Object__c}" />
@@ -303,56 +308,69 @@
                                                                   rendered="{!OR(!enableADD,AND($ObjectType.copado__Data_Template__c.fields.copado__Continue_on_Error__c.Accessible,!$ObjectType.copado__Data_Template__c.fields.copado__Continue_on_Error__c.Createable,!$ObjectType.copado__Data_Template__c.fields.copado__Continue_on_Error__c.Updateable))}" />
                                             </div>
                                         </div>
-                                        <!--
-                                        Do not delete this line, we will enable it in future releases
                                         <div class="slds-form-element">
                                             <label class="slds-form-element__label" for="attachementOptions">
                                                 {!$ObjectType.Data_Template__c.fields.Attachment_Options__c.Label}
                                                 <span id="attachmentOptionsBlock" class="info-wrapper info-icon copado-tooltip" tooltip-text="{!$Label.Attachment_Options_Tooltip}"></span>
                                             </label>
                                             <div class="slds-form-element__control">
-                                                <apex:inputField value="{!template.Attachment_Options__c}"
+                                                <apex:inputField value="{!template.copado__Attachment_Options__c}"
                                                                  id="attachementOptions"
                                                                  styleClass="slds-input"
-                                                                 rendered="{!AND(enableADD,$ObjectType.Data_Template__c.fields.Attachment_Options__c.Createable,$ObjectType.Data_Template__c.fields.Attachment_Options__c.Updateable)}" />
-                                                <apex:outputField value="{!template.Attachment_Options__c}"
+                                                                 rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Attachment_Options__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Attachment_Options__c.Updateable)}" />
+                                                <apex:outputField value="{!template.copado__Attachment_Options__c}"
                                                                   styleClass="slds-input"
-                                                                  rendered="{!OR(!enableADD,AND($ObjectType.Data_Template__c.fields.Attachment_Options__c.Accessible,!$ObjectType.Data_Template__c.fields.Attachment_Options__c.Createable,!$ObjectType.Data_Template__c.fields.Attachment_Options__c.Updateable))}" />
+                                                                  rendered="{!OR(!enableADD,AND($ObjectType.copado__Data_Template__c.fields.copado__Attachment_Options__c.Accessible,!$ObjectType.copado__Data_Template__c.fields.copado__Attachment_Options__c.Createable,!$ObjectType.copado__Data_Template__c.fields.copado__Attachment_Options__c.Updateable))}" />
                                             </div>
-                                        </div>-->
+                                        </div>
                                         <div class="slds-form-element">
                                             <label class="slds-form-element__label" for="matchOwners">
                                                 {!$ObjectType.Data_Template__c.fields.Match_Owners__c.Label}
                                                 <span id="matchOwnerBlock" class="info-wrapper info-icon copado-tooltip" tooltip-text="{!$Label.Match_Owner_Tooltip}"></span>
                                             </label>
-                                            <div class="slds-form-element__control">
+                                            <apex:outputPanel layout="block" styleClass="slds-form-element__control" id="matchOwnerCheckbox">
                                                 <span class="slds-checkbox slds-checkbox_standalone">
-                                                    <apex:inputField value="{!template.copado__Match_Owners__c}"
-                                                                     rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Updateable)}" />
+                                                    <apex:outputPanel layout="none" rendered="{!OwnerIdField}">
+                                                        <apex:inputField value="{!template.copado__Match_Owners__c}"
+                                                                         rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Updateable)}" />
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!!OwnerIdField}">
+                                                        <apex:inputField value="{!template.copado__Match_Owners__c}"
+                                                                         html-disabled="true"
+                                                                         rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Updateable)}" />
+                                                    </apex:outputPanel>
                                                     <apex:outputField value="{!template.copado__Match_Owners__c}"
                                                                       rendered="{!OR(!enableADD,AND($ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Accessible,!$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Createable,!$ObjectType.copado__Data_Template__c.fields.copado__Match_Owners__c.Updateable))}" />
                                                     <apex:outputPanel layout="none" rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Active__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Active__c.Updateable)}">
                                                       <span class="slds-checkbox_faux"></span>
                                                   </apex:outputPanel>
                                                 </span>
-                                            </div>
+                                            </apex:outputPanel>
                                         </div>
                                         <div class="slds-form-element">
                                             <label class="slds-form-element__label" for="matchRecordType">
                                                 {!$ObjectType.Data_Template__c.fields.Match_Record_Type__c.Label}
                                                 <span id="matchRecordTypeBlock" class="info-wrapper info-icon copado-tooltip" tooltip-text="{!$Label.Match_Record_Type_Info}"></span>
                                             </label>
-                                            <div class="slds-form-element__control">
+                                            <apex:outputPanel layout="block" styleClass="slds-form-element__control" id="recordTypeCheckbox">
                                                 <span class="slds-checkbox slds-checkbox_standalone">
-                                                    <apex:inputField value="{!template.copado__Match_Record_Type__c}"
-                                                                     rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Updateable)}" />
+                                                    <apex:outputPanel layout="none" rendered="{!RecordTypeIdField}">
+                                                        <apex:inputField value="{!template.copado__Match_Record_Type__c}"
+                                                                         rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Updateable)}" />
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel layout="none" rendered="{!!RecordTypeIdField}">
+                                                        <apex:inputField value="{!template.copado__Match_Record_Type__c}"
+                                                                         html-disabled="true"
+                                                                         rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Updateable)}" />
+                                                    </apex:outputPanel>
+
                                                     <apex:outputField value="{!template.copado__Match_Record_Type__c}"
                                                                       rendered="{!OR(!enableADD,AND($ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Accessible,!$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Createable,!$ObjectType.copado__Data_Template__c.fields.copado__Match_Record_Type__c.Updateable))}" />
                                                     <apex:outputPanel layout="none" rendered="{!AND(enableADD,$ObjectType.copado__Data_Template__c.fields.copado__Active__c.Createable,$ObjectType.copado__Data_Template__c.fields.copado__Active__c.Updateable)}">
                                                       <span class="slds-checkbox_faux"></span>
                                                   </apex:outputPanel>
                                                 </span>
-                                            </div>
+                                            </apex:outputPanel>
                                         </div>
                                     </div>
                                 </div>
@@ -401,7 +419,7 @@
                                                     <apex:outputPanel layout="none" rendered="{!obl.externalId}">
                                                         <span class="external-ids">{!$Label.copado__xid}</span>
                                                     </apex:outputPanel>
-                                                    <apex:outputPanel layout="none" rendered="{!!obl.nillable}">
+                                                    <apex:outputPanel layout="none" rendered="{!AND(!obl.nillable,obl.type != 'boolean')}">
                                                         <span class="hide-ordering">_</span>
                                                         <apex:image value="{!URLFOR($Resource.copado__DTS_images,'asterisk.png')}" />
                                                     </apex:outputPanel>
@@ -549,7 +567,7 @@
                                                                             <apex:repeat value="{!selectableFieldsMap[pofl.name].deploymentTemplateNameMap}" var="dt">
                                                                                 <li class="slds-dropdown__item" role="presentation">
                                                                                     <a href="javascript:void(0);" role="menuitemcheckbox">
-                                                                                        <span class="slds-truncate">{!selectableFieldsMap[pofl.name].deploymentTemplateNameMap[dt]}</span>
+                                                                                        <span data-recordId="{!dt}" class="slds-truncate">{!selectableFieldsMap[pofl.name].deploymentTemplateNameMap[dt]}</span>
                                                                                     </a>
                                                                                 </li>
                                                                             </apex:repeat>
@@ -1086,8 +1104,6 @@
                                 </p>
                             </div>
                         </div>
-
-
                     </apex:outputPanel>
                     <footer class="slds-modal__footer">
                         <div class="buttons modal-button">

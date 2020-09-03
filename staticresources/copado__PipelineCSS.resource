@@ -150,6 +150,7 @@ body .lookupInput > a {
     display: flex;
     justify-content: flex-start;
     padding-bottom: 5px;
+    cursor: move;
 }
 
 .co-pipeline-container .env-box .info .status {
@@ -248,6 +249,7 @@ body .lookupInput > a {
     position: relative;
     text-align: center;
     padding-left: 5px;
+
 }
 
 .co-pipeline-container .connection-info {
@@ -267,9 +269,9 @@ body .lookupInput > a {
     position:relative;
     text-align: center;
     padding: 2px;
-    border:1px solid #ebebeb;
-    border-radius:11px;
-    background-color:white;
+    border: 1px solid #ebebeb;
+    border-radius: 11px;
+    background-color: white;
 }
 
 .co-pipeline-container .connection-info .connection-behaviour-override.hide {
@@ -279,7 +281,7 @@ body .lookupInput > a {
 }
 
 .co-pipeline-container .connection-info .connection-behaviour-override.show {
-
+    cursor: pointer;
     visibility: visible;
     opacity: 1;
     -webkit-transition: visibility 1s ease-out 0.2s, opacity 0.125s linear 0.2s;
@@ -407,20 +409,7 @@ body .lookupInput > a {
     height: 24px;
 }
 
-.co-pipeline-container .createEnv {
-    font-size: 20px !important;
-    width: 50px;
-    border-right: none;
-    border-bottom: none;
-    border-top: none;
-    border: none;
-    color:white !important;
-    background-color: #9ebfd8 !important;
-    text-align: left;
-    border-radius: 50px;
-    padding-left: 4px;
-}
-
+.co-pipeline-container .createEnv,
 .co-pipeline-container .noCreateEnv {
     font-size: 20px !important;
     width: 50px;
@@ -433,7 +422,6 @@ body .lookupInput > a {
     text-align: left;
     border-radius: 50px;
     padding-left: 4px;
-    opacity: 70%;
 }
 
 .co-pipeline-container .createEnv:hover {
@@ -513,7 +501,7 @@ body .lookupInput > a {
 .co-pipeline-container #minimap {
     display: none;
     position: fixed;
-    overflow: hidden;
+    /*overflow: hidden;*/
     width: 175px;
     height: 125px;
     bottom: 50px;
@@ -523,6 +511,18 @@ body .lookupInput > a {
     border-radius: 10px;
     opacity: 0.9;
     z-index: 999;
+}
+
+#minimapHeader {
+    padding: 0 10px;
+    cursor: move;
+    z-index: 10;
+    background-color: transparent;
+    color: #cecece;
+    position: absolute;
+    top: -28px;
+    right: -11px;
+    font-size: 20px;
 }
 
 .co-pipeline-container #minimap .minimap-node {
@@ -765,11 +765,27 @@ input.toggle {
     width: 20px;
 }
 
-#confirmDeletePopup>section {
+#filterModalDiv .dueling-picklist .multiSelectPicklistRow .slds-input.picklistArrowRight,
+#filterModalDiv .dueling-picklist .multiSelectPicklistRow .slds-input.picklistArrowLeft {
+    border: none;
+    border-radius: 0;
+    transition: none;
+    display: inline-block;
+    padding: 0;
+    line-height: 0;
+    min-height: 20px;
+    width: 20px;
+}
+
+#filterModalDiv .dueling-picklist .multiSelectPicklistRow td {
+    vertical-align: middle;
+}
+
+#confirmDeletePopup > section {
     z-index: 9999;
 }
 
-#confirmDeletePopup>div {
+#confirmDeletePopup > div {
     z-index: 9998;
 }
 

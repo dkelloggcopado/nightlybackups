@@ -6,12 +6,18 @@
 }
 
 /* Resets */
-.co-dts-container hr {
-	margin: 0 0 2rem 0;
-}
-
 body {
     background-color: #F3F2F2 !important;
+}
+
+/* Container */
+.co-dts-container {
+	padding: 0 1rem;
+    font-family: "Salesforce Sans";
+}
+
+.co-dts-container hr {
+	margin: 0 0 2rem 0;
 }
 
 .co-dts-container ol {
@@ -22,16 +28,9 @@ body {
 	margin-inline-start: 0px;
 	margin-inline-end: 0px;
 	padding-inline-start: 0px;
-
 	word-break: break-all;
 	margin: 0;
 	padding: 0;
-}
-
-/* Container */
-.co-dts-container {
-	padding: 1rem;
-    font-family: "Salesforce Sans";
 }
 
 .co-dts-container .slds-page-header {
@@ -547,6 +546,10 @@ body {
 
 .co-dts-container .slds-modal__content.modal-content div {
     margin-bottom: 1rem;
+}
+
+.co-dts-container .slds-modal__content.modal-content div.slds-media__body {
+    margin-bottom: 0;
 }
 
 .co-dts-container .buttons.modal-button {

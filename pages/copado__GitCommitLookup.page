@@ -249,7 +249,7 @@
                           {text: copadoLabels.name, columntype:'textbox', filtertype: 'input', editable:false, datafield: 'n', width: '10%' },
                           {text: 'Repository',  columntype:'textbox', filtertype:'input', editable:false, datafield: 'r', width: '10%' },
                           {text: 'Branch',  columntype:'textbox', filtertype: 'input', editable:false, datafield: 'b', width: '10%'},
-                          {text: 'Commit Date', cellsformat: 'yyyy/MM/dd', filtertype: 'range', editable:false, datafield: 'd', width: '10%'},
+                          {text: 'Commit Date', cellsformat: 'yyyy-MM-dd', filtertype: 'range', editable:false, datafield: 'd', width: '10%'},
                           {text: 'Commit Id', columntype:'textbox', filtertype: 'input',  editable:false, datafield: 'i', width: '30%'},
                           {text: 'Commit Message', columntype:'textbox', filtertype: 'input', editable:false, datafield: 'm', width: '30%'}
 
