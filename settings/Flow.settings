@@ -11,7 +11,6 @@
     <enableFlowNullPreviousValueFix>false</enableFlowNullPreviousValueFix>
     <enableFlowPauseEnabled>false</enableFlowPauseEnabled>
     <enableFlowUseApexExceptionEmail>false</enableFlowUseApexExceptionEmail>
-    <enableInvocableFlowFixEnabled>true</enableInvocableFlowFixEnabled>
     <enableLightningRuntimeEnabled>true</enableLightningRuntimeEnabled>
     <isAccessToInvokedApexRequired>true</isAccessToInvokedApexRequired>
     <isApexPluginAccessModifierRespected>false</isApexPluginAccessModifierRespected>
