@@ -154,6 +154,15 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>Lock_Environment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Locks environment from deployments</description>
+        <externalId>false</externalId>
+        <label>Lock Environment</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>copado__Compliance_Rule_Group__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
