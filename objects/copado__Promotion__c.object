@@ -886,6 +886,13 @@
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
+        <fullName>Locked_Environment</fullName>
+        <active>true</active>
+        <description>Locks promotions with locked environments as target org.</description>
+        <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp;  copado__Destination_Environment__r.Lock_Environment__c = true</errorConditionFormula>
+        <errorMessage>This is a locked environment.  Please reach out to your Copado Admin for more information.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>copado__Scratch_Orgs_Disabled_for_Back_Promoting</fullName>
         <active>true</active>
         <errorConditionFormula>AND(copado__Back_Promotion__c == true,ISPICKVAL(copado__Destination_Org_Credential__r.copado__Org_Type__c,&apos;Scratch Org&apos;))</errorConditionFormula>

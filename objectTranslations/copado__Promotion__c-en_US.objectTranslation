@@ -131,6 +131,10 @@
         </picklistValues>
     </fields>
     <validationRules>
+        <errorMessage><!-- This is a locked environment.  Please reach out to your Copado Admin for more information. --></errorMessage>
+        <name>Locked_Environment</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- Back Promotions to Scratch Orgs are not allowed --></errorMessage>
         <name>copado__Scratch_Orgs_Disabled_for_Back_Promoting</name>
     </validationRules>
