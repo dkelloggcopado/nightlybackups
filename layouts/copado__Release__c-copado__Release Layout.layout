@@ -103,6 +103,11 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
+            <actionName>copado__Select_Base_Branch</actionName>
+            <actionType>CustomButton</actionType>
+            <sortOrder>7</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
             <actionName>Edit</actionName>
             <actionType>StandardButton</actionType>
             <sortOrder>0</sortOrder>
@@ -136,11 +141,6 @@
             <actionName>copado__Mass_add_to_Release</actionName>
             <actionType>CustomButton</actionType>
             <sortOrder>6</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>copado__Select_Base_Branch</actionName>
-            <actionType>CustomButton</actionType>
-            <sortOrder>7</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <relatedLists>
