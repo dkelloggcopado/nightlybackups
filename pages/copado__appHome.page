@@ -1,5 +1,4 @@
 <apex:page controller="copado.appHome" title="{!$Label.copado__account_summary}" standardStylesheets="true" sidebar="false" showHeader="true"
-
     id="thePage" cache="false" applyHtmlTag="{!$User.UIThemeDisplayed=='Theme3'}" applyBodyTag="false" docType="html-5.0" lightningStylesheets="true">
     <apex:slds rendered="{!$User.UIThemeDisplayed == 'Theme4d'}" />
 
@@ -47,8 +46,8 @@
     <body>
         <apex:form id="theForm">
             <div class="copado-lightning-VF">
-            <apex:sectionHeader id="theHeader" title="Copado" subtitle="{!$Label.copado__account_summary}" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}"
-            />
+                <apex:sectionHeader id="theHeader" title="Copado" subtitle="{!$Label.copado__account_summary}" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}"
+                />
                 <apex:pageMessages id="pmessage" rendered="{!$User.UIThemeDisplayed != 'Theme4d'}" />
                 <apex:outputPanel layout="block" styleClass="slds-scope copado-lightning-container" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
                     <div class="slds-page-header">
@@ -75,8 +74,7 @@
                                 <div class="slds-button-group" role="group">
                                     <apex:outputPanel id="registerApplication" layout="block">
                                         <apex:outputPanel layout="block" rendered="{!NOT(isApplicationRegistered)}">
-                                            <apex:commandButton styleClass="slds-button_brand" onclick="return showModal();"
-                                                value="Register Application" />
+                                            <apex:commandButton styleClass="slds-button_brand" onclick="return showModal();" value="Register Application" />
                                             <c:GenericBaseModal title="Register Copado Application" actionButtonText="Register" onActionRerender="messagesContainer, registerApplication, registerApiKeyButtonContainer, serverURLContainer"
                                                 actionToInvokeParamName="{!registerCopado}">
                                                 <div class="slds-m-around_medium">
@@ -163,25 +161,25 @@
                             <apex:tab label="{!$Label.copado__features}" name="t_features" id="tabOne" rendered="true">
                                 <apex:pageBlock id="pbFeatures" title="{!$Label.copado__features}">
                                     <apex:pageBlockButtons location="top">
-                                    <div class="slds-scope" style="display: flex;justify-content: flex-end;">
-                                        <apex:outputPanel title="You are about to activate Vlocity Feature. If you are not using Vlocity, do not activate it." layout="block"
-                                            styleClass="slds-form-element" style="width: 150px;margin-top: 7px;" rendered="{!$Permission.copado__Enable_Vlocity_Integration}">
-                                            <label class="slds-checkbox_toggle slds-grid">
-                                                <span class="slds-form-element__label slds-m-bottom_none">Toggle Vlocity</span>
-                                                <input id="vlocityInputCheckbox" type="checkbox" name="checkbox-toggle" value="checkbox-toggle" aria-describedby="checkbox-toggle"
-                                                    onClick="vlocityToggle();" />
-                                                <span id="checkbox-toggle" class="slds-checkbox_faux_container" aria-live="assertive">
-                                                    <span class="slds-checkbox_faux"></span>
-                                                </span>
-                                            </label>
-                                            <apex:actionFunction name="vlocityToggle" action="{!vlocityFeatureOperations}" oncomplete="toggleVlocityCheckbox('{!AND(VlocityFeature != null,VlocityFeature.copado__Enabled__c)}');"
-                                                reRender="pbFeatures" />
-                                        </apex:outputPanel>
-                                        <apex:commandButton action="{!refreshFeatures}" value="Refresh features" />
-                                    </div>
+                                        <div class="slds-scope" style="display: flex;justify-content: flex-end;">
+                                            <apex:outputPanel title="{!$Label.copado__vlocity_activation_info}" layout="block" styleClass="slds-form-element" style="width: 150px;margin-top: 7px;"
+                                                rendered="{!$Permission.copado__Enable_Vlocity_Integration}">
+                                                <label class="slds-checkbox_toggle slds-grid">
+                                                    <span class="slds-form-element__label slds-m-bottom_none">{!$Label.Toggle_Vlocity}</span>
+                                                    <input id="vlocityInputCheckbox" type="checkbox" name="checkbox-toggle" value="checkbox-toggle" aria-describedby="checkbox-toggle"
+                                                        onClick="vlocityToggle();" />
+                                                    <span id="checkbox-toggle" class="slds-checkbox_faux_container" aria-live="assertive">
+                                                        <span class="slds-checkbox_faux"></span>
+                                                    </span>
+                                                </label>
+                                                <apex:actionFunction name="vlocityToggle" action="{!vlocityFeatureOperations}" oncomplete="toggleVlocityCheckbox('{!AND(VlocityFeature != null,VlocityFeature.copado__Enabled__c)}');"
+                                                    reRender="pbFeatures" />
+                                            </apex:outputPanel>
+                                            <apex:commandButton action="{!refreshFeatures}" value="Refresh features" />
+                                        </div>
                                     </apex:pageBlockButtons>
 
-                                <apex:pageBlockTable value="{!featuresList}" var="f" columnsWidth="40%,20%,20%,20%">
+                                    <apex:pageBlockTable value="{!featuresList}" var="f" columnsWidth="40%,20%,20%,20%">
                                         <apex:column value="{!f.Name}" />
                                         <apex:column value="{!f.copado__Enabled__c}" />
                                         <apex:column value="{!f.copado__Quantity__c}" />

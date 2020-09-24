@@ -9,6 +9,9 @@ global class RegisterCopado {
     global RegisterCopado() {
 
     }
+    global static void setDefaultSettings(String copadoSettings) {
+
+    }
     global static void setUpCopadoRegistration() {
 
     }
