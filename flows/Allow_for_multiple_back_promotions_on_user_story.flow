@@ -43,13 +43,6 @@
         <locationX>696</locationX>
         <locationY>113</locationY>
         <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>{!$Record.{copado__User_Story__r.copado__Promoted_User_Story__c.copado__Promotion__c.ID}</stringValue>
-            </value>
-        </filters>
-        <filters>
             <field>copado__Back_Promotion__c</field>
             <operator>EqualTo</operator>
             <value>
@@ -61,6 +54,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>{!$Record.{copado__User_Story__r.copado__Promoted_User_Story__c.copado__Promotion__c.ID}</stringValue>
             </value>
         </filters>
         <inputAssignments>

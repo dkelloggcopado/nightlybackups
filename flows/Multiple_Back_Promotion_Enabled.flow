@@ -70,6 +70,13 @@
             <targetReference>count_number_of_promoted_back_promotions_on_promoted_user_story</targetReference>
         </connector>
         <filters>
+            <field>copado__User_Story__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>UserStory.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
             <field>Is_back_promotion__c</field>
             <operator>EqualTo</operator>
             <value>
@@ -81,13 +88,6 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Completed</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>copado__User_Story__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>UserStory.Id</elementReference>
             </value>
         </filters>
         <object>copado__Promoted_User_Story__c</object>
