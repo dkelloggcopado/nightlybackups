@@ -5673,6 +5673,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>VA_DEmo__c.Test_field__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>another__c.package_test__c</field>
         <readable>false</readable>
@@ -9541,6 +9546,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>UserProvisioningRequest-User Provisioning Request Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>VA_DEmo__c-VA DEmo Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>another__c-another Layout</layout>
