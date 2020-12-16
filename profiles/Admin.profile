@@ -3339,6 +3339,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.va_new_field_test__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Cisco_Demo__c.Cisco__c</field>
         <readable>true</readable>
     </fieldPermissions>
