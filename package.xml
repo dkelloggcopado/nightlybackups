@@ -55,6 +55,7 @@
         <members>LightningExperience</members>
         <members>Macro</members>
         <members>MapsAndLocation</members>
+        <members>Meetings</members>
         <members>Mobile</members>
         <members>MyDomain</members>
         <members>Name</members>
@@ -76,6 +77,7 @@
         <members>Product</members>
         <members>QuickText</members>
         <members>Quote</members>
+        <members>RealTimeEvent</members>
         <members>RecommendationBuilder</members>
         <members>RecordPage</members>
         <members>RetailExecution</members>
@@ -102,5 +104,5 @@
         <members>WorkDotCom</members>
         <name>Settings</name>
     </types>
-    <version>50.0</version>
+    <version>51.0</version>
 </Package>
