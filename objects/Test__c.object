@@ -152,6 +152,45 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>deploytest__c</fullName>
+        <externalId>false</externalId>
+        <label>deploytest</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>You</fullName>
+                    <default>false</default>
+                    <label>You</label>
+                </value>
+                <value>
+                    <fullName>Me</fullName>
+                    <default>false</default>
+                    <label>Me</label>
+                </value>
+                <value>
+                    <fullName>Us</fullName>
+                    <default>false</default>
+                    <label>Us</label>
+                </value>
+                <value>
+                    <fullName>Them</fullName>
+                    <default>false</default>
+                    <label>Them</label>
+                </value>
+                <value>
+                    <fullName>All</fullName>
+                    <default>false</default>
+                    <label>All</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
     <label>Test</label>
     <nameField>
         <label>Test Name</label>

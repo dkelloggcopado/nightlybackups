@@ -8,5 +8,29 @@
         <plural>true</plural>
         <value>Tests</value>
     </caseValues>
+    <fields>
+        <label><!-- deploytest --></label>
+        <name>deploytest__c</name>
+        <picklistValues>
+            <masterLabel>All</masterLabel>
+            <translation><!-- All --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Me</masterLabel>
+            <translation><!-- Me --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Them</masterLabel>
+            <translation><!-- Them --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Us</masterLabel>
+            <translation><!-- Us --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>You</masterLabel>
+            <translation><!-- You --></translation>
+        </picklistValues>
+    </fields>
     <startsWith>Consonant</startsWith>
 </CustomObjectTranslation>
