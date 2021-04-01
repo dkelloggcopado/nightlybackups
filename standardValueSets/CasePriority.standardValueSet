@@ -16,4 +16,14 @@
         <default>false</default>
         <label>Low</label>
     </standardValue>
+    <standardValue>
+        <fullName>Super High Priority</fullName>
+        <default>false</default>
+        <label>Super High Priority</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Super Duper High Priority</fullName>
+        <default>false</default>
+        <label>Super Duper High Priority</label>
+    </standardValue>
 </StandardValueSet>
