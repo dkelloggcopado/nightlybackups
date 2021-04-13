@@ -45,6 +45,13 @@
         <name>Region__c</name>
     </fields>
     <gender>Feminine</gender>
+    <layouts>
+        <layout>Store Layout</layout>
+        <sections>
+            <label><!-- Visual Information --></label>
+            <section>Visual Information</section>
+        </sections>
+    </layouts>
     <webLinks>
         <label><!-- Locate --></label>
         <name>Locate</name>

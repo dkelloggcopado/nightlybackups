@@ -1,0 +1,1646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>AutonomIQ API</description>
+    <label>AutonomIQ</label>
+    <namedCredential>AutonomIQ</namedCredential>
+    <schema>{
+  &quot;swagger&quot;: &quot;2.0&quot;,
+  &quot;info&quot;: {
+    &quot;description&quot;: &quot;AIQ API Service swagger Documentation\n&quot;,
+    &quot;version&quot;: &quot;1.0&quot;,
+    &quot;title&quot;: &quot;AIQ API Documentation&quot;,
+    &quot;contact&quot;: {}
+  },
+  &quot;host&quot;: &quot;testiq.autonomiq.ai&quot;,
+  &quot;basePath&quot;: &quot;/platform&quot;,
+  &quot;tags&quot;: [
+    {
+      &quot;name&quot;: &quot;Projects&quot;,
+      &quot;description&quot;: &quot;Project Operations&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Test Cases&quot;,
+      &quot;description&quot;: &quot;Test Cases Operations&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Test Suite&quot;,
+      &quot;description&quot;: &quot;Test Suites Operations&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Execution And Report&quot;,
+      &quot;description&quot;: &quot;Executions And Report Operations&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Authentication&quot;,
+      &quot;description&quot;: &quot;Authentication operations&quot;
+    }
+  ],
+  &quot;schemes&quot;: [
+    &quot;https&quot;
+  ],
+  &quot;consumes&quot;: [
+    &quot;application/json&quot;
+  ],
+  &quot;produces&quot;: [
+    &quot;application/json&quot;
+  ],
+  &quot;security&quot;: [
+    {
+      &quot;auth&quot;: []
+    }
+  ],
+  &quot;paths&quot;: {
+    &quot;/v1/getprojects&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Projects&quot;
+        ],
+        &quot;summary&quot;: &quot;Get all enabled projects for the account&quot;,
+        &quot;operationId&quot;: &quot;v1/projects/getprojects&quot;,
+        &quot;consumes&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns list of projects for the user account.&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/GetProjects&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/projects/{projectId}/getproject&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Projects&quot;
+        ],
+        &quot;summary&quot;: &quot;Get project information by projectId&quot;,
+        &quot;consumes&quot;: [
+          &quot;multipart/form-data&quot;
+        ],
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;projectId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Project Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns project object of the selected project which contains project inforamation.&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/ProjectObject&quot;
+            }
+          }
+        }
+      }
+    },
+    &quot;/v1/projects/{projectName}/getprojectbyname&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Projects&quot;
+        ],
+        &quot;summary&quot;: &quot;Get project information by project name.&quot;,
+        &quot;operationId&quot;: &quot;/v1/projects/{project_name}/getprojectbyname&quot;,
+        &quot;consumes&quot;: [
+          &quot;multipart/form-data&quot;
+        ],
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;projectName&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Project Name&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns the project information of the project having project name same as a query parameter.&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/GetProjectByName&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/testSuites/{accountId}/{projectId}/getTestSuites&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Test Suite&quot;
+        ],
+        &quot;summary&quot;: &quot;Get test suites and associated test case  info for the testsuite for the requested project.&quot;,
+        &quot;operationId&quot;: &quot;GetTestsuitesByProjects&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;projectId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Project Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          },
+          {
+            &quot;name&quot;: &quot;accountId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Account Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns test suites and associated test case  info for the testsuite for the requested project.&quot;,
+            &quot;examples&quot;: {
+              &quot;application/json&quot;: [
+                {
+                  &quot;projectId&quot;: 1074,
+                  &quot;projectName&quot;: &quot;new_Test_Demo_1&quot;,
+                  &quot;testSuiteId&quot;: 937,
+                  &quot;testSuiteName&quot;: &quot;NewTestSuite&quot;,
+                  &quot;creationTime&quot;: &quot;2020-08-06T05:13:44Z&quot;,
+                  &quot;lastRunTime&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+                  &quot;testCases&quot;: [
+                    {
+                      &quot;testCaseId&quot;: 6528,
+                      &quot;testCaseName&quot;: &quot;New Test Case&quot;,
+                      &quot;createdTime&quot;: &quot;2020-08-06T05:12:05Z&quot;,
+                      &quot;executionStatus&quot;: 4,
+                      &quot;lastRun&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+                      &quot;lastExecutionId&quot;: 0,
+                      &quot;ordinal&quot;: 1,
+                      &quot;isGenerating&quot;: false,
+                      &quot;isScriptAvailable&quot;: true,
+                      &quot;isAiqExecution&quot;: false
+                    }
+                  ],
+                  &quot;disabledStatus&quot;: false,
+                  &quot;interval&quot;: 0,
+                  &quot;latestJobId&quot;: 0,
+                  &quot;executionStatus&quot;: &quot;NA&quot;,
+                  &quot;scheduleStartTime&quot;: &quot;2020-08-06T05:15:38Z&quot;,
+                  &quot;isAiqExecution&quot;: false,
+                  &quot;schedulePlatform&quot;: &quot;Linux&quot;,
+                  &quot;scheduleBrowser&quot;: &quot;Chrome&quot;,
+                  &quot;recipientsEmails&quot;: [],
+                  &quot;peTriggers&quot;: []
+                },
+                {
+                  &quot;projectId&quot;: 1074,
+                  &quot;projectName&quot;: &quot;new_Test_Demo_1&quot;,
+                  &quot;testSuiteId&quot;: 938,
+                  &quot;testSuiteName&quot;: &quot;Test_Demo&quot;,
+                  &quot;creationTime&quot;: &quot;2020-08-06T06:08:52Z&quot;,
+                  &quot;lastRunTime&quot;: &quot;2020-08-06T06:48:48Z&quot;,
+                  &quot;testCases&quot;: [
+                    {
+                      &quot;testCaseId&quot;: 6528,
+                      &quot;testCaseName&quot;: &quot;New Test Case&quot;,
+                      &quot;createdTime&quot;: &quot;2020-08-06T05:12:05Z&quot;,
+                      &quot;executionStatus&quot;: 1,
+                      &quot;lastRun&quot;: &quot;2020-08-06T06:49:40Z&quot;,
+                      &quot;lastExecutionId&quot;: 35520,
+                      &quot;ordinal&quot;: 1,
+                      &quot;isGenerating&quot;: false,
+                      &quot;isScriptAvailable&quot;: true,
+                      &quot;isAiqExecution&quot;: false
+                    },
+                    {
+                      &quot;testCaseId&quot;: 6532,
+                      &quot;testCaseName&quot;: &quot;New Test Case_1&quot;,
+                      &quot;createdTime&quot;: &quot;2020-08-06T06:09:15Z&quot;,
+                      &quot;executionStatus&quot;: 1,
+                      &quot;lastRun&quot;: &quot;2020-08-06T06:49:57Z&quot;,
+                      &quot;lastExecutionId&quot;: 35521,
+                      &quot;ordinal&quot;: 2,
+                      &quot;isGenerating&quot;: false,
+                      &quot;isScriptAvailable&quot;: true,
+                      &quot;isAiqExecution&quot;: false
+                    }
+                  ],
+                  &quot;disabledStatus&quot;: false,
+                  &quot;interval&quot;: 0,
+                  &quot;latestJobId&quot;: 89029,
+                  &quot;executionStatus&quot;: &quot;SUCCESS&quot;,
+                  &quot;scheduleStartTime&quot;: &quot;2020-08-06T06:15:47Z&quot;,
+                  &quot;isAiqExecution&quot;: false,
+                  &quot;schedulePlatform&quot;: &quot;Linux&quot;,
+                  &quot;scheduleBrowser&quot;: &quot;Chrome&quot;,
+                  &quot;recipientsEmails&quot;: [],
+                  &quot;peTriggers&quot;: []
+                }
+              ]
+            },
+            &quot;headers&quot;: {
+              &quot;Content-Length&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;default&quot;: &quot;1587&quot;
+              },
+              &quot;Date&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;default&quot;: &quot;Fri, 07 Aug 2020 05:43:28 GMT&quot;
+              },
+              &quot;Server&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;default&quot;: &quot;Caddy&quot;
+              }
+            },
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;array&quot;,
+              &quot;items&quot;: {
+                &quot;$ref&quot;: &quot;#/definitions/GetTestsuitesByProject&quot;
+              }
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/projects/{projectId}/execute&quot;: {
+      &quot;post&quot;: {
+        &quot;tags&quot;: [
+          &quot;Execution And Report&quot;
+        ],
+        &quot;summary&quot;: &quot;Execute test script.&quot;,
+        &quot;operationId&quot;: &quot;ExecuteTestSuiteTest&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;in&quot;: &quot;body&quot;,
+            &quot;name&quot;: &quot;Body&quot;,
+            &quot;description&quot;: &quot;&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/ExecuteTestSuiteTestRequest&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;projectId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Project Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It Executes a single test script, though this end point accepts the array of scriptId but it will execute only the script with id at 0th index.&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/ExecuteTestSuiteTestResponse&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/testsuite/{testSuiteId}/execute&quot;: {
+      &quot;post&quot;: {
+        &quot;tags&quot;: [
+          &quot;Test Suite&quot;
+        ],
+        &quot;summary&quot;: &quot;Execute a test suite&quot;,
+        &quot;operationId&quot;: &quot;testSuiteId&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;testSuiteId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Testsuite Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          },
+          {
+            &quot;in&quot;: &quot;body&quot;,
+            &quot;name&quot;: &quot;Body&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/TestSuiteExecRequest&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;&quot;,
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/TestSuiteExecResponse&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/auth&quot;: {
+      &quot;post&quot;: {
+        &quot;tags&quot;: [
+          &quot;Authentication&quot;
+        ],
+        &quot;summary&quot;: &quot;Authorize user&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;in&quot;: &quot;body&quot;,
+            &quot;name&quot;: &quot;Body&quot;,
+            &quot;description&quot;: &quot;Request body must contain username and password whith which user whis to authenticate the session&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/Authrequest&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;This response consist of token and user information&quot;,
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/AuthResponse&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/jobs/{jobId}/get_status&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Test Suite&quot;
+        ],
+        &quot;summary&quot;: &quot;Get execution status of a testsuite&quot;,
+        &quot;operationId&quot;: &quot;GetexecutionStatusOfJobByTestSuite&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;jobId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Job Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns status of execution of test suite&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/GetStatus&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/projects/{projectId}/testcases&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Test Cases&quot;
+        ],
+        &quot;summary&quot;: &quot;Get Test Cases For ProjectId&quot;,
+        &quot;operationId&quot;: &quot;GetTestCasesForaProject&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;projectId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Project Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns test case and their test script information for a project.&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/GetTestCaseByProjectId&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/v1/downloadFile&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Execution And Report&quot;
+        ],
+        &quot;summary&quot;: &quot;Download html report&quot;,
+        &quot;operationId&quot;: &quot;DownloadReport&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;fileURL&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;&quot;,
+            &quot;headers&quot;: {}
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    },
+    &quot;/testScriptExecutions/{executionId}/executions&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;Execution And Report&quot;
+        ],
+        &quot;summary&quot;: &quot;Get execution details&quot;,
+        &quot;operationId&quot;: &quot;GetExecutions&quot;,
+        &quot;produces&quot;: [
+          &quot;application/json&quot;
+        ],
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;executionId&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;Project Id&quot;,
+            &quot;required&quot;: true,
+            &quot;type&quot;: &quot;string&quot;
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;It returns execution details for the executing script.&quot;,
+            &quot;headers&quot;: {},
+            &quot;schema&quot;: {
+              &quot;$ref&quot;: &quot;#/definitions/GetExecutions&quot;
+            }
+          }
+        },
+        &quot;deprecated&quot;: false
+      }
+    }
+  },
+  &quot;securityDefinitions&quot;: {
+    &quot;auth&quot;: {
+      &quot;type&quot;: &quot;basic&quot;
+    }
+  },
+  &quot;definitions&quot;: {
+    &quot;Authrequest&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [
+        &quot;password&quot;,
+        &quot;username&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;username&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;password&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        }
+      },
+      &quot;title&quot;: &quot;AuthRequest&quot;,
+      &quot;example&quot;: {
+        &quot;username&quot;: &quot;appuser&quot;,
+        &quot;password&quot;: &quot;app123&quot;
+      }
+    },
+    &quot;AuthResponse&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;token&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;role&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;email&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;userId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;userAccount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;lastLogin&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;isRelativeDateFormat&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        }
+      },
+      &quot;title&quot;: &quot;AuthResponse&quot;,
+      &quot;example&quot;: {
+        &quot;token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhaXFVc2VyIjoiYXBwdXNlciIsImFpcVVzZXJJZCI6MSwiYWlxVXNlclJvbGUiOiJBRE1JTiIsImFpcUFjY291bnRJZCI6MSwiYWlxSXNQbGF0Zm9ybUFkbWluIjpmYWxzZSwiZXhwIjoxNjAyMjc0MDIzLCJpYXQiOjE2MDIyMzA4MjN9.8Rcdhz3J1L71NQpCqpCPfHudsO4TUBo51cSFSrEeS0k&quot;,
+        &quot;role&quot;: &quot;ADMIN&quot;,
+        &quot;name&quot;: &quot;appuser&quot;,
+        &quot;email&quot;: &quot;appuser@autonomiq.io&quot;,
+        &quot;userId&quot;: 1,
+        &quot;userAccount&quot;: 1,
+        &quot;lastLogin&quot;: &quot;2020-10-09T08:07:03.891583195Z&quot;,
+        &quot;isRelativeDateFormat&quot;: false
+      }
+    },
+    &quot;GetTestsuitesByProject&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [
+        &quot;creationTime&quot;,
+        &quot;disabledStatus&quot;,
+        &quot;executionStatus&quot;,
+        &quot;interval&quot;,
+        &quot;isAiqExecution&quot;,
+        &quot;lastRunTime&quot;,
+        &quot;latestJobId&quot;,
+        &quot;peTriggers&quot;,
+        &quot;projectId&quot;,
+        &quot;projectName&quot;,
+        &quot;recipientsEmails&quot;,
+        &quot;scheduleBrowser&quot;,
+        &quot;schedulePlatform&quot;,
+        &quot;scheduleStartTime&quot;,
+        &quot;testCases&quot;,
+        &quot;testSuiteId&quot;,
+        &quot;testSuiteName&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;projectId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;projectName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testSuiteId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;testSuiteName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;creationTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;lastRunTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testCases&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/TestCase&quot;
+          }
+        },
+        &quot;disabledStatus&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;interval&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;latestJobId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;executionStatus&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;scheduleStartTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;isAiqExecution&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;schedulePlatform&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;scheduleBrowser&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;recipientsEmails&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        },
+        &quot;peTriggers&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        }
+      },
+      &quot;title&quot;: &quot;GetTestsuitesByProject&quot;,
+      &quot;example&quot;: {
+        &quot;projectId&quot;: 1074,
+        &quot;projectName&quot;: &quot;new_Test_Demo_1&quot;,
+        &quot;testSuiteId&quot;: 937,
+        &quot;testSuiteName&quot;: &quot;NewTestSuite&quot;,
+        &quot;creationTime&quot;: &quot;2020-08-06T05:13:44Z&quot;,
+        &quot;lastRunTime&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+        &quot;testCases&quot;: [
+          {
+            &quot;testCaseId&quot;: 6528,
+            &quot;testCaseName&quot;: &quot;New Test Case&quot;,
+            &quot;createdTime&quot;: &quot;2020-08-06T05:12:05Z&quot;,
+            &quot;executionStatus&quot;: 4,
+            &quot;lastRun&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+            &quot;lastExecutionId&quot;: 0,
+            &quot;ordinal&quot;: 1,
+            &quot;isGenerating&quot;: false,
+            &quot;isScriptAvailable&quot;: true,
+            &quot;isAiqExecution&quot;: false
+          }
+        ],
+        &quot;disabledStatus&quot;: false,
+        &quot;interval&quot;: 0,
+        &quot;latestJobId&quot;: 0,
+        &quot;executionStatus&quot;: &quot;NA&quot;,
+        &quot;scheduleStartTime&quot;: &quot;2020-08-06T05:15:38Z&quot;,
+        &quot;isAiqExecution&quot;: false,
+        &quot;schedulePlatform&quot;: &quot;Linux&quot;,
+        &quot;scheduleBrowser&quot;: &quot;Chrome&quot;,
+        &quot;recipientsEmails&quot;: [],
+        &quot;peTriggers&quot;: []
+      }
+    },
+    &quot;TestCase&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [
+        &quot;createdTime&quot;,
+        &quot;executionStatus&quot;,
+        &quot;isAiqExecution&quot;,
+        &quot;isGenerating&quot;,
+        &quot;isScriptAvailable&quot;,
+        &quot;lastExecutionId&quot;,
+        &quot;lastRun&quot;,
+        &quot;ordinal&quot;,
+        &quot;testCaseId&quot;,
+        &quot;testCaseName&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;testCaseId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;testCaseName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;createdTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;executionStatus&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;lastRun&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;lastExecutionId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;ordinal&quot;: {
+          &quot;type&quot;: &quot;integer&quot;,
+          &quot;format&quot;: &quot;int32&quot;
+        },
+        &quot;isGenerating&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;isScriptAvailable&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;isAiqExecution&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        }
+      },
+      &quot;title&quot;: &quot;TestCase&quot;,
+      &quot;example&quot;: {
+        &quot;testCaseId&quot;: 6528,
+        &quot;testCaseName&quot;: &quot;New Test Case&quot;,
+        &quot;createdTime&quot;: &quot;2020-08-06T05:12:05Z&quot;,
+        &quot;executionStatus&quot;: 4,
+        &quot;lastRun&quot;: &quot;0001-01-01T00:00:00Z&quot;,
+        &quot;lastExecutionId&quot;: 0,
+        &quot;ordinal&quot;: 1,
+        &quot;isGenerating&quot;: false,
+        &quot;isScriptAvailable&quot;: true,
+        &quot;isAiqExecution&quot;: false
+      }
+    },
+    &quot;GetProjects&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;projectId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;projectName&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        }
+      },
+      &quot;title&quot;: &quot;GetProjects&quot;,
+      &quot;example&quot;: [
+        {
+          &quot;projectId&quot;: 38,
+          &quot;projectName&quot;: &quot;iceDQ&quot;
+        }
+      ]
+    },
+    &quot;ProjectObject&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;disabledStatus&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;name&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;appUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;accountId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;lastActivityDate&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;creationTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;lastUsedBy&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;xpathAttributes&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;stepsColNum&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;dataColNum&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;expectedResultsColNum&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;parserLocation&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;customParserArgs&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;cacheXpaths&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;isFullScreenshot&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;isNoExecutionScreenshot&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;isAutoExecute&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;isInteractiveDebug&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;interval&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsFailedCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsPassedCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsSkippedCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsInProgressCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;noOfUsers&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;noOfEnvironments&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;emailToSend&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;caseCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;dataCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;variablesCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;flowsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;scriptCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;smartRetry&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;aiqExecution&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;showTimer&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;description&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        }
+      },
+      &quot;title&quot;: &quot;ProjectObject&quot;,
+      &quot;example&quot;: {
+        &quot;id&quot;: 54,
+        &quot;disabledStatus&quot;: false,
+        &quot;name&quot;: &quot;MarcTest&quot;,
+        &quot;appUrl&quot;: &quot;https://login.salesforce.com&quot;,
+        &quot;accountId&quot;: 1,
+        &quot;lastActivityDate&quot;: &quot;2018-08-23T16:17:48Z&quot;,
+        &quot;creationTime&quot;: &quot;2018-08-23T16:17:48Z&quot;,
+        &quot;lastUsedBy&quot;: &quot;appuser&quot;,
+        &quot;xpathAttributes&quot;: &quot;null&quot;,
+        &quot;stepsColNum&quot;: 0,
+        &quot;dataColNum&quot;: 0,
+        &quot;expectedResultsColNum&quot;: 0,
+        &quot;parserLocation&quot;: &quot;&quot;,
+        &quot;customParserArgs&quot;: &quot;&quot;,
+        &quot;cacheXpaths&quot;: true,
+        &quot;isFullScreenshot&quot;: false,
+        &quot;isNoExecutionScreenshot&quot;: false,
+        &quot;isAutoExecute&quot;: true,
+        &quot;isInteractiveDebug&quot;: false,
+        &quot;interval&quot;: 0,
+        &quot;totalTestsCount&quot;: 2,
+        &quot;totalTestsFailedCount&quot;: 0,
+        &quot;totalTestsPassedCount&quot;: 2,
+        &quot;totalTestsSkippedCount&quot;: 0,
+        &quot;totalTestsInProgressCount&quot;: 0,
+        &quot;noOfUsers&quot;: 49,
+        &quot;noOfEnvironments&quot;: 2,
+        &quot;emailToSend&quot;: &quot;&quot;,
+        &quot;caseCount&quot;: 2,
+        &quot;dataCount&quot;: 2,
+        &quot;variablesCount&quot;: 0,
+        &quot;flowsCount&quot;: 0,
+        &quot;scriptCount&quot;: 2,
+        &quot;smartRetry&quot;: true,
+        &quot;aiqExecution&quot;: false,
+        &quot;showTimer&quot;: false,
+        &quot;description&quot;: &quot;&quot;
+      }
+    },
+    &quot;GetProjectByName&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;projectId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;projectName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;appUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;lastActivityDate&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;noOfEnvironments&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;numberOfCases&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsFailedCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;totalTestsPassedCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;jobs&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/JobObject&quot;
+          }
+        }
+      },
+      &quot;title&quot;: &quot;GetProjectByName&quot;,
+      &quot;example&quot;: {
+        &quot;projectId&quot;: 54,
+        &quot;projectName&quot;: &quot;MarcTest&quot;,
+        &quot;appUrl&quot;: &quot;https://login.salesforce.com&quot;,
+        &quot;lastActivityDate&quot;: &quot;2018-08-23T16:17:48Z&quot;,
+        &quot;noOfEnvironments&quot;: 2,
+        &quot;numberOfCases&quot;: 2,
+        &quot;totalTestsCount&quot;: 2,
+        &quot;totalTestsFailedCount&quot;: 0,
+        &quot;totalTestsPassedCount&quot;: 2,
+        &quot;jobs&quot;: [
+          {
+            &quot;jobId&quot;: 0,
+            &quot;inProgress&quot;: 0,
+            &quot;passed&quot;: 0,
+            &quot;failed&quot;: 0
+          },
+          {
+            &quot;jobId&quot;: 0,
+            &quot;inProgress&quot;: 0,
+            &quot;passed&quot;: 0,
+            &quot;failed&quot;: 0
+          },
+          {
+            &quot;jobId&quot;: 0,
+            &quot;inProgress&quot;: 0,
+            &quot;passed&quot;: 0,
+            &quot;failed&quot;: 0
+          }
+        ],
+        &quot;isFavourite&quot;: false
+      }
+    },
+    &quot;JobObject&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;jobId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;inProgress&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;passed&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;failed&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        }
+      },
+      &quot;title&quot;: &quot;JobObject&quot;,
+      &quot;example&quot;: {
+        &quot;jobId&quot;: 0,
+        &quot;inProgress&quot;: 0,
+        &quot;passed&quot;: 0,
+        &quot;failed&quot;: 0
+      }
+    },
+    &quot;ExecuteTestSuiteTestResponse&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;tasks&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/TaskObject&quot;
+          }
+        },
+        &quot;total_execs&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        }
+      },
+      &quot;title&quot;: &quot;ExecuteTestSuiteTestResponse&quot;,
+      &quot;example&quot;: {
+        &quot;tasks&quot;: [
+          {
+            &quot;executionId&quot;: 37919,
+            &quot;executionName&quot;: &quot;suitedemo&quot;,
+            &quot;executionStatus&quot;: &quot;INPROGRESS&quot;,
+            &quot;initiatedOn&quot;: &quot;2020-10-08T15:28:36.229634292Z&quot;,
+            &quot;projectName&quot;: &quot;demo_avishkar&quot;,
+            &quot;projectId&quot;: 0,
+            &quot;executionVideoUrl&quot;: &quot;&quot;,
+            &quot;reportUrl&quot;: &quot;&quot;,
+            &quot;testcaseIds&quot;: 0,
+            &quot;testCaseName&quot;: &quot;&quot;,
+            &quot;tcErrors&quot;: 0,
+            &quot;tcWarnings&quot;: 0,
+            &quot;aiqExecution&quot;: false,
+            &quot;aiqReportData&quot;: &quot;&quot;,
+            &quot;browser&quot;: 0,
+            &quot;errorsCount&quot;: 0,
+            &quot;warningsCount&quot;: 0,
+            &quot;statusMessage&quot;: &quot;&quot;
+          }
+        ],
+        &quot;total_execs&quot;: 0
+      }
+    },
+    &quot;TaskObject&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;executionId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;executionName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;executionStatus&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;initiatedOn&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;projectName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;projectId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;executionVideoUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;reportUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testcaseIds&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testCaseName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;tcErrors&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;tcWarnings&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;classes&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {}
+        },
+        &quot;aiqExecution&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;aiqReportData&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;browser&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;errorsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;warningsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;statusMessage&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        }
+      },
+      &quot;title&quot;: &quot;TaskObject&quot;,
+      &quot;example&quot;: {
+        &quot;executionId&quot;: 37919,
+        &quot;executionName&quot;: &quot;suitedemo&quot;,
+        &quot;executionStatus&quot;: &quot;INPROGRESS&quot;,
+        &quot;initiatedOn&quot;: &quot;2020-10-08T15:28:36.229634292Z&quot;,
+        &quot;projectName&quot;: &quot;demo_avishkar&quot;,
+        &quot;projectId&quot;: 0,
+        &quot;executionVideoUrl&quot;: &quot;&quot;,
+        &quot;reportUrl&quot;: &quot;&quot;,
+        &quot;testcaseIds&quot;: 0,
+        &quot;testCaseName&quot;: &quot;&quot;,
+        &quot;tcErrors&quot;: 0,
+        &quot;tcWarnings&quot;: 0,
+        &quot;aiqExecution&quot;: false,
+        &quot;aiqReportData&quot;: &quot;&quot;,
+        &quot;browser&quot;: 0,
+        &quot;errorsCount&quot;: 0,
+        &quot;warningsCount&quot;: 0,
+        &quot;statusMessage&quot;: &quot;&quot;
+      }
+    },
+    &quot;ExecuteTestSuiteTestRequest&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [
+        &quot;browserDetails&quot;,
+        &quot;executionType&quot;,
+        &quot;isRemoteDriver&quot;,
+        &quot;platform&quot;,
+        &quot;remoteDriver&quot;,
+        &quot;scripts&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;executionType&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;isRemoteDriver&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;remoteDriver&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;remoteDriverUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testExecutionName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;sessionId&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testCaseId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;extraData&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {}
+        },
+        &quot;appiumVersion&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;deviceName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;deviceOrientation&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;platformVersion&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;platform&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;scripts&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          }
+        },
+        &quot;browserDetails&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/BrowserDetail&quot;
+          }
+        }
+      },
+      &quot;title&quot;: &quot;ExecuteTestSuiteTestRequest&quot;,
+      &quot;example&quot;: {
+        &quot;executionType&quot;: &quot;smoke&quot;,
+        &quot;isRemoteDriver&quot;: false,
+        &quot;platform&quot;: &quot;Linux&quot;,
+        &quot;remoteDriverUrl&quot;: &quot;&quot;,
+        &quot;scripts&quot;: [
+          3110
+        ],
+        &quot;testExecutionName&quot;: &quot;suitedemo&quot;,
+        &quot;sessionId&quot;: &quot;&quot;,
+        &quot;testCaseId&quot;: 3331,
+        &quot;extraData&quot;: {},
+        &quot;appiumVersion&quot;: &quot;&quot;,
+        &quot;deviceName&quot;: &quot;&quot;,
+        &quot;deviceOrientation&quot;: &quot;&quot;,
+        &quot;platformVersion&quot;: &quot;&quot;,
+        &quot;browserDetails&quot;: [
+          {
+            &quot;browser&quot;: &quot;chrome&quot;,
+            &quot;browserVersion&quot;: &quot;0.0&quot;
+          }
+        ]
+      }
+    },
+    &quot;GetTestCaseByProjectId&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;testCaseId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testCaseName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;createdTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;discoveryId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testCaseLoc&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;projectName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;disabledStatus&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;status&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;statusMessage&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testScripts&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/TestScriptObject&quot;
+          }
+        }
+      },
+      &quot;title&quot;: &quot;GetTestCaseByProjectId&quot;,
+      &quot;example&quot;: [
+        {
+          &quot;testCaseId&quot;: 3330,
+          &quot;testCaseName&quot;: &quot;New Test Case&quot;,
+          &quot;createdTime&quot;: &quot;2019-08-09T05:08:16Z&quot;,
+          &quot;discoveryId&quot;: 720,
+          &quot;testCaseLoc&quot;: &quot;http://minio:9000/000001/appuser/1/demo_avishkar/720/3330/New Test Case&quot;,
+          &quot;projectName&quot;: &quot;&quot;,
+          &quot;disabledStatus&quot;: false,
+          &quot;status&quot;: 1,
+          &quot;statusMessage&quot;: &quot;Success&quot;,
+          &quot;testScripts&quot;: [
+            {
+              &quot;testScriptid&quot;: 3109,
+              &quot;projectId&quot;: 720,
+              &quot;testCaseId&quot;: 3330,
+              &quot;discoveryId&quot;: 720,
+              &quot;userId&quot;: 1,
+              &quot;testScriptName&quot;: &quot;New_Test_Case.java&quot;,
+              &quot;testScriptDownloadLink&quot;: &quot;http://minio:9000/000001/appuser/1/demo_avishkar/720/3330/New_Test_Case.java&quot;,
+              &quot;testScriptGenerationStatus&quot;: &quot;SUCCESS&quot;,
+              &quot;errorMessage&quot;: &quot;&quot;,
+              &quot;stepsErrorMessages&quot;: &quot;&quot;,
+              &quot;initiatedBy&quot;: &quot;appuser&quot;,
+              &quot;initiatedTime&quot;: &quot;2019-08-09T05:08:18Z&quot;,
+              &quot;generationTime&quot;: &quot;2019-08-09T05:08:25Z&quot;,
+              &quot;lastExecutedTime&quot;: &quot;2020-10-08T12:34:31Z&quot;,
+              &quot;lastExecStatus&quot;: 1,
+              &quot;executionId&quot;: 37911
+            }
+          ],
+          &quot;tags&quot;: [],
+          &quot;lastRun&quot;: &quot;2019-08-09T05:08:25Z&quot;,
+          &quot;totalTime&quot;: 4,
+          &quot;isGenerating&quot;: false,
+          &quot;desc&quot;: &quot;&quot;,
+          &quot;reportUrl&quot;: &quot;&quot;,
+          &quot;testDatas&quot;: [],
+          &quot;ordinal&quot;: 0
+        }
+      ]
+    },
+    &quot;GetExecutions&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;executionId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;executionName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;executionStatus&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;initiatedOn&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;projectName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;projectId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;executionVideoUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;reportUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testcaseIds&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testCaseName&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;tcErrors&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;tcWarnings&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;classes&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {}
+        },
+        &quot;aiqExecution&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;aiqReportData&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;browser&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;errorsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;warningsCount&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;statusMessage&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        }
+      },
+      &quot;title&quot;: &quot;GetExecutions&quot;,
+      &quot;example&quot;: {
+        &quot;executionId&quot;: 13202,
+        &quot;executionName&quot;: &quot;&quot;,
+        &quot;executionStatus&quot;: &quot;ERROR&quot;,
+        &quot;initiatedOn&quot;: &quot;2020-10-08T12:36:20Z&quot;,
+        &quot;projectName&quot;: &quot;new_Test_Demo6&quot;,
+        &quot;projectId&quot;: 22,
+        &quot;executionVideoUrl&quot;: &quot;&quot;,
+        &quot;reportUrl&quot;: &quot;Iv5aXQ_Vz89VVbhwh4LUD-6myAwGJ6y-8il2CikQ1XSSjh6WDf0TdUcs27M06mzKoPZXQFZq4K5EKETDY-iCqWubmkbDJELveKuu88P7mpo11D56nVFgs7aVY6JO2RuJ9Rh51G9xLn3Z&quot;,
+        &quot;testcaseIds&quot;: 62,
+        &quot;testCaseName&quot;: &quot;outlook_login&quot;,
+        &quot;tcErrors&quot;: 0,
+        &quot;tcWarnings&quot;: 0,
+        &quot;aiqExecution&quot;: true,
+        &quot;aiqReportData&quot;: &quot;&quot;,
+        &quot;browser&quot;: 1,
+        &quot;errorsCount&quot;: 0,
+        &quot;warningsCount&quot;: 0,
+        &quot;statusMessage&quot;: &quot;Failed at step 11&quot;
+      }
+    },
+    &quot;TestScriptObject&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;testScriptid&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;projectId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testCaseId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;discoveryId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;userId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testScriptName&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;testScriptDownloadLink&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;testScriptGenerationStatus&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;errorMessage&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;stepsErrorMessages&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;initiatedBy&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;initiatedTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;generationTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;lastExecutedTime&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;lastExecStatus&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;executionId&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        }
+      },
+      &quot;title&quot;: &quot;TestScriptObject&quot;
+    },
+    &quot;GetStatus&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;job_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;creation_time&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;job_execution_status&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;tcs&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/TcsObject&quot;
+          }
+        }
+      },
+      &quot;title&quot;: &quot;GetStatus&quot;,
+      &quot;example&quot;: {
+        &quot;job_id&quot;: 9854,
+        &quot;creation_time&quot;: &quot;2020-09-15T15:49:01Z&quot;,
+        &quot;job_execution_status&quot;: &quot;PARTIAL&quot;,
+        &quot;tcs&quot;: [
+          {
+            &quot;tc_id&quot;: 61,
+            &quot;tc_name&quot;: &quot;New_Test_Case_1&quot;,
+            &quot;execution_id&quot;: 11938,
+            &quot;execution_name&quot;: &quot;New_Test_Case_1_TestDemo3&quot;,
+            &quot;execution_initiated_time&quot;: &quot;2020-09-15T15:49:02Z&quot;,
+            &quot;execution_cmpletion_tiem&quot;: &quot;2020-09-15T16:03:17Z&quot;,
+            &quot;execution_status&quot;: &quot;ERROR&quot;,
+            &quot;execution_error_meg&quot;: &quot;&quot;,
+            &quot;script_generation_status&quot;: &quot;INPROGRESS&quot;,
+            &quot;script_generation_error&quot;: &quot;&quot;,
+            &quot;project_id&quot;: 22,
+            &quot;project_name&quot;: &quot;&quot;,
+            &quot;aiq_execution&quot;: false,
+            &quot;aiq_report_data&quot;: &quot;&quot;,
+            &quot;browser&quot;: &quot;chrome&quot;,
+            &quot;tags&quot;: []
+          }
+        ]
+      }
+    },
+    &quot;TestSuiteExecRequest&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;executionType&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;executionMode&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;isRemoteDriver&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;platform&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;remoteDriverUrl&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;browserDetails&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;$ref&quot;: &quot;#/definitions/BrowserDetail&quot;
+          }
+        },
+        &quot;map&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {}
+        }
+      },
+      &quot;title&quot;: &quot;TestSuiteExecRequest&quot;,
+      &quot;example&quot;: {
+        &quot;executionType&quot;: &quot;smoke&quot;,
+        &quot;executionMode&quot;: &quot;parallel&quot;,
+        &quot;isRemoteDriver&quot;: false,
+        &quot;platform&quot;: &quot;Linux&quot;,
+        &quot;remoteDriverUrl&quot;: &quot;&quot;,
+        &quot;browserDetails&quot;: [
+          {
+            &quot;browser&quot;: &quot;Chrome&quot;,
+            &quot;browserVersion&quot;: &quot;0.0&quot;
+          }
+        ],
+        &quot;map&quot;: {}
+      }
+    },
+    &quot;TestSuiteExecResponse&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;job_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        }
+      },
+      &quot;title&quot;: &quot;TestSuiteExecResponse&quot;,
+      &quot;example&quot;: {
+        &quot;job_id&quot;: 118102
+      }
+    },
+    &quot;TcsObject&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;properties&quot;: {
+        &quot;tc_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;tc_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;execution_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;execution_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;execution_initiated_time&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;execution_cmpletion_tiem&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;execution_status&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;execution_error_meg&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;script_generation_status&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;script_generation_error&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;project_id&quot;: {
+          &quot;type&quot;: &quot;integer&quot;
+        },
+        &quot;project_name&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;aiq_execution&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;
+        },
+        &quot;aiq_report_data&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;browser&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;tags&quot;: {
+          &quot;type&quot;: &quot;array&quot;,
+          &quot;items&quot;: {
+            &quot;type&quot;: &quot;string&quot;
+          }
+        }
+      },
+      &quot;title&quot;: &quot;TcsObject&quot;
+    },
+    &quot;BrowserDetail&quot;: {
+      &quot;type&quot;: &quot;object&quot;,
+      &quot;required&quot;: [
+        &quot;browser&quot;,
+        &quot;browserVersion&quot;
+      ],
+      &quot;properties&quot;: {
+        &quot;browser&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        },
+        &quot;browserVersion&quot;: {
+          &quot;type&quot;: &quot;string&quot;
+        }
+      },
+      &quot;title&quot;: &quot;BrowserDetail&quot;,
+      &quot;example&quot;: {
+        &quot;browser&quot;: &quot;Chrome&quot;,
+        &quot;browserVersion&quot;: &quot;0.0&quot;
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi</schemaType>
+    <status>Complete</status>
+</ExternalServiceRegistration>

@@ -21,7 +21,7 @@
     <apex:includeScript value="{!URLFOR($Resource.copado__DataTables10,'DataTables10/datatables.select.min.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.copado__CopadoChangeManagement, 'Assets/js/jquery.svg.min.js')}" />
     <apex:includeScript value="{!URLFOR($Resource.copado__CopadoChangeManagement, 'Assets/js/jquery.connectingLine.js')}" />
-    <!-- end pipeline promotion -->   
+    <!-- end pipeline promotion -->
 
     <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.DataTables10,'DataTables10/datatables.min.css')}" />
     <link rel="stylesheet" href="{!URLFOR($Resource.CopadoChangeManagement,'Assets/css/deploymentFlowConnections.css')}" />
@@ -318,7 +318,7 @@
 
 
 
-        /* pipeline dialog */ 
+        /* pipeline dialog */
         function showApprovalModal(envId) {
             prepareEnvApprovals(envId);
             $copado('#approvalBackdrop').addClass('slds-backdrop--open');
@@ -526,12 +526,12 @@
             border-top: 4px solid #3593c6 !important;
         }
         .tabButton {
-	        width:34%;
-	        min-width: 250px;
-	    }
+            width:34%;
+            min-width: 250px;
+        }
         /* end pipeline diagram */
     </style>
-    <!-- end pipeline promotion and diagram --> 
+    <!-- end pipeline promotion and diagram -->
 
     <div class="slds-scope">
         <apex:form id="filterModalForm">
@@ -1455,14 +1455,14 @@
                     </script>
                 </apex:outputPanel>
             </apex:outputPanel>
-        
-        
+
+
         <!-- PIPELINE PROMOTION -->
         <apex:actionFunction name="getUserStories" action="{!getPromotableUserStories}" oncomplete="bindSelectAll();bindLookupChanges();unlockScreen();" reRender="fieldSets,GeneralActionButtons"/>
         <apex:actionFunction name="resetModalDOM" action="{!resetModalsDOM}" reRender="fileModal, modal, logsModal" />
         <apex:actionFunction name="closeToast" action="{!closeToastMessage}" reRender="notify" />
         <apex:actionFunction name="prepareRebase" action="{!prepareRebase}" reRender="rebaseModalContent,rebaseMainRender" oncomplete="showRebaseModal();"/>
-        
+
         <!-- Environment Variables for all environments -->
         <apex:outputPanel layout="none">
             <section role="dialog" tabindex="-1" id="eVarModal" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_large" style="height: 100%">
@@ -1561,7 +1561,7 @@
                                 function() {
                                     openRebasePromotionsPanel();
                                     rebasePromotionsRender();
-                                } 
+                                }
                             );
                             </script>
                     </apex:outputPanel>
@@ -1788,7 +1788,7 @@
                     </div>
                 </apex:outputPanel>
             </section>
-            <div class="slds-backdrop" id="rebaseBackdrop"></div>           
+            <div class="slds-backdrop" id="rebaseBackdrop"></div>
         </apex:outputPanel>
         <!-- END OF Rebase Panel -->
 
@@ -1936,10 +1936,10 @@
             </section>
             <div class="slds-backdrop" id="rebasePromotionsBackdrop"></div>
         </apex:outputPanel>
-        <!-- END OF PIPELINE PROMOTION --> 
-    
+        <!-- END OF PIPELINE PROMOTION -->
 
-        <!-- PIPELINE DIALOG --> 
+
+        <!-- PIPELINE DIALOG -->
         <!-- deployment modal functions -->
         <apex:actionFunction name="openConflictPage" reRender="copadoErrorPanel,copadoErrorPanelForDialog" action="{!openResolveConflictsPage}" onComplete="closeDeploymentModal();">
             <apex:param name="promId" value="" />
@@ -1958,8 +1958,8 @@
         <apex:actionFunction name="renderPromotionPoller" reRender="promotionPoller" />
         <apex:actionFunction name="resetPromotionList" action="{!resetPromotionList}" oncomplete="renderTable();closePromotionListModal();changeSelectAll('userStoriesTable', 'selectAll');unlockScreen();" reRender="fieldSets,pins" />
         <apex:actionFunction name="deployPromotionList" action="{!deployPromotionList}" reRender="createdPromotionListPanel,promotionPoller,copadoErrorPanelForDialog" oncomplete="unlockScreen();" />
-        
-        
+
+
         <apex:outputPanel layout="none">
             <section role="dialog" tabindex="-1" id="modal" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_large" style="height: 100%">
                 <apex:outputPanel layout="block" id="operationModal" styleClass="slds-modal__container" style="width: 100% !important;">
@@ -2131,13 +2131,19 @@
                                         <apex:repeat value="{!ComplianceScanResults}" var="cr">
                                             <tr class="slds-hint-parent">
                                                 <apex:repeat value="{!$ObjectType.copado__Compliance_Scan_Result__c.FieldSets.copado__Compliance_Result_Tab}" var="fld">
+                                                    <apex:variable var="isReferenceField" value="{!fld.Type == 'reference'}" />
+                                                    <apex:variable var="isBooleanField" value="{!fld.Type == 'boolean'}" />
+                                                    <apex:variable var="isNameField" value="{!fld.Label == $ObjectType.copado__Compliance_Scan_Result__c.fields.Name.Label}" />
                                                     <td role="gridcell" class="">
                                                         <div class="slds-truncate" title="{!cr[fld]}">
-                                                            <apex:outputPanel layout="none" rendered="{!OR(fld.Type == 'reference', fld.Type == 'boolean')}">
+                                                            <apex:outputPanel layout="none" rendered="{!OR(isReferenceField, isBooleanField)}">
                                                                 <apex:outputField value="{!cr[fld.fieldPath]}" />
                                                             </apex:outputPanel>
-                                                            <apex:outputPanel layout="none" rendered="{!AND(fld.Type != 'reference', fld.Type != 'boolean')}">
+                                                            <apex:outputPanel layout="none" rendered="{!AND(NOT(isReferenceField), NOT(isBooleanField), NOT(isNameField))}">
                                                                 {!cr[fld.fieldPath]}
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel layout="none" rendered="{!isNameField}">
+                                                                <a href="#" onclick="copadoNavigateToUrl('{!cr.Id}','{!URLFOR($Action.copado__Compliance_Scan_Result__c.View,cr.Id)}', '_blank'); return false;">{!cr[fld.fieldPath]}</a>
                                                             </apex:outputPanel>
                                                         </div>
                                                     </td>
@@ -2561,7 +2567,7 @@
             </section>
             <div class="slds-backdrop" id="promoListBackdrop"></div>
         </apex:outputPanel>
-        <!-- END OF PIPELINE DIALOG --> 
+        <!-- END OF PIPELINE DIALOG -->
 
         </apex:form>
     </div>

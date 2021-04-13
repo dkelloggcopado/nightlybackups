@@ -91,6 +91,21 @@
         <label><!-- Severity --></label>
         <name>copado__Severity__c</name>
     </fields>
+    <layouts>
+        <layout>Compliance Rule Layout</layout>
+        <sections>
+            <label><!-- Criteria --></label>
+            <section>Criteria</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- New Section --></label>
+            <section>New Section</section>
+        </sections>
+    </layouts>
     <recordTypes>
         <description><!-- Use this record type to define scan rules run by Copado. --></description>
         <label><!-- Copado --></label>

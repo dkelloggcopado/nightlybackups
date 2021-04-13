@@ -5,7 +5,7 @@
         <name>copado__Active__c</name>
     </fields>
     <fields>
-        <label><!-- Attachment Options --></label>
+        <label><!-- Attachment Actions --></label>
         <name>copado__Attachment_Options__c</name>
         <picklistValues>
             <masterLabel>Insert Attachments</masterLabel>
@@ -73,6 +73,13 @@
         <name>copado__Template_Source_Org__c</name>
         <relationshipLabel><!-- Data Templates --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>Data Template Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
     <webLinks>
         <label><!-- Import_Templates --></label>
         <name>copado__Import_Templates</name>

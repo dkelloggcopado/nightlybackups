@@ -202,6 +202,7 @@
         <deprecated>false</deprecated>
         <description>Match only metadata whose name matches this value (ignored if Metadata Name = &apos;All&apos; is selected)</description>
         <externalId>false</externalId>
+        <inlineHelpText>Match only metadata whose name matches this value (ignored if Metadata Name = &apos;All&apos; is selected)</inlineHelpText>
         <label>Value</label>
         <length>255</length>
         <required>false</required>

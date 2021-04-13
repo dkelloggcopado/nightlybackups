@@ -4748,34 +4748,161 @@
         <label>Work Manager Relations</label>
     </fieldSets>
     <fields>
-        <fullName>Enable_Logs__c</fullName>
-        <defaultValue>false</defaultValue>
+        <fullName>Bundle_User_Story__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to Bundle (Parent) User Story</description>
         <externalId>false</externalId>
-        <label>Enable Logs</label>
+        <label>Bundle User Story</label>
+        <referenceTo>copado__User_Story__c</referenceTo>
+        <relationshipLabel>Bundled User Stories</relationshipLabel>
+        <relationshipName>Bundle_User_Stories</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Change_Approved__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Once this checkbox is checked, the change has been approved and can be deployed forward.</description>
+        <externalId>false</externalId>
+        <label>Change Approved</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>External_Id__c</fullName>
-        <externalId>true</externalId>
-        <label>External Id</label>
-        <length>255</length>
+        <fullName>Datetime_Completed__c</fullName>
+        <description>This will get filled out with the current datetime the very first time this User Story gets marked as either &quot;Promote And Deploy&quot; or &quot;Ready To Promote&quot;. If this field is already filled out, it will not be updated, so this is filled in once and only once. This is filled in via the workflow rule &quot;Fill In Datetime Completed Field&quot;.</description>
+        <externalId>false</externalId>
+        <label>Datetime Completed</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Datetime_Deployed_To_Production__c</fullName>
+        <description>This will get filled in with the current datetime once this User Story has the &quot;Environment&quot; field filled in with the value &quot;Production&quot;. This will happen when the User Story is successfully deployed there. This is filled in by the process builder labeled &quot;Stop Indexing Metadata &amp; Mark &quot;Datetime Deployed&quot; Once User Story Reaches Production (Invocable)&quot;.</description>
+        <externalId>false</externalId>
+        <label>Datetime Deployed To Production</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Is_Bundle__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates when a User Story is a Bundle</description>
+        <externalId>false</externalId>
+        <label>Is Bundle</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lead_Time_Hours__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Datetime_Deployed_To_Production__c  -  Datetime_Completed__c) * 24</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Time (Hours)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>JIRA_key__c</fullName>
+        <fullName>Lead_Time_Minutes__c</fullName>
         <externalId>false</externalId>
-        <label>JIRA key</label>
-        <length>255</length>
+        <formula>(Datetime_Deployed_To_Production__c  -  Datetime_Completed__c) * 1440</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Time (Minutes)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_Of_Components__c</fullName>
+        <description>Displays the number of components currently linked to the User Story.</description>
+        <externalId>false</externalId>
+        <label>Number Of Components</label>
+        <summaryForeignKey>copado__User_Story_Metadata__c.copado__User_Story__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Parent__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Allows leadership to add bug causing user stories to the fixes that are being pushed through the pipeline.</description>
+        <externalId>false</externalId>
+        <label>Parent</label>
+        <referenceTo>copado__User_Story__c</referenceTo>
+        <relationshipLabel>User Stories</relationshipLabel>
+        <relationshipName>User_Stories</relationshipName>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Requires_Approval__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If opportunity is selected, require an approval process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>You are attempting to deploy a change to the opportunity object.  This requires an approval process. Please submit an approval process.</inlineHelpText>
+        <label>Requires Approval</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SCA_Score__c</fullName>
+        <description>This field is updated by a process that pastes the most recent SCA results.</description>
+        <externalId>false</externalId>
+        <label>SCA Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SCA_Violation_Priority__c</fullName>
+        <externalId>false</externalId>
+        <label>SCA Violation Priority</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SCA_Violations__c</fullName>
+        <description>This field is updated by a process that pastes the most recent SCA results.</description>
+        <externalId>false</externalId>
+        <label>SCA Violations</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -5110,6 +5237,21 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>copado__Feature__c</fullName>
+        <businessStatus>Hidden</businessStatus>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Feature</label>
+        <referenceTo>copado__Copado_Feature__c</referenceTo>
+        <relationshipLabel>User Stories</relationshipLabel>
+        <relationshipName>User_Stories</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>copado__Functional_Specifications__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -5148,6 +5290,18 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>copado__Git_Repository__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>copado__Project__r.copado__Deployment_Flow__r.copado__Git_Repository__c</formula>
+        <label>Git Repository</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>copado__Has_Apex_Code__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>
@@ -5155,6 +5309,16 @@
         <externalId>false</externalId>
         <inlineHelpText>Value automatically updated by Copado whenever there are Apex Classes added or committed in the User Story.</inlineHelpText>
         <label>Has Apex Code</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>copado__Is_Bundle__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Is Bundle</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -5184,23 +5348,23 @@
     <fields>
         <fullName>copado__Last_Validation_Deployment_Status__c</fullName>
         <deprecated>false</deprecated>
-        <description>Status of the latest validation Deployment for the User Story.</description>
+        <description>Status of the latest validation Promotion for the User Story.</description>
         <externalId>false</externalId>
         <formula>IF(copado__Last_Validation_Deployment__r.copado__Date__c &lt; copado__Latest_Commit_Date__c,
-			 IMAGE(&apos;/img/msg_icons/warning16.png&apos;,&apos;OutDated&apos;)+&quot; &quot;+&quot;Validation Outdated&quot;, 
-				IF(AND(NOT(ISBLANK(copado__Last_Validation_Deployment__c)),
-											CONTAINS(TEXT(copado__Last_Validation_Deployment__r.copado__Status__c),&apos;Error&apos;)),
-							IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;failed&quot;)+&quot; &quot;+TEXT(copado__Last_Validation_Deployment__r.copado__Status__c),
-							IF(AND(NOT(ISBLANK(copado__Last_Validation_Deployment__c)),
-											CONTAINS(TEXT(copado__Last_Validation_Deployment__r.copado__Status__c),&apos;Successfully&apos;)),
-										IMAGE(&quot;/img/samples/flag_green.gif&quot;,&quot;completed&quot;)+&quot; &quot;+TEXT(copado__Last_Validation_Deployment__r.copado__Status__c),
-										TEXT(copado__Last_Validation_Deployment__r.copado__Status__c)
-									)
-		    )
-			)</formula>
+IMAGE(&apos;/img/msg_icons/warning16.png&apos;,&apos;OutDated&apos;)+&quot; &quot;+&quot;Validation Outdated&quot;, 
+   IF(AND(NOT(ISBLANK(copado__Last_Validation_Promotion__c)),
+                               (CONTAINS(TEXT(copado__Last_Validation_Promotion__r.copado__Status__c),&apos;error&apos;)) || ISPICKVAL(copado__Last_Validation_Promotion__r.copado__Status__c, &apos;Validation failed&apos;)),
+               IMAGE(&quot;/img/samples/flag_red.gif&quot;,&quot;failed&quot;)+&quot; &quot;+TEXT(copado__Last_Validation_Promotion__r.copado__Status__c),
+               IF(AND(NOT(ISBLANK(copado__Last_Validation_Promotion__c)),
+                               (CONTAINS(TEXT(copado__Last_Validation_Promotion__r.copado__Status__c),&apos;Successfully&apos;)) || ISPICKVAL(copado__Last_Validation_Promotion__r.copado__Status__c, &apos;Validated&apos;)),
+                           IMAGE(&quot;/img/samples/flag_green.gif&quot;,&quot;completed&quot;)+&quot; &quot;+TEXT(copado__Last_Validation_Promotion__r.copado__Status__c),
+                           TEXT(copado__Last_Validation_Promotion__r.copado__Status__c)
+                       )
+)
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Status of the latest validation Deployment for the User Story.</inlineHelpText>
-        <label>Last Validation Deployment Status</label>
+        <label>Last Validation Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6033,7 +6197,7 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <fullName>copado__Story_Points_Other__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <label>Story Points Other</label>
+        <label>Planned Points</label>
         <precision>3</precision>
         <required>false</required>
         <scale>0</scale>
@@ -6046,7 +6210,7 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <fullName>copado__Story_Points_SFDC__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <label>Story Points SFDC</label>
+        <label>Actual Points</label>
         <precision>3</precision>
         <required>false</required>
         <scale>0</scale>
@@ -6143,6 +6307,20 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>copado__US_Feature__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Feature</label>
+        <referenceTo>copado__Application_Feature__c</referenceTo>
+        <relationshipLabel>User Stories</relationshipLabel>
+        <relationshipName>User_Stories</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>copado__User_Story_Title__c</fullName>
         <deprecated>false</deprecated>
         <description>Short description of the User Story or requirement. Technical and non-technical team members should be able to understand the description.</description>
@@ -6228,25 +6406,95 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
     </fields>
+    <fields>
+        <fullName>copadoccmint__Enable_Logs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Enable Logs</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>copadoccmint__External_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>copadoccmint__JIRA_key__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>JIRA key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
     <label>User Story</label>
+    <listViews>
+        <fullName>Bundle_Stories</fullName>
+        <columns>NAME</columns>
+        <columns>copado__User_Story_Title__c</columns>
+        <columns>copado__Sprint__c</columns>
+        <columns>copado__Environment__c</columns>
+        <columns>Is_Bundle__c</columns>
+        <columns>Bundle_User_Story__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Environment__c</field>
+            <operation>equals</operation>
+            <value>Developer 1</value>
+        </filters>
+        <label>Bundle Stories</label>
+    </listViews>
+    <listViews>
+        <fullName>User_Story_Reviewers_User_Story</fullName>
+        <filterScope>Queue</filterScope>
+        <label>User Story Reviewers</label>
+        <queue>User_Story_Reviewers</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
         <columns>copado__User_Story_Title__c</columns>
-        <columns>copado__userStory_Role__c</columns>
-        <columns>copado__userStory_need__c</columns>
-        <columns>copado__userStory_reason__c</columns>
-        <columns>copado__Story_Points_SFDC__c</columns>
-        <columns>copado__Story_Points_Other__c</columns>
         <columns>copado__Environment__c</columns>
         <columns>copado__Status__c</columns>
         <columns>copado__Project__c</columns>
         <columns>copado__Epic__c</columns>
+        <columns>copado__Has_Apex_Code__c</columns>
         <columns>copado__Sprint__c</columns>
         <columns>copado__Promote_Change__c</columns>
+        <columns>copado__Exclude_From_CBM__c</columns>
+        <columns>copado__Stop_Indexing_Metadata__c</columns>
         <columns>copado__Release__c</columns>
         <columns>LAST_UPDATE</columns>
+        <columns>copado__Pull_Requests_Approved__c</columns>
+        <columns>RECORDTYPE</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Exclude_From_CBM__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>copado__Stop_Indexing_Metadata__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
         <label>All</label>
     </listViews>
     <listViews>
@@ -7624,21 +7872,204 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <customTabListAdditionalFields>copado__Project__c</customTabListAdditionalFields>
         <listViewButtons>copado__Assign_to_Release</listViewButtons>
         <listViewButtons>copado__Import_to_User_Story</listViewButtons>
+        <listViewButtons>User_Story_Bundle</listViewButtons>
+        <listViewButtons>copado__Mass_Add_User_Stories</listViewButtons>
         <lookupDialogsAdditionalFields>copado__User_Story_Title__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__userStory_Role__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__userStory_need__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>copado__userStory_reason__c</lookupDialogsAdditionalFields>
         <searchResultsAdditionalFields>copado__User_Story_Title__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__userStory_Role__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__userStory_need__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>copado__userStory_reason__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Project__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Sprint__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Story_Points_SFDC__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Story_Points_Other__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>copado__Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>copado__Environment__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Bundle_User_Story__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Is_Bundle__c</searchResultsAdditionalFields>
+        <searchResultsCustomButtons>User_Story_Bundle</searchResultsCustomButtons>
+        <searchResultsCustomButtons>copado__Import_to_User_Story</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Approved_pull_request_for_Pr_and_Depl</fullName>
+        <active>false</active>
+        <description>Check to make sure there is an approved pull request review before allowing promote and deploy checkbox</description>
+        <errorConditionFormula>AND(copado__Pull_Requests_Approved__c = false,
+OR( copado__Environment__r.Name = &apos;Developer 1&apos;,
+  copado__Environment__r.Name = &apos;Developer 2&apos;),
+AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy__c = true))</errorConditionFormula>
+        <errorMessage>There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Cancelling_a_child_user_story_bundled</fullName>
+        <active>true</active>
+        <description>Cancelling a child user story is not allowed.</description>
+        <errorConditionFormula>NOT( ISBLANK( Bundle_User_Story__c ) )  &amp;&amp;   ISPICKVAL(copado__Status__c, &apos;Cancelled&apos;)</errorConditionFormula>
+        <errorMessage>The user story status cannot be changed to Cancelled since it is part of a bundle and the bundle will continue moving the changes committed in this user story. You need to cancel the parent user story bundle first in order to cancel this user story.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Opportunity_metadata_validation</fullName>
+        <active>false</active>
+        <description>AND(PRIORVALUE(copado__Promote_and_Deploy__c) = false,copado__Promote_and_Deploy__c = true))</description>
+        <errorConditionFormula>AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true,
+PRIORVALUE( copado__Promote_Change__c) = false, 
+copado__Promote_Change__c = true, 
+Change_Approved__c = false
+)</errorConditionFormula>
+        <errorMessage>Your change includes metadata that alters the opportunity object.  Changes must be approved before pushing forward.  Please submit approval request by clicking &quot;Submit for Approval&quot;.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Pull_Request_Approved</fullName>
+        <active>false</active>
+        <description>This enforces that a pull request for this User Story must first be approved before the User Story can be marked as &quot;Promote Change&quot; or &quot;Promote &amp; Deploy&quot;. The checkbox Pull Request Approved must equal true,</description>
+        <errorConditionFormula>AND( 
+OR( 
+AND( 
+PRIORVALUE(copado__Promote_Change__c) = false, 
+copado__Promote_Change__c = true 
+), 
+AND( 
+PRIORVALUE(copado__Promote_and_Deploy__c) = false, 
+copado__Promote_and_Deploy__c = true 
+) 
+), 
+ copado__Pull_Requests_Approved__c = false
+)</errorConditionFormula>
+        <errorMessage>A pull request must first be approved in order to promote this User Story.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Run_specified_tests_if_apex</fullName>
+        <active>true</active>
+        <description>Run specified tests must be selected before selecting &quot;Promote and Deploy&quot; or &quot;Ready to Promote&quot;</description>
+        <errorConditionFormula>AND(
+copado__Has_Apex_Code__c = true,
+OR(
+AND(
+PRIORVALUE(copado__Promote_Change__c) = false,
+copado__Promote_Change__c = true
+),
+AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true
+)
+),
+ISPICKVAL(copado__Promotion_Test_Level__c,&apos;RunSpecifiedTests&apos;)
+)</errorConditionFormula>
+        <errorMessage>Please update &quot;Promotion Test Level&quot; to &quot;Run Specified Tests&quot; before selecting &quot;Promote and Deploy&quot; or &quot;Ready to Promote&quot;</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Static_Code_Analysis_Results</fullName>
+        <active>false</active>
+        <description>This enforces any sort of conditions you may want on the Static Code Analysis results of a User Story (i.e. whether they have to be run and/or achieve certain results). What is written here is that the SCA Score cannot be blank or greater than zero.</description>
+        <errorConditionFormula>AND(
+copado__Has_Apex_Code__c = true,
+OR( 
+AND( 
+PRIORVALUE(copado__Promote_Change__c) = false, 
+copado__Promote_Change__c = true 
+), 
+AND( 
+PRIORVALUE(copado__Promote_and_Deploy__c) = false, 
+copado__Promote_and_Deploy__c = true 
+) 
+), 
+OR( 
+ISBLANK( SCA_Score__c ), 
+SCA_Score__c &gt; 0 
+) 
+)</errorConditionFormula>
+        <errorMessage>Static Code Analysis has either not been run or the SCA Score is too high.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Successful_Validation_Required</fullName>
+        <active>false</active>
+        <description>Before a user story can be promoted there must be a successful validation deployment.</description>
+        <errorConditionFormula>AND( NOT(ISBLANK( copado__Metadata_Types_in_Selection__c )), 
+OR(
+AND(
+PRIORVALUE(copado__Promote_Change__c) = false,
+copado__Promote_Change__c = true
+),
+AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true
+)
+),
+OR(
+ISNULL(copado__Last_Validation_Deployment__c),
+ISNULL(copado__Last_Validation_Deployment_Status__c),
+ISBLANK(copado__Last_Validation_Deployment__c),
+ISBLANK(copado__Last_Validation_Deployment_Status__c),
+NOT(OR(CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Validated&quot;),CONTAINS(copado__Last_Validation_Deployment_Status__c, &quot;Completed&quot;)))
+)
+)</errorConditionFormula>
+        <errorMessage>Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Uber_Approval_Process</fullName>
+        <active>false</active>
+        <description>Checks to make sure there is an approval before deployment</description>
+        <errorConditionFormula>AND( NOT(ISBLANK( copado__Metadata_Types_in_Selection__c )),
+Requires_Approval__c = true,
+Change_Approved__c = false,
+OR(
+AND(
+PRIORVALUE(copado__Promote_Change__c) = false,
+copado__Promote_Change__c = true
+),
+AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true
+)
+)
+)</errorConditionFormula>
+        <errorMessage>This change requires an approval.  Please wait until approval process is complete.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>User_must_own_org_credential</fullName>
+        <active>false</active>
+        <errorConditionFormula>$User.Id &lt;&gt;  copado__Org_Credential__r.OwnerId</errorConditionFormula>
+        <errorMessage>You must own the org credential you are adding to the user story.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>VA_Apex_Test_Coverage</fullName>
+        <active>false</active>
+        <description>If User Story has apex code, validate that the minimum code coverage has been met.</description>
+        <errorConditionFormula>AND(
+copado__Has_Apex_Code__c = true,
+OR(
+AND(
+PRIORVALUE(copado__Promote_Change__c) = false,
+copado__Promote_Change__c = true
+),
+AND(
+PRIORVALUE(copado__Promote_and_Deploy__c) = false,
+copado__Promote_and_Deploy__c = true
+)
+),
+OR(
+ISNULL(copado__Apex_Code_Coverage__c),
+ISNULL(copado__Minimum_Apex_Code_Coverage__c),
+copado__Apex_Code_Coverage__c &lt; copado__Minimum_Apex_Code_Coverage__c
+),
+AND(
+OR(
+copado__Project__r.Name = &apos;CARMA&apos;,
+copado__Project__r.Name = &apos;QMS (Quality Management System)&apos;,
+copado__Project__r.Name = &apos;VHA Integrity&apos;,
+copado__Project__r.Name = &apos;DMC VAMS&apos;,
+copado__Project__r.Name = &apos;CLE-CCM&apos;,
+copado__Project__r.Name = &apos;NVSPSE&apos;,
+copado__Project__r.Name = &apos;CIS - Consolidated Internship Solution&apos;,
+copado__Project__r.Name = &apos;ORH-NOMAD&apos;
+)
+)
+)</errorConditionFormula>
+        <errorMessage>This User Story does not meet the required Apex coverage threshold to be promoted. Run apex test tests from User Story.</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>copado__Cancellation_reason_required</fullName>
         <active>true</active>
@@ -7681,6 +8112,18 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <errorMessage>Test scratch orgs cannot be used for developments</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>User_Story_Bundle</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Bundle User Stories</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/apex/CUSB_UserStoryBundle</url>
+    </webLinks>
     <webLinks>
         <fullName>copado__Add_Apex_Tests</fullName>
         <availability>online</availability>
@@ -7835,6 +8278,19 @@ IMAGE(&quot;/img/samples/color_yellow.gif&quot;, &quot;white&quot;, 15,
         <protected>false</protected>
         <requireRowSelection>false</requireRowSelection>
         <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}QuickCreateUserStories?sid={!copado__Sprint__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>copado__Open_Org</fullName>
+        <availability>online</availability>
+        <description>Open the org speficied in the org credential for the US</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Open Org</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/{!IF(CONTAINS($Action.copado__User_Story__c.New, &apos;copado__&apos;), &apos;copado__&apos;, &apos;&apos;)}ScratchOrgOpen?id={! copado__User_Story__c.copado__Org_CredentialId__c }</url>
     </webLinks>
     <webLinks>
         <fullName>copado__Perform_Validation</fullName>

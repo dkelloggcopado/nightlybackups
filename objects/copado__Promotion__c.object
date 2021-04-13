@@ -583,12 +583,12 @@
             <isRequired>false</isRequired>
         </displayedFields>
         <displayedFields>
-            <field>copado__Destination_Environment__c</field>
+            <field>copado__Source_Environment__c</field>
             <isFieldManaged>false</isFieldManaged>
             <isRequired>false</isRequired>
         </displayedFields>
         <displayedFields>
-            <field>copado__Source_Environment__c</field>
+            <field>copado__Destination_Environment__c</field>
             <isFieldManaged>false</isFieldManaged>
             <isRequired>false</isRequired>
         </displayedFields>
@@ -701,6 +701,16 @@
             <valueSetName>copado__Auto_Resolve_Exceptions</valueSetName>
         </valueSet>
         <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>copado__Merge_Conflict__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates that this promotion includes a manual conflict resolution.</inlineHelpText>
+        <label>Merge Conflict</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>copado__Order_by__c</fullName>
@@ -855,13 +865,14 @@
     <listViews>
         <fullName>copado__All</fullName>
         <columns>NAME</columns>
+        <columns>copado__Source_Environment__c</columns>
         <columns>copado__Destination_Environment__c</columns>
         <columns>copado__Project__c</columns>
         <columns>copado__Release__c</columns>
-        <columns>copado__Source_Environment__c</columns>
+        <columns>copado__Back_Promotion__c</columns>
+        <columns>copado__Status__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
-        <language>en_US</language>
     </listViews>
     <nameField>
         <displayFormat>P{00000}</displayFormat>
@@ -874,6 +885,13 @@
         <customTabListAdditionalFields>copado__Status__c</customTabListAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Locked_Environment</fullName>
+        <active>true</active>
+        <description>Locks promotions with locked environments as target org.</description>
+        <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp;  copado__Destination_Environment__r.Lock_Environment__c = true</errorConditionFormula>
+        <errorMessage>This is a locked environment.  Please reach out to your Copado Admin for more information.</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>copado__Scratch_Orgs_Disabled_for_Back_Promoting</fullName>
         <active>true</active>

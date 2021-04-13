@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <fields>
+        <label><!-- CUSB Source Deployment Task --></label>
+        <name>CUSB_Source_Deployment_Task__c</name>
+        <relationshipLabel><!-- Deployment Tasks --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Notify Task Owner --></label>
         <name>copado__Notify_Task_Owner__c</name>
     </fields>
@@ -76,6 +81,10 @@
             <translation><!-- Manual Task --></translation>
         </picklistValues>
         <picklistValues>
+            <masterLabel>Salesforce Flow</masterLabel>
+            <translation><!-- Salesforce Flow --></translation>
+        </picklistValues>
+        <picklistValues>
             <masterLabel>URL Callout</masterLabel>
             <translation><!-- URL Callout --></translation>
         </picklistValues>
@@ -89,4 +98,15 @@
         <label><!-- dataJSON --></label>
         <name>copado__dataJSON__c</name>
     </fields>
+    <layouts>
+        <layout>Deployment Task Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- New Section --></label>
+            <section>New Section</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>

@@ -51,7 +51,7 @@
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Story points --></label>
+        <label><!-- Total Capacity (Points) --></label>
         <name>copado__Story_points__c</name>
     </fields>
     <fields>
@@ -63,4 +63,23 @@
         <label><!-- Working days in sprint --></label>
         <name>copado__Working_days_in_sprint__c</name>
     </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>copadoccmint__External_Id__c</name>
+    </fields>
+    <layouts>
+        <layout>Sprint Layout</layout>
+        <sections>
+            <label><!-- Additional Information --></label>
+            <section>Additional Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Sprint Summary --></label>
+            <section>Sprint Summary</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>

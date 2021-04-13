@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Eggplant Integration</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Eggplant Integration</value>
+    </caseValues>
+    <fields>
+        <help><!-- Password for connecting to the Eggplant DAI REST API --></help>
+        <label><!-- Password --></label>
+        <name>Password__c</name>
+    </fields>
+    <fields>
+        <help><!-- The URL of the DAI REST API server.  Be sure to include the &quot;https://&quot; or &quot;callout:&quot; as appropriate. --></help>
+        <label><!-- Server --></label>
+        <name>Server__c</name>
+    </fields>
+    <fields>
+        <help><!-- Username for connecting to Eggplant DAI REST API --></help>
+        <label><!-- Username --></label>
+        <name>Username__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

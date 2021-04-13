@@ -39,4 +39,11 @@
         <label><!-- Webhook URL --></label>
         <name>copado__Webhook_URL__c</name>
     </fields>
+    <layouts>
+        <layout>Scheduled Job Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>

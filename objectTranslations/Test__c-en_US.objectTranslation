@@ -9,8 +9,8 @@
         <value>Tests</value>
     </caseValues>
     <fields>
-        <label><!-- deploytest --></label>
-        <name>deploytest__c</name>
+        <label><!-- Deploypicklist --></label>
+        <name>Deploypicklist__c</name>
         <picklistValues>
             <masterLabel>All</masterLabel>
             <translation><!-- All --></translation>

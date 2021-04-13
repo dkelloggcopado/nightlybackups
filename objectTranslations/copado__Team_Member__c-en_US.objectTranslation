@@ -146,4 +146,11 @@
         <name>copado__Team__c</name>
         <relationshipLabel><!-- Team Members --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>Team Member Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>

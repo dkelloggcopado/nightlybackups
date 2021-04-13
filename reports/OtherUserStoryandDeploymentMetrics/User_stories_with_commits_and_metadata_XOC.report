@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <block>
+        <blockInfo>
+            <blockId>B0</blockId>
+            <joinTable>x</joinTable>
+        </blockInfo>
+        <columns>
+            <field>CHILD_NAME</field>
+        </columns>
+        <columns>
+            <field>CHILD_LAST_UPDATE_NAME</field>
+        </columns>
+        <format>Summary</format>
+        <name>User Stories with User Story Met block 1</name>
+        <params>
+            <name>co</name>
+            <value>1</value>
+        </params>
+        <reportType>CustomEntityCustomEntity$copado__User_Story__c$copado__User_Story_Metadata__c</reportType>
+        <scope>user</scope>
+        <showGrandTotal>true</showGrandTotal>
+        <showSubTotals>true</showSubTotals>
+        <timeFrameFilter>
+            <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+            <interval>INTERVAL_CUSTOM</interval>
+        </timeFrameFilter>
+    </block>
+    <block>
+        <blockInfo>
+            <blockId>B1</blockId>
+            <joinTable>x</joinTable>
+        </blockInfo>
+        <columns>
+            <field>CHILD_NAME</field>
+        </columns>
+        <columns>
+            <field>FK_NAME</field>
+        </columns>
+        <columns>
+            <field>copado__User_Story__c.copado__Metadata_Types_in_Selection__c</field>
+        </columns>
+        <columns>
+            <field>CHILD_LAST_UPDATE_NAME</field>
+        </columns>
+        <format>Summary</format>
+        <name>User Stories with User Story Com block 1</name>
+        <params>
+            <name>co</name>
+            <value>1</value>
+        </params>
+        <reportType>CustomEntityCustomEntity$copado__User_Story__c$copado__User_Story_Commit__c@copado__User_Story_Commit__c.copado__Snapshot_Commit__c</reportType>
+        <scope>user</scope>
+        <showGrandTotal>true</showGrandTotal>
+        <showSubTotals>true</showSubTotals>
+        <timeFrameFilter>
+            <dateColumn>copado__User_Story__c.copado__Close_Date__c</dateColumn>
+            <interval>INTERVAL_CUSTOM</interval>
+        </timeFrameFilter>
+    </block>
+    <blockInfo>
+        <blockId xsi:nil="true"/>
+        <joinTable>x</joinTable>
+    </blockInfo>
+    <description>Allows you to view who committed the changes and who made the last update on the metadata in the org</description>
+    <format>MultiBlock</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>CUST_NAME</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>User stories with commits and metadata</name>
+    <reportType>CustomEntityCustomEntity$copado__User_Story__c$copado__User_Story_Metadata__c</reportType>
+    <showDetails>true</showDetails>
+</Report>

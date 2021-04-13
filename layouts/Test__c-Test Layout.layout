@@ -12,7 +12,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>deploytest__c</field>
+                <field>Deploypicklist__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

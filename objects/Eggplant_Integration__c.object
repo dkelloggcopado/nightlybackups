@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings supporting the Eggplant DAI REST API integration</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Password__c</fullName>
+        <description>Password for connecting to the Eggplant DAI REST API</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Password for connecting to the Eggplant DAI REST API</inlineHelpText>
+        <label>Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Server__c</fullName>
+        <description>The URL of the DAI REST API server.  Be sure to include the &quot;https://&quot; or &quot;callout:&quot; as appropriate.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL of the DAI REST API server.  Be sure to include the &quot;https://&quot; or &quot;callout:&quot; as appropriate.</inlineHelpText>
+        <label>Server</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Username__c</fullName>
+        <description>Username for connecting to Eggplant DAI REST API</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Username for connecting to Eggplant DAI REST API</inlineHelpText>
+        <label>Username</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Eggplant Integration</label>
+    <visibility>Public</visibility>
+</CustomObject>

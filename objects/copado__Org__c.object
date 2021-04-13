@@ -144,6 +144,7 @@
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
     <deprecated>false</deprecated>
+    <description>Org authenticated via OAuth that you will need in order to schedule a deployment, run or schedule a Git Snapshot, run or schedule Apex test for an Org and to add more Org credentials in the same Salesforce server (pod).</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableEnhancedLookup>false</enableEnhancedLookup>
@@ -768,7 +769,6 @@ IMAGE(&apos;/resource/1516617568000/&apos;+IF($Setup.copado__Settings__c.copado_
 
 ) 
 ) 
-
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Type Icon</label>
@@ -846,6 +846,22 @@ IMAGE(&apos;/resource/1516617568000/&apos;+IF($Setup.copado__Settings__c.copado_
         <label>All</label>
         <language>en_US</language>
     </listViews>
+    <listViews>
+        <fullName>copado__copa</fullName>
+        <columns>NAME</columns>
+        <columns>copado__Environment__c</columns>
+        <columns>copado__Org_Type__c</columns>
+        <columns>copado__Username__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>copado__Username__c</field>
+            <operation>contains</operation>
+            <value>@copa</value>
+        </filters>
+        <label>@copa</label>
+        <language>en_US</language>
+    </listViews>
     <nameField>
         <label>Org Name</label>
         <trackHistory>false</trackHistory>
@@ -871,6 +887,18 @@ IMAGE(&apos;/resource/1516617568000/&apos;+IF($Setup.copado__Settings__c.copado_
         <searchResultsCustomButtons>copado__Add_to_Deployment</searchResultsCustomButtons>
     </searchLayouts>
     <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Admin_only_can_create_stage_org_cred</fullName>
+        <active>true</active>
+        <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp; copado__Environment__r.Name = &apos;Stage&apos;</errorConditionFormula>
+        <errorMessage>You can only change org credentials you own.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Admin_or_Owner_Changes_Only</fullName>
+        <active>true</active>
+        <errorConditionFormula>$Profile.Name &lt;&gt; &apos;System Administrator&apos; &amp;&amp; $User.Id &lt;&gt; OwnerId</errorConditionFormula>
+        <errorMessage>You can only change org credentials you own.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
     <webLinks>
         <fullName>copado__Add_to_Deployment</fullName>

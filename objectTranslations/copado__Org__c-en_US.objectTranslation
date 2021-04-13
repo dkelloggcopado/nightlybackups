@@ -204,6 +204,28 @@
         <label><!-- Is Developer Hub Org --></label>
         <name>copado__is_Developer_Hub_Org__c</name>
     </fields>
+    <layouts>
+        <layout>Org Credential Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Org Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <validationRules>
+        <errorMessage><!-- You can only change org credentials you own. --></errorMessage>
+        <name>Admin_only_can_create_stage_org_cred</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You can only change org credentials you own. --></errorMessage>
+        <name>Admin_or_Owner_Changes_Only</name>
+    </validationRules>
     <webLinks>
         <label><!-- Add_to_Deployment --></label>
         <name>copado__Add_to_Deployment</name>

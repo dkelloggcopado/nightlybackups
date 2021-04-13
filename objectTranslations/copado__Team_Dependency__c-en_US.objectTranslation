@@ -88,4 +88,46 @@
         <label><!-- Skip Dependency --></label>
         <name>copado__Skip_Dependency__c</name>
     </fields>
+    <layouts>
+        <layout>Team Dependency Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Notes --></label>
+            <section>Notes</section>
+        </sections>
+        <sections>
+            <label><!-- What is needed and when? --></label>
+            <section>What is needed and when?</section>
+        </sections>
+        <sections>
+            <label><!-- Who needs this dependency? --></label>
+            <section>Who needs this dependency?</section>
+        </sections>
+        <sections>
+            <label><!-- Who will do the work? --></label>
+            <section>Who will do the work?</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>User Story Dependency Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deliverable --></label>
+            <section>Deliverable</section>
+        </sections>
+        <sections>
+            <label><!-- Notes --></label>
+            <section>Notes</section>
+        </sections>
+        <sections>
+            <label><!-- Team Dependency (Optional) --></label>
+            <section>Team Dependency (Optional)</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>

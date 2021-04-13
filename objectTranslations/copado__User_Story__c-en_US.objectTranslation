@@ -49,16 +49,59 @@
         <name>copado__Work_Manager_Relations</name>
     </fieldSets>
     <fields>
-        <label><!-- Enable Logs --></label>
-        <name>Enable_Logs__c</name>
+        <label><!-- Bundle User Story --></label>
+        <name>Bundle_User_Story__c</name>
+        <relationshipLabel><!-- Bundled User Stories --></relationshipLabel>
     </fields>
     <fields>
-        <label><!-- External Id --></label>
-        <name>External_Id__c</name>
+        <label><!-- Change Approved --></label>
+        <name>Change_Approved__c</name>
     </fields>
     <fields>
-        <label><!-- JIRA key --></label>
-        <name>JIRA_key__c</name>
+        <label><!-- Datetime Completed --></label>
+        <name>Datetime_Completed__c</name>
+    </fields>
+    <fields>
+        <label><!-- Datetime Deployed To Production --></label>
+        <name>Datetime_Deployed_To_Production__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Bundle --></label>
+        <name>Is_Bundle__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lead Time (Hours) --></label>
+        <name>Lead_Time_Hours__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lead Time (Minutes) --></label>
+        <name>Lead_Time_Minutes__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number Of Components --></label>
+        <name>Number_Of_Components__c</name>
+    </fields>
+    <fields>
+        <label><!-- Parent --></label>
+        <name>Parent__c</name>
+        <relationshipLabel><!-- User Stories --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- You are attempting to deploy a change to the opportunity object.  This requires an approval process. Please submit an approval process. --></help>
+        <label><!-- Requires Approval --></label>
+        <name>Requires_Approval__c</name>
+    </fields>
+    <fields>
+        <label><!-- SCA Score --></label>
+        <name>SCA_Score__c</name>
+    </fields>
+    <fields>
+        <label><!-- SCA Violation Priority --></label>
+        <name>SCA_Violation_Priority__c</name>
+    </fields>
+    <fields>
+        <label><!-- SCA Violations --></label>
+        <name>SCA_Violations__c</name>
     </fields>
     <fields>
         <label><!-- Acceptance Criteria Status --></label>
@@ -199,6 +242,11 @@
         <name>copado__Failing_Methods__c</name>
     </fields>
     <fields>
+        <label><!-- Feature --></label>
+        <name>copado__Feature__c</name>
+        <relationshipLabel><!-- User Stories --></relationshipLabel>
+    </fields>
+    <fields>
         <label><!-- Functional Specifications --></label>
         <name>copado__Functional_Specifications__c</name>
     </fields>
@@ -216,9 +264,17 @@
         </picklistValues>
     </fields>
     <fields>
+        <label><!-- Git Repository --></label>
+        <name>copado__Git_Repository__c</name>
+    </fields>
+    <fields>
         <help><!-- Value automatically updated by Copado whenever there are Apex Classes added or committed in the User Story. --></help>
         <label><!-- Has Apex Code --></label>
         <name>copado__Has_Apex_Code__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Bundle --></label>
+        <name>copado__Is_Bundle__c</name>
     </fields>
     <fields>
         <help><!-- Latest Compliance Scan execution date. --></help>
@@ -231,7 +287,7 @@
     </fields>
     <fields>
         <help><!-- Status of the latest validation Deployment for the User Story. --></help>
-        <label><!-- Last Validation Deployment Status --></label>
+        <label><!-- Last Validation Status --></label>
         <name>copado__Last_Validation_Deployment_Status__c</name>
     </fields>
     <fields>
@@ -735,11 +791,11 @@
         <name>copado__Stop_Indexing_Metadata__c</name>
     </fields>
     <fields>
-        <label><!-- Story Points Other --></label>
+        <label><!-- Planned Points --></label>
         <name>copado__Story_Points_Other__c</name>
     </fields>
     <fields>
-        <label><!-- Story Points SFDC --></label>
+        <label><!-- Actual Points --></label>
         <name>copado__Story_Points_SFDC__c</name>
     </fields>
     <fields>
@@ -773,6 +829,11 @@
         <name>copado__Triggers_Without_Coverage__c</name>
     </fields>
     <fields>
+        <label><!-- Feature --></label>
+        <name>copado__US_Feature__c</name>
+        <relationshipLabel><!-- User Stories --></relationshipLabel>
+    </fields>
+    <fields>
         <help><!-- Short description of the User Story or requirement. Technical and non-technical team members should be able to understand the description. --></help>
         <label><!-- User Story Title --></label>
         <name>copado__User_Story_Title__c</name>
@@ -799,6 +860,314 @@
         <label><!-- So that... --></label>
         <name>copado__userStory_reason__c</name>
     </fields>
+    <fields>
+        <label><!-- Enable Logs --></label>
+        <name>copadoccmint__Enable_Logs__c</name>
+    </fields>
+    <fields>
+        <label><!-- External Id --></label>
+        <name>copadoccmint__External_Id__c</name>
+    </fields>
+    <fields>
+        <label><!-- JIRA key --></label>
+        <name>copadoccmint__JIRA_key__c</name>
+    </fields>
+    <layouts>
+        <layout>Bug Layout V.17</layout>
+        <sections>
+            <label><!-- Apex Code Coverage --></label>
+            <section>Apex Code Coverage</section>
+        </sections>
+        <sections>
+            <label><!-- Approvals --></label>
+            <section>Approvals</section>
+        </sections>
+        <sections>
+            <label><!-- Compliance --></label>
+            <section>Compliance</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Flow --></label>
+            <section>Deployment Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Options --></label>
+            <section>Deployment Options</section>
+        </sections>
+        <sections>
+            <label><!-- Estimation --></label>
+            <section>Estimation</section>
+        </sections>
+        <sections>
+            <label><!-- Project Management --></label>
+            <section>Project Management</section>
+        </sections>
+        <sections>
+            <label><!-- Resourcing --></label>
+            <section>Resourcing</section>
+        </sections>
+        <sections>
+            <label><!-- Specifications --></label>
+            <section>Specifications</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+        <sections>
+            <label><!-- Validation Deployment Results --></label>
+            <section>Validation Deployment Results</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Investigation Layout V.17</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Estimation --></label>
+            <section>Estimation</section>
+        </sections>
+        <sections>
+            <label><!-- Project Management --></label>
+            <section>Project Management</section>
+        </sections>
+        <sections>
+            <label><!-- Specifications --></label>
+            <section>Specifications</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Kaiser Test User Story Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Controls --></label>
+            <section>Deployment Controls</section>
+        </sections>
+        <sections>
+            <label><!-- Development Control --></label>
+            <section>Development Control</section>
+        </sections>
+        <sections>
+            <label><!-- Git Controls --></label>
+            <section>Git Controls</section>
+        </sections>
+        <sections>
+            <label><!-- Pipeline Flow --></label>
+            <section>Pipeline Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Quality Gates --></label>
+            <section>Quality Gates</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Uber User Story Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Controls --></label>
+            <section>Deployment Controls</section>
+        </sections>
+        <sections>
+            <label><!-- Development Control --></label>
+            <section>Development Control</section>
+        </sections>
+        <sections>
+            <label><!-- Git Controls --></label>
+            <section>Git Controls</section>
+        </sections>
+        <sections>
+            <label><!-- Pipeline Flow --></label>
+            <section>Pipeline Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Quality Gates --></label>
+            <section>Quality Gates</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>User Story Layout</layout>
+        <sections>
+            <label><!-- Acceptance --></label>
+            <section>Acceptance</section>
+        </sections>
+        <sections>
+            <label><!-- Apex Code Coverage --></label>
+            <section>Apex Code Coverage</section>
+        </sections>
+        <sections>
+            <label><!-- Compliance --></label>
+            <section>Compliance</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Definition of Done --></label>
+            <section>Definition of Done</section>
+        </sections>
+        <sections>
+            <label><!-- Pipeline Flow --></label>
+            <section>Pipeline Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Release Controls --></label>
+            <section>Release Controls</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+        <sections>
+            <label><!-- Validation Deployment Results --></label>
+            <section>Validation Deployment Results</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>User Story Layout (Unmanaged)</layout>
+        <sections>
+            <label><!-- Apex Code Coverage --></label>
+            <section>Apex Code Coverage</section>
+        </sections>
+        <sections>
+            <label><!-- Approvals --></label>
+            <section>Approvals</section>
+        </sections>
+        <sections>
+            <label><!-- Compliance --></label>
+            <section>Compliance</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Flow --></label>
+            <section>Deployment Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Options --></label>
+            <section>Deployment Options</section>
+        </sections>
+        <sections>
+            <label><!-- Latest Deployment Validation Results --></label>
+            <section>Latest Deployment Validation Results</section>
+        </sections>
+        <sections>
+            <label><!-- Project Management --></label>
+            <section>Project Management</section>
+        </sections>
+        <sections>
+            <label><!-- Resourcing --></label>
+            <section>Resourcing</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>User Story Layout V.17</layout>
+        <sections>
+            <label><!-- Agile content --></label>
+            <section>Agile content</section>
+        </sections>
+        <sections>
+            <label><!-- Apex Code Coverage --></label>
+            <section>Apex Code Coverage</section>
+        </sections>
+        <sections>
+            <label><!-- Approvals --></label>
+            <section>Approvals</section>
+        </sections>
+        <sections>
+            <label><!-- Compliance --></label>
+            <section>Compliance</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Flow --></label>
+            <section>Deployment Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Deployment Options --></label>
+            <section>Deployment Options</section>
+        </sections>
+        <sections>
+            <label><!-- Estimation --></label>
+            <section>Estimation</section>
+        </sections>
+        <sections>
+            <label><!-- Project Management --></label>
+            <section>Project Management</section>
+        </sections>
+        <sections>
+            <label><!-- Resourcing --></label>
+            <section>Resourcing</section>
+        </sections>
+        <sections>
+            <label><!-- Specifications --></label>
+            <section>Specifications</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+        <sections>
+            <label><!-- Validation Deployment Results --></label>
+            <section>Validation Deployment Results</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>VA Citizen Developer User Story Layout</layout>
+        <sections>
+            <label><!-- Current Environment and Deployment Controls --></label>
+            <section>Current Environment and Deployment Controls</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Pipeline Flow --></label>
+            <section>Pipeline Flow</section>
+        </sections>
+        <sections>
+            <label><!-- Quality Gates --></label>
+            <section>Quality Gates</section>
+        </sections>
+        <sections>
+            <label><!-- User Story selections --></label>
+            <section>User Story selections</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Cancel Bundle --></label>
+        <name>Cancel_Bundle</name>
+    </quickActions>
     <recordTypes>
         <label><!-- Bug --></label>
         <name>copado__Bug</name>
@@ -812,6 +1181,46 @@
         <name>copado__User_Story</name>
     </recordTypes>
     <validationRules>
+        <errorMessage><!-- There must be an approved pull request before deploying this user story. If you haven&apos;t already, please open a pull request for approval. --></errorMessage>
+        <name>Approved_pull_request_for_Pr_and_Depl</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The user story status cannot be changed to Cancelled since it is part of a bundle and the bundle will continue moving the changes committed in this user story. You need to cancel the parent user story bundle first in order to cancel this user story. --></errorMessage>
+        <name>Cancelling_a_child_user_story_bundled</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Your change includes metadata that alters the opportunity object.  Changes must be approved before pushing forward.  Please submit approval request by clicking &quot;Submit for Approval&quot;. --></errorMessage>
+        <name>Opportunity_metadata_validation</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- A pull request must first be approved in order to promote this User Story. --></errorMessage>
+        <name>Pull_Request_Approved</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please update &quot;Promotion Test Level&quot; to &quot;Run Specified Tests&quot; before selecting &quot;Promote and Deploy&quot; or &quot;Ready to Promote&quot; --></errorMessage>
+        <name>Run_specified_tests_if_apex</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Static Code Analysis has either not been run or the SCA Score is too high. --></errorMessage>
+        <name>Static_Code_Analysis_Results</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Before a user story can be moved to the next environment, there must be a successful validation deployment.  Click on &quot;Validate Changes&quot; to validate. --></errorMessage>
+        <name>Successful_Validation_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This change requires an approval.  Please wait until approval process is complete. --></errorMessage>
+        <name>Uber_Approval_Process</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You must own the org credential you are adding to the user story. --></errorMessage>
+        <name>User_must_own_org_credential</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- This User Story does not meet the required Apex coverage threshold to be promoted. Run apex test tests from User Story. --></errorMessage>
+        <name>VA_Apex_Test_Coverage</name>
+    </validationRules>
+    <validationRules>
         <errorMessage><!-- A cancellation reason must be given. --></errorMessage>
         <name>copado__Cancellation_reason_required</name>
     </validationRules>
@@ -823,6 +1232,10 @@
         <errorMessage><!-- Test scratch orgs cannot be used for developments --></errorMessage>
         <name>copado__Test_scratch_orgs_cannot_be_used_for_dev</name>
     </validationRules>
+    <webLinks>
+        <label><!-- User_Story_Bundle --></label>
+        <name>User_Story_Bundle</name>
+    </webLinks>
     <webLinks>
         <label><!-- Add_Apex_Tests --></label>
         <name>copado__Add_Apex_Tests</name>
@@ -870,6 +1283,10 @@
     <webLinks>
         <label><!-- Mass_Add_User_Stories_Sprint --></label>
         <name>copado__Mass_Add_User_Stories_Sprint</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Open_Org --></label>
+        <name>copado__Open_Org</name>
     </webLinks>
     <webLinks>
         <label><!-- Perform_Validation --></label>

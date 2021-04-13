@@ -153,9 +153,9 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
-        <fullName>deploytest__c</fullName>
+        <fullName>Deploypicklist__c</fullName>
         <externalId>false</externalId>
-        <label>deploytest</label>
+        <label>Deploypicklist</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>

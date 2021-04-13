@@ -9,4 +9,18 @@
         <name>copado__Quality_Gate__c</name>
         <relationshipLabel><!-- Metadata Groups --></relationshipLabel>
     </fields>
+    <layouts>
+        <layout>Metadata Group Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Metadata Template Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
 </CustomObjectTranslation>
