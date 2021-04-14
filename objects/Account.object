@@ -259,6 +259,50 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Favorite_Ice_Cream__c</fullName>
+        <externalId>false</externalId>
+        <label>Favorite Ice Cream</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Chocolate</fullName>
+                    <default>false</default>
+                    <label>Chocolate</label>
+                </value>
+                <value>
+                    <fullName>Vanilla</fullName>
+                    <default>false</default>
+                    <label>Vanilla</label>
+                </value>
+                <value>
+                    <fullName>Superman</fullName>
+                    <default>false</default>
+                    <label>Superman</label>
+                </value>
+                <value>
+                    <fullName>Strawberry</fullName>
+                    <default>false</default>
+                    <label>Strawberry</label>
+                </value>
+                <value>
+                    <fullName>Mint Chocolate Chip</fullName>
+                    <default>false</default>
+                    <label>Mint Chocolate Chip</label>
+                </value>
+                <value>
+                    <fullName>Cookies and Cream</fullName>
+                    <default>false</default>
+                    <label>Cookies and Cream</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Fax</fullName>
         <trackFeedHistory>false</trackFeedHistory>
     </fields>
