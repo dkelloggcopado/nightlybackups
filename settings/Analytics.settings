@@ -24,7 +24,6 @@
     <enableQueryLiveConnectors>false</enableQueryLiveConnectors>
     <enableRemoveFooterForRepDisplay>false</enableRemoveFooterForRepDisplay>
     <enableRemoveFooterFromRepExp>false</enableRemoveFooterFromRepExp>
-    <enableReportCrtAutoAddPref>false</enableReportCrtAutoAddPref>
     <enableReportHideXlsExportPref>false</enableReportHideXlsExportPref>
     <enableReportNotificationsEnable>true</enableReportNotificationsEnable>
     <enableS1AnalyticsEclairEnable>true</enableS1AnalyticsEclairEnable>

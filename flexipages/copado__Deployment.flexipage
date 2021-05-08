@@ -70,11 +70,6 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentName>copado:deploymentStepsContainer</componentName>
-            </componentInstance>
-        </itemInstances>
         <name>Facet-470e7cc3-7db2-4484-ab74-5d33bfadae85</name>
         <type>Facet</type>
     </flexiPageRegions>
