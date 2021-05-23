@@ -293,6 +293,11 @@
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>copado:functionsParametersContainer</componentName>
+            </componentInstance>
+        </itemInstances>
         <name>Facet-7y7z64dtpt5</name>
         <type>Facet</type>
     </flexiPageRegions>
