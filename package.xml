@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>ChangeEvents_copado_Promotion_ChangeEvent</members>
-        <members>ChangeEvents_copado_User_Story_ChangeEvent</members>
-        <name>PlatformEventChannelMember</name>
+        <members>copado__Application_Feature_Path</members>
+        <members>copado__Feature_Path</members>
+        <name>PathAssistant</name>
     </types>
     <version>52.0</version>
 </Package>
