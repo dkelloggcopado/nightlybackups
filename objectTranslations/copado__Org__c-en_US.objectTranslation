@@ -5,6 +5,10 @@
         <name>copado__Copado_Header_Fields</name>
     </fieldSets>
     <fields>
+        <label><!-- Latest Number of Test Failures --></label>
+        <name>Latest_Number_of_Test_Failures__c</name>
+    </fields>
+    <fields>
         <help><!-- Status of the most recent Compliance Scan of the Org. --></help>
         <label><!-- Compliance Status --></label>
         <name>copado__Compliance_Status__c</name>
